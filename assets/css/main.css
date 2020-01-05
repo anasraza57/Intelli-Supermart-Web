@@ -5593,6 +5593,7 @@ a#more-btn {
 }
 
 .single-product-tab-section .tab-content p.product-desc {
+    color: black;
     font-size: 15px;
     line-height: 25px;
 }
