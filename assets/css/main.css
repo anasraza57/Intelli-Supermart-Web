@@ -833,6 +833,7 @@ header {
 }
 
 .cart-floating-box .cart-float-single-item .cart-float-single-item-desc p {
+    color: #333;
     margin-bottom: 5px;
 }
 
