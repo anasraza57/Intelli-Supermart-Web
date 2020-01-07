@@ -180,29 +180,15 @@ button, input[type="submit"] {
     cursor: pointer;
 }
 
-h3{
-    margin-left:110px;
-    font-weight:bold;
-}
-p.about{
-    padding-left:110px;
-    padding-right:140px;
+.myStyle {
+    margin-left: 110px;
+    font-weight: bold;
 }
 
-p.career{
-    margin-left:110px;
-    margin-right:140px;
+.myStyle2 {
+    padding-left: 110px;
+    padding-right: 140px;
 }
-p.terms{
-    margin-left:110px;
-    margin-right:140px;
-}
-
-p.privacy{
-    margin-left:110px;
-    margin-right:140px;
-}
-
 
 ul {
     list-style: outside none none;
