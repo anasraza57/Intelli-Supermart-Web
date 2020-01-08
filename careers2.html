@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>How To Pay - Intelli Supermart</title>
+    <title>Careers - Intelli Supermart</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -32,7 +32,8 @@
 
     <!-- Modernizer JS -->
     <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -58,7 +59,6 @@
                             <li><a href="my-account.html">My account</a></li>
                             <li><a href="wishlist.html">Wishlist</a></li>
                             <li><a href="checkout.html">Checkout</a></li>
-                            <li><a id="loginBtn">Login</a></li>
                         </ul>
                     </div>
                     <!-- end of header top menu -->
@@ -112,13 +112,14 @@
                             <!-- end of shopping cart -->
 
                             <!-- cart floating box -->
-                           <div class="cart-floating-box" id="cart-floating-box">
+                            <div class="cart-floating-box" id="cart-floating-box">
                                 <div class="cart-items">
                                     <div class="cart-float-single-item d-flex">
                                         <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
                                         <div class="cart-float-single-item-image">
                                             <a href="product-details.html"><img
-                                                    src="assets/images/products/Beverages/bb-450g.png" class="img-fluid" alt=""></a>
+                                                    src="assets/images/products/Beverages/bb-450g.png" class="img-fluid"
+                                                    alt=""></a>
                                         </div>
                                         <div class="cart-float-single-item-desc">
                                             <p class="product-title"><a href="product-details.html">Supreme Tea</a></p>
@@ -129,7 +130,8 @@
                                         <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
                                         <div class="cart-float-single-item-image">
                                             <a href="product-details.html"><img
-                                                    src="assets/images/products/Breakfast & Dairy/Nutella.jpg" class="img-fluid" alt=""></a>
+                                                    src="assets/images/products/Breakfast & Dairy/Nutella.jpg"
+                                                    class="img-fluid" alt=""></a>
                                         </div>
                                         <div class="cart-float-single-item-desc">
                                             <p class="product-title"><a href="product-details.html">Nutella</a></p>
@@ -157,6 +159,7 @@
                             <ul>
                                 <li><a href="index.html">HOME</a></li>
                                 <li><a href="shop.html">Shop</a></li>
+                                <li><a href="login-register.html">Login Register</a></li>
                                 <li><a href="contact-us.html">CONTACT</a></li>
                             </ul>
                         </nav>
@@ -187,7 +190,7 @@
                 <div class="breadcrumb-container">
                     <ul>
                         <li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
-                        <li class="active">How To Pay</li>
+                        <li class="active">Careers</li>
                     </ul>
                 </div>
             </div>
@@ -201,13 +204,39 @@
 <!--=============================================
 =            Careers page content         =
 =============================================-->
-<h3 class="myStyle">How To Pay</h3>
-<br>
-<p class="myStyle2">To pay Intelli Supermart, you can avail the Cash on Delivery method of payment</p>
-<br><br>
+<div>
+    <button id="btn">Click me</button>
+</div>
 
-
-
+<script>
+    $('#btn').on("click", function () {
+        swal({
+            title: "Phone Number Verification",
+            text: "Enter your mobile number to Login/SignUp:",
+            content: "input",
+            buttons: {
+                confirm: "Next"
+            },
+            animation: "slide-from-top"
+        }).then(val => {
+            if (val) {
+                swal({
+                    title: "Phone Number Verification",
+                    text: "Enter 4 digit code to your phone\n" + val,
+                    content: "input"
+                }).then(val2 => {
+                    if (val2) {
+                        swal({
+                           title:"Thanks!",
+                            text:"Logged In",
+                            icon:"success"
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
 <!--=====  End of Careers page content  ======-->
 
 
@@ -341,10 +370,6 @@
 ============================================ -->
 <!-- jQuery JS -->
 <script src="assets/js/vendor/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-<!-- SweetAlert -->
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <!-- Popper JS -->
 <script src="assets/js/popper.min.js"></script>
@@ -358,8 +383,6 @@
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>
 
-<!-- Custom JS -->
-<script src="assets/js/custom.js"></script>
 </body>
 
 </html>
