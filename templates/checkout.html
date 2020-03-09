@@ -1,0 +1,242 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<!--=============================================
+=            breadcrumb area         =
+=============================================-->
+
+<div class="breadcrumb-area mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-container">
+                    <ul>
+                        <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+                        <li class="active">Checkout</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--=====  End of breadcrumb area  ======-->
+
+<!--=============================================
+=            Checkout page content         =
+=============================================-->
+
+<div class="page-section section mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+                <!-- Checkout Form s-->
+                <form action="#" class="checkout-form">
+                    <div class="row row-40">
+
+                        <div class="col-lg-7 mb-20">
+
+                            <!-- Billing Address -->
+                            <div id="billing-form" class="mb-40">
+                                <h4 class="checkout-title">Billing Address</h4>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>First Name*</label>
+                                        <input type="text" placeholder="First Name">
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>Last Name*</label>
+                                        <input type="text" placeholder="Last Name">
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>Email Address*</label>
+                                        <input type="email" placeholder="Email Address">
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>Phone no*</label>
+                                        <input type="text" placeholder="Phone number">
+                                    </div>
+
+                                    <div class="col-12 mb-20">
+                                        <label>Address*</label>
+                                        <input type="text" placeholder="Address line 1">
+                                        <input type="text" placeholder="Address line 2">
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>City*</label>
+                                        <select class="nice-select">
+                                            <option>Lahore</option>
+                                            <option>Islamabad</option>
+                                            <option>Karachi</option>
+                                            <option>Gujrat</option>
+                                            <option>Multan</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>Town*</label>
+                                        <input type="text" placeholder="Town/City">
+                                    </div>
+                                  
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>Zip Code*</label>
+                                        <input type="text" placeholder="Zip Code">
+                                    </div>
+
+                                    <div class="col-12 mb-20">
+                                        <div class="check-box">
+                                            
+                                            <label><a href='/login-register'>Create an Acount?</a></label>
+                                        </div>
+                                        <div class="check-box">
+                                            <input type="checkbox" id="shiping_address" data-shipping>
+                                            <label for="shiping_address">Ship to Different Address</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Shipping Address -->
+                            <div id="shipping-form" class="mb-40">
+                                <h4 class="checkout-title">Shipping Address</h4>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>First Name*</label>
+                                        <input type="text" placeholder="First Name">
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>Last Name*</label>
+                                        <input type="text" placeholder="Last Name">
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>Email Address*</label>
+                                        <input type="email" placeholder="Email Address">
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>Phone no*</label>
+                                        <input type="text" placeholder="Phone number">
+                                    </div>
+
+                                    <div class="col-12 mb-20">
+                                        <label>Address*</label>
+                                        <input type="text" placeholder="Address line 1">
+                                        <input type="text" placeholder="Address line 2">
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>City*</label>
+                                        <select class="nice-select">
+                                            <option>Lahore</option>
+                                            <option>Islamabad</option>
+                                            <option>Karachi</option>
+                                            <option>Gujrat</option>
+                                            <option>Multan</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>Town*</label>
+                                        <input type="text" placeholder="Town/City">
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-12 mb-20">
+                                        <label>Zip Code*</label>
+                                        <input type="text" placeholder="Zip Code">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-5">
+                            <div class="row">
+
+                                <!-- Cart Total -->
+                                <div class="col-12 mb-60">
+
+                                    <h4 class="checkout-title">Cart Total</h4>
+
+                                    <div class="checkout-cart-total">
+
+                                        <h4>Product <span>Total</span></h4>
+
+                                        <ul>
+                                            <li>Supreme Tea 450g X 01 <span>Rs 250</span></li>
+                                            <li>Nutella Chocolate Spread X 01 <span>Rs 200</span></li>
+                                            
+                                        </ul>
+
+                                        <p>Sub Total <span>Rs 450</span></p>
+                                        <p>Shipping Fee <span>Rs 100</span></p>
+
+                                        <h4>Grand Total <span>Rs 550</span></h4>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- Payment Method -->
+                                <div class="col-12">
+
+                                    <h4 class="checkout-title">Payment Method</h4>
+
+                                    <div class="checkout-payment-method">
+
+                                        <div class="single-method">
+                                            <input type="radio" id="payment_check" name="payment-method" value="check">
+                                            <label for="payment_check">Cash on Delivery</label>                                            
+                                        </div>
+
+                                        <div class="single-method">
+                                            <input type="radio" id="payment_bank" name="payment-method" value="bank">
+                                            <label for="payment_bank">Easy Paisa</label>                                          
+                                        </div>
+
+                                        <div class="single-method">
+                                            <input type="radio" id="payment_cash" name="payment-method" value="cash">
+                                            <label for="payment_cash">Credit/Debit Card</label>                                           
+                                        </div>
+                                     
+                                     
+                                        <div class="single-method">
+                                            <input type="checkbox" id="accept_terms">
+                                            <label for="accept_terms">I’ve read and accept the terms &
+                                                conditions</label>
+                                        </div>
+
+                                    </div>
+
+                                    <button class="place-order">Place order</button>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--=====  End of Checkout page content  ======-->
+
+{% endblock %}

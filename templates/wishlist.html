@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<!--=============================================
+=            breadcrumb area         =
+=============================================-->
+
+<div class="breadcrumb-area mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-container">
+                    <ul>
+                        <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+                        <li class="active">Wishlist</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--=====  End of breadcrumb area  ======-->
+
+<!--=============================================
+=            Wishlist page content         =
+=============================================-->
+
+
+<div class="page-section section mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="#">
+                    <!--=======  cart table  =======-->
+
+                    <div class="cart-table table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th class="pro-thumbnail">Image</th>
+                                <th class="pro-title">Product</th>
+                                <th class="pro-price">Price</th>
+                                <th class="pro-quantity">Quantity</th>
+                                <th class="pro-subtotal">Total</th>
+                                <th class="pro-remove">Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="pro-thumbnail"><a href="#"><img
+                                        src="{{url_for('static', filename = 'images/products/Noodles & Frozen Food/strawberry-custard-300-gm.png')}}"
+                                        class="img-fluid" alt="Product"></a></td>
+                                <td class="pro-title"><a href="#">Strawberry Custard</a></td>
+                                <td class="pro-price"><span>Rs 150</span></td>
+                                <td class="pro-quantity">
+                                    <div class="pro-qty"><input type="text" value="1"></div>
+                                </td>
+                                <td class="pro-subtotal"><span>Rs 150</span></td>
+                                <td class="pro-remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td class="pro-thumbnail"><a href="#"><img
+                                        src="{{url_for('static', filename = 'images/products/Beverages/milo.jpg')}}"
+                                        class="img-fluid" alt="Product"></a></td>
+                                <td class="pro-title"><a href="#">Nestle Milo</a></td>
+                                <td class="pro-price"><span>Rs 250</span></td>
+                                <td class="pro-quantity">
+                                    <div class="pro-qty"><input type="text" value="2"></div>
+                                </td>
+                                <td class="pro-subtotal"><span>Rs 500</span></td>
+                                <td class="pro-remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td class="pro-thumbnail"><a href="#"><img
+                                        src="{{url_for('static', filename = 'images/products/Breakfast & Dairy/mayo_2.jpg')}}"
+                                        class="img-fluid" alt="Product"></a></td>
+                                <td class="pro-title"><a href="#">Young's Mayoneese Pack</a></td>
+                                <td class="pro-price"><span>Rs 350</span></td>
+                                <td class="pro-quantity">
+                                    <div class="pro-qty"><input type="text" value="1"></div>
+                                </td>
+                                <td class="pro-subtotal"><span>Rs 350</span></td>
+                                <td class="pro-remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!--=======  End of cart table  =======-->
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--=====  End of Cart page content  ======-->
+{% endblock %}

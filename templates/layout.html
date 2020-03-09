@@ -3,35 +3,35 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>How To Pay - Intelli Supermart</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <title>Intelli Supermart</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Favicon -->
-    <link rel="icon" href="assets/images/icon.png">
+    <link href="{{url_for('static', filename = 'assets/images/icon.png')}}" rel="icon">
 
     <!-- CSS
     ============================================ -->
     <!-- Bootstrap CSS -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{url_for('static', filename = 'css/bootstrap.min.css')}}" rel="stylesheet">
 
     <!-- FontAwesome CSS -->
-    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{url_for('static', filename = 'css/font-awesome.min.css')}}" rel="stylesheet">
 
     <!-- Elegent CSS -->
-    <link href="assets/css/elegent.min.css" rel="stylesheet">
+    <link href="{{url_for('static', filename = 'css/elegent.min.css')}}" rel="stylesheet">
 
     <!-- Plugins CSS -->
-    <link href="assets/css/plugins.css" rel="stylesheet">
+    <link href="{{url_for('static', filename = 'css/plugins.css')}}" rel="stylesheet">
 
     <!-- Helper CSS -->
-    <link href="assets/css/helper.css" rel="stylesheet">
+    <link href="{{url_for('static', filename = 'css/helper.css')}}" rel="stylesheet">
 
     <!-- Main CSS -->
-    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="{{url_for('static', filename = 'css/main.css')}}" rel="stylesheet">
 
     <!-- Modernizer JS -->
-    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="{{url_for('static', filename = 'js/vendor/modernizr-2.8.3.min.js')}}"></script>
 
 </head>
 
@@ -52,12 +52,12 @@
                     <div class="header-top-menu">
                         <ul>
                             <li>
-                                <img src="assets/images/icons/contact-icon2.png" height="20" alt="">
+                                <img alt="" height="20" src="{{url_for('static', filename = 'images/icons/contact-icon2.png')}}">
                                 <span>+92-323-0496310</span>
                             </li>
-                            <li><a href="my-account.html">My account</a></li>
-                            <li><a href="wishlist.html">Wishlist</a></li>
-                            <li><a href="checkout.html">Checkout</a></li>
+                            <li><a href="/my-account">My account</a></li>
+                            <li><a href="/wishlist">Wishlist</a></li>
+                            <li><a href="/checkout">Checkout</a></li>
                             <li><a id="loginBtn">Login</a></li>
                         </ul>
                     </div>
@@ -77,8 +77,8 @@
                 <div class="col-md-5 col-sm-12 col-xs-12 text-lg-left text-md-center text-sm-center">
                     <!-- logo -->
                     <div class="logo">
-                        <a href="index.html">
-                            <img src="assets/images/logo.png" class="img-fluid" alt="">
+                        <a href="/">
+                            <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/logo.png')}}">
                         </a>
                     </div>
                     <!-- end of logo -->
@@ -89,7 +89,7 @@
                         <div class="header-advance-search">
                             <form action="#">
                                 <label>
-                                    <input type="text" placeholder="Search your product">
+                                    <input placeholder="Search your product" type="text">
                                 </label>
                                 <button><span class="icon_search"></span></button>
                             </form>
@@ -97,7 +97,7 @@
                         <!-- end of search bar -->
                         <!-- shopping cart -->
                         <div class="shopping-cart" id="shopping-cart">
-                            <a href="cart.html">
+                            <a href="/cart">
                                 <div class="cart-icon d-inline-block">
                                     <span class="icon_bag_alt"></span>
                                 </div>
@@ -112,27 +112,29 @@
                             <!-- end of shopping cart -->
 
                             <!-- cart floating box -->
-                           <div class="cart-floating-box" id="cart-floating-box">
+                            <div class="cart-floating-box" id="cart-floating-box">
                                 <div class="cart-items">
                                     <div class="cart-float-single-item d-flex">
                                         <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
                                         <div class="cart-float-single-item-image">
-                                            <a href="product-details.html"><img
-                                                    src="assets/images/products/Beverages/bb-450g.png" class="img-fluid" alt=""></a>
+                                            <a href="/product-details"><img
+                                                    alt="" class="img-fluid"
+                                                    src="{{url_for('static', filename = 'images/products/Beverages/bb-450g.png')}}"></a>
                                         </div>
                                         <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="product-details.html">Supreme Tea</a></p>
+                                            <p class="product-title"><a href="/product-details">Supreme Tea</a></p>
                                             <p class="price"><span class="count">1x</span>Rs 250</p>
                                         </div>
                                     </div>
                                     <div class="cart-float-single-item d-flex">
                                         <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
                                         <div class="cart-float-single-item-image">
-                                            <a href="product-details.html"><img
-                                                    src="assets/images/products/Breakfast & Dairy/Nutella.jpg" class="img-fluid" alt=""></a>
+                                            <a href="/product-details"><img
+                                                    alt=""
+                                                    class="img-fluid" src="{{url_for('static', filename = 'images/products/Breakfast & Dairy/Nutella.jpg')}}"></a>
                                         </div>
                                         <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="product-details.html">Nutella</a></p>
+                                            <p class="product-title"><a href="/product-details">Nutella</a></p>
                                             <p class="price"><span class="count">1x</span>Rs 200</p>
                                         </div>
                                     </div>
@@ -142,8 +144,8 @@
                                         <p class="total">Subtotal <span>Rs 450</span></p>
                                     </div>
                                     <div class="floating-cart-btn text-center">
-                                        <a href="checkout.html">Checkout</a>
-                                        <a href="cart.html">View Cart</a>
+                                        <a href="/checkout">Checkout</a>
+                                        <a href="/cart">View Cart</a>
                                     </div>
                                 </div>
                             </div>
@@ -155,9 +157,9 @@
                     <div class="main-menu">
                         <nav>
                             <ul>
-                                <li><a href="index.html">HOME</a></li>
-                                <li><a href="shop.html">Shop</a></li>
-                                <li><a href="contact-us.html">CONTACT</a></li>
+                                <li><a href="/">HOME</a></li>
+                                <li><a href="/shop">Shop</a></li>
+                                <li><a href="/contact-us">CONTACT</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -174,42 +176,7 @@
     <!--=======  End of header bottom  =======-->
 </header>
 
-<!--=====  End of Header  ======-->
-
-<!--=============================================
-=            breadcrumb area         =
-=============================================-->
-
-<div class="breadcrumb-area mb-50">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="breadcrumb-container">
-                    <ul>
-                        <li><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
-                        <li class="active">How To Pay</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--=====  End of breadcrumb area  ======-->
-
-
-<!--=============================================
-=            Careers page content         =
-=============================================-->
-<h3 class="myStyle">How To Pay</h3>
-<br>
-<p class="myStyle2">To pay Intelli Supermart, you can avail the Cash on Delivery method of payment</p>
-<br><br>
-
-
-
-<!--=====  End of Careers page content  ======-->
-
+{% block body %} {% endblock %}
 
 <!--=============================================
 =            Footer         =
@@ -227,10 +194,10 @@
                     <div class="single-navigation-section">
                         <h3 class="nav-section-title">Intelli Supermart</h3>
                         <ul>
-                            <li><a href="about-us.html">About Us</a></li>
-                            <li><a href="careers.html">Careers</a></li>
-                            <li><a href="terms-n-conditions.html">Terms & Condition</a></li>
-                            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                            <li><a href="/about-us">About Us</a></li>
+                            <li><a href="/careers">Careers</a></li>
+                            <li><a href="/terms-n-conditions">Terms & Condition</a></li>
+                            <li><a href="/privacy-policy">Privacy Policy</a></li>
                         </ul>
                     </div>
 
@@ -242,12 +209,12 @@
                     <div class="single-navigation-section">
                         <h3 class="nav-section-title">Help</h3>
                         <ul>
-                            <li><a href="faqs.html">FAQs</a></li>
-                            <li><a href="how-to-order.html">How to Order</a></li>
-                            <li><a href="how-to-pay.html">How to Pay</a></li>
-                            <li><a href="return-n-refunds.html">Return & Refunds</a></li>
-                            <li><a href="contact-us.html">Contact us</a></li>
-                            <li><a href="delivery.html">Delivery</a></li>
+                            <li><a href="/faqs">FAQs</a></li>
+                            <li><a href="/how-to-order">How to Order</a></li>
+                            <li><a href="/how-to-pay">How to Pay</a></li>
+                            <li><a href="/return-n-refunds">Return & Refunds</a></li>
+                            <li><a href="/contact-us">Contact us</a></li>
+                            <li><a href="/delivery">Delivery</a></li>
                         </ul>
                     </div>
 
@@ -283,15 +250,15 @@
                         <ul>
                             <li>
                                 <div class="social-links">
-                                    <a class="facebook" href="http://www.facebook.com/" data-tooltip="Facebook"><i
+                                    <a class="facebook" data-tooltip="Facebook" href="http://www.facebook.com/"><i
                                             class="fa fa-facebook"></i></a>
-                                    <a class="twitter" href="http://www.twitter.com/" data-tooltip="Twitter"><i
+                                    <a class="twitter" data-tooltip="Twitter" href="http://www.twitter.com/"><i
                                             class="fa fa-twitter"></i></a>
-                                    <a class="instagram" href="http://www.instagram.com/" data-tooltip="Instagram"><i
+                                    <a class="instagram" data-tooltip="Instagram" href="http://www.instagram.com/"><i
                                             class="fa fa-instagram"></i></a>
-                                    <a class="linkedin" href="http://www.linkedin.com/" data-tooltip="Linkedin"><i
+                                    <a class="linkedin" data-tooltip="Linkedin" href="http://www.linkedin.com/"><i
                                             class="fa fa-linkedin"></i></a>
-                                    <a class="rss" href="http://www.rss.com/" data-tooltip="RSS"><i
+                                    <a class="rss" data-tooltip="RSS" href="http://www.rss.com/"><i
                                             class="fa fa-rss"></i></a>
                                 </div>
                             </li>
@@ -316,7 +283,7 @@
                     <!--=======  copyright text	  =======-->
 
                     <div class="copyright-segment">
-                        <p class="copyright-text">&copy; 2019 <a href="index.html">Intelli Supermart</a>. All
+                        <p class="copyright-text">&copy; 2019 <a href="/">Intelli Supermart</a>. All
                             Rights Reserved</p>
                     </div>
 
@@ -334,32 +301,35 @@
 
 
 <!-- scroll to top  -->
-<a href="#" class="scroll-top"></a>
+<a class="scroll-top" href="#"></a>
 <!-- end of scroll to top -->
 
 <!-- JS
 ============================================ -->
 <!-- jQuery JS -->
-<script src="assets/js/vendor/jquery.min.js"></script>
+<script src="{{url_for('static', filename = 'js/vendor/jquery.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <!-- SweetAlert -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <!-- Popper JS -->
-<script src="assets/js/popper.min.js"></script>
+<script src="{{url_for('static', filename = 'js/popper.min.js')}}"></script>
 
 <!-- Bootstrap JS -->
-<script src="assets/js/bootstrap.min.js"></script>
+<script src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
 
 <!-- Plugins JS -->
-<script src="assets/js/plugins.js"></script>
+<script src="{{url_for('static', filename = 'js/plugins.js')}}"></script>
 
 <!-- Main JS -->
-<script src="assets/js/main.js"></script>
+<script src="{{url_for('static', filename = 'js/main.js')}}"></script>
 
 <!-- Custom JS -->
-<script src="assets/js/custom.js"></script>
+<script src="{{url_for('static', filename = 'js/custom.js')}}"></script>
+
+<!-- AJAX mail JS -->
+<script src="{{url_for('static', filename = 'js/ajax-mail.js')}}"></script>
 </body>
 
 </html>
