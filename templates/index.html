@@ -52,7 +52,8 @@
                     <div class="header-top-menu">
                         <ul>
                             <li>
-                                <img alt="" height="20" src="{{url_for('static', filename = 'images/icons/contact-icon2.png')}}">
+                                <img alt="" height="20"
+                                     src="{{url_for('static', filename = 'images/icons/contact-icon2.png')}}">
                                 <span>+92-323-0496310</span>
                             </li>
                             <li><a href="/my-account">My account</a></li>
@@ -131,7 +132,8 @@
                                         <div class="cart-float-single-item-image">
                                             <a href="/product-details"><img
                                                     alt=""
-                                                    class="img-fluid" src="{{url_for('static', filename = 'images/products/Breakfast & Dairy/Nutella.jpg')}}"></a>
+                                                    class="img-fluid"
+                                                    src="{{url_for('static', filename = 'images/products/Breakfast & Dairy/Nutella.jpg')}}"></a>
                                         </div>
                                         <div class="cart-float-single-item-desc">
                                             <p class="product-title"><a href="/product-details">Nutella</a></p>
@@ -270,7 +272,8 @@
                     <!--=======  single policy  =======-->
 
                     <div class="single-policy">
-                        <span><img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/policy-icon1.png')}}"></span>
+                        <span><img alt="" class="img-fluid"
+                                   src="{{url_for('static', filename = 'images/policy-icon1.png')}}"></span>
                         <p> FREE SHIPPING ON ORDERS OVER Rs.1000</p>
                     </div>
 
@@ -280,7 +283,8 @@
                     <!--=======  single policy  =======-->
 
                     <div class="single-policy">
-                        <span><img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/policy-icon2.png')}}"></span>
+                        <span><img alt="" class="img-fluid"
+                                   src="{{url_for('static', filename = 'images/policy-icon2.png')}}"></span>
                         <p>30 -DAY RETURNS MONEY BACK</p>
                     </div>
 
@@ -291,7 +295,8 @@
                     =============================================-->
 
                     <div class="single-policy">
-                        <span><img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/policy-icon3.png')}}"></span>
+                        <span><img alt="" class="img-fluid"
+                                   src="{{url_for('static', filename = 'images/policy-icon3.png')}}"></span>
                         <p> 24/7 SUPPORT</p>
                     </div>
 
@@ -329,248 +334,31 @@
 
                 <div class="category-slider-container">
 
+                    {% for category in categories%}
                     <!--=======  single category  =======-->
 
                     <div class="single-category">
+
+                        {% for picture in pictures %}
+                        {% if(picture.picture_id == category.picture_id) %}
+                        {% set url = 'images/categories/' + picture.picture_url %}
+
                         <div class="category-image">
-                            <a href="/shop" title="Fruits and Vegetables">
-                                <img alt=""
-                                     class="img-fluid" src="{{url_for('static', filename = 'images/categories/fruits_and_vegetables.jpg')}}">
+                            <a href="/shop" title={{ category.category_name }}>
+                                <img alt="" class="img-fluid" src="{{url_for('static', filename=url)}}">
                             </a>
                         </div>
+                        {% endif %}
+                        {% endfor %}
                         <div class="category-title">
                             <h3>
-                                <a href="/shop">Fruits and Vegetables</a>
+                                <a href="/shop">{{ category.category_name }}</a>
                             </h3>
                         </div>
                     </div>
 
                     <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="/shop" title="Breakfast and Dairy">
-                                <img alt="" class="img-fluid" src="assets/images/categories/breakfast_and_dairy.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Breakfast and Dairy</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Beverages">
-                                <img alt="" class="img-fluid" src="assets/images/categories/beverages.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Beverages</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Grocery and Staples">
-                                <img alt="" class="img-fluid" src="assets/images/categories/grocery_and_staples.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Grocery and Staples</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Household Needs">
-                                <img alt="" class="img-fluid" src="assets/images/categories/household_needs.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Household Needs</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Home and Kitchen">
-                                <img alt="" class="img-fluid" src="assets/images/categories/home_and_kitchen.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Home and Kitchen</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Baby and Kids">
-                                <img alt="" class="img-fluid" src="assets/images/categories/baby_and_kids.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Baby and Kids</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Biscuits, Snacks and Chocolates">
-                                <img alt="" class="img-fluid"
-                                     src="assets/images/categories/biscuit_snacks_chocolates.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Biscuits, Snacks and Chocolates </a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Noodles, Sauces and Instant Food">
-                                <img alt="" class="img-fluid"
-                                     src="assets/images/categories/noodles_sauces_instant_food.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Noodles, Sauces and Instant Food</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Personal Care">
-                                <img alt="" class="img-fluid" src="assets/images/categories/personal_care.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Personal Care</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Ice Creams">
-                                <img alt="" class="img-fluid" src="assets/images/categories/ice_creams.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Ice Creams</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Pet Care">
-                                <img alt="" class="img-fluid" src="assets/images/categories/pet_care.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Pet Care</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Meat and Seafood">
-                                <img alt="" class="img-fluid" src="assets/images/categories/meat_seafood.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Meat and Seafood</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
-                    <!--=======  single category  =======-->
-
-                    <div class="single-category">
-                        <div class="category-image">
-                            <a href="shop" title="Furnishing and Home Needs">
-                                <img alt="" class="img-fluid" src="assets/images/categories/furnishing_home_needs.jpg">
-                            </a>
-                        </div>
-                        <div class="category-title">
-                            <h3>
-                                <a href="shop">Furnishing and Home Needs</a>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single category  =======-->
-
+                    {% endfor %}
                 </div>
 
                 <!--=======  End of category container  =======-->
@@ -581,239 +369,6 @@
 </div>
 
 <!--=====  End of category slider  ======-->
-
-<!--=============================================
-=            Slider with banner        =
-=============================================-->
-
-<div class="slider slider-with-banner mb-35">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <!--=======  blog slider section title  =======-->
-
-                <div class="section-title red-title">
-                    <h3>fist & meals</h3>
-                </div>
-
-                <!--=======  End of blog slider section title  =======-->
-            </div>
-        </div>
-
-        <div class="row">
-
-            <div class="col-lg-12">
-                <!--=======  banner slider wrapper  =======-->
-
-                <div class="banner-slider-wrapper">
-                    <div class="row no-gutters">
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                            <!--=======  slider side banner  =======-->
-
-                            <div class="slider-side-banner">
-                                <a href="/shop">
-                                    <img alt=""
-                                         class="img-fluid"
-                                         src="{{url_for('static', filename = 'images/banners/home6-banner2-2.jpg')}}">
-                                </a>
-                            </div>
-
-                            <!--=======  End of slider side banner  =======-->
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-12">
-                            <!--=======  banner slider container  =======-->
-
-                            <div class="banner-slider-container">
-                                <!--=======  single banner slider product  =======-->
-
-
-                                <div class="gf-product banner-slider-product">
-                                    <div class="image">
-                                        <a href="/product-details">
-                                            <span class="onsale">Sale!</span>
-                                            <img alt=""
-                                                 class="img-fluid" src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/11084.jpg')}}">
-                                        </a>
-                                        <div class="product-hover-icons">
-                                            <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                               href="#"> <span
-                                                    class="icon_search"></span> </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="product-categories">
-                                            <a href="/shop">Fruits & Vegetables</a>
-                                        </div>
-                                        <h3 class="product-title"><a href="/product-details">Potatoes</a></h3>
-                                        <div class="price-box">
-                                            <span class="main-price">Rs 100</span>
-                                            <span class="discounted-price">Rs 80</span>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <!--=======  End of single banner slider product =======-->
-                                <!--=======  single banner slider product  =======-->
-
-
-                                <div class="gf-product banner-slider-product">
-                                    <div class="image">
-                                        <a href="product-details">
-                                            <span class="onsale">Sale!</span>
-                                            <img alt=""
-                                                 class="img-fluid" src="assets/images/products/Fruits & Vegetables/tomato.jpg">
-                                        </a>
-                                        <div class="product-hover-icons">
-                                            <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                               href="#"> <span
-                                                    class="icon_search"></span> </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="product-categories">
-                                            <a href="shop">Fruits & Vegetables</a>
-                                        </div>
-                                        <h3 class="product-title"><a href="product-details">Tomatoes</a></h3>
-                                        <div class="price-box">
-                                            <span class="main-price">Rs 120</span>
-                                            <span class="discounted-price">Rs 80</span>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <!--=======  End of single banner slider product =======-->
-                                <!--=======  single banner slider product  =======-->
-
-
-                                <div class="gf-product  banner-slider-product">
-                                    <div class="image">
-                                        <a href="product-details">
-                                            <span class="onsale">Sale!</span>
-                                            <img alt=""
-                                                 class="img-fluid" src="assets/images/products/Fruits & Vegetables/lemon.jpg">
-                                        </a>
-                                        <div class="product-hover-icons">
-                                            <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                               href="#"> <span
-                                                    class="icon_search"></span> </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="product-categories">
-                                            <a href="shop">Fruits & Vegetables</a>
-                                        </div>
-                                        <h3 class="product-title"><a href="product-details">Lemons</a></h3>
-                                        <div class="price-box">
-                                            <span class="main-price">Rs 70</span>
-                                            <span class="discounted-price">Rs 50</span>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <!--=======  End of single banner slider product =======-->
-                                <!--=======  single banner slider product  =======-->
-
-
-                                <div class="gf-product  banner-slider-product">
-                                    <div class="image">
-                                        <a href="product-details">
-                                            <span class="onsale">Sale!</span>
-                                            <img alt=""
-                                                 class="img-fluid" src="assets/images/products/Fruits & Vegetables/bananas.jpg">
-                                        </a>
-                                        <div class="product-hover-icons">
-                                            <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                               href="#"> <span
-                                                    class="icon_search"></span> </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="product-categories">
-                                            <a href="shop">Fruits & Vegetables</a>
-                                        </div>
-                                        <h3 class="product-title"><a href="product-details">Bananas</a></h3>
-                                        <div class="price-box">
-                                            <span class="main-price">Rs 80</span>
-                                            <span class="discounted-price">Rs 60</span>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <!--=======  End of single banner slider product =======-->
-                                <!--=======  single banner slider product  =======-->
-
-
-                                <div class="gf-product  banner-slider-product">
-                                    <div class="image">
-                                        <a href="product-details">
-                                            <span class="onsale">Sale!</span>
-                                            <img alt=""
-                                                 class="img-fluid" src="assets/images/products/Fruits & Vegetables/oranges.jpg">
-                                        </a>
-                                        <div class="product-hover-icons">
-                                            <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                               href="#"> <span
-                                                    class="icon_search"></span> </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <div class="product-categories">
-                                            <a href="shop">Fruits & Vegetables</a>
-                                        </div>
-                                        <h3 class="product-title"><a href="product-details">Oranges</a></h3>
-                                        <div class="price-box">
-                                            <span class="main-price">Rs 89</span>
-                                            <span class="discounted-price">Rs 80</span>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <!--=======  End of single banner slider product =======-->
-                            </div>
-
-                            <!--=======  End of banner slider container  =======-->
-
-                            <div class="row no-gutters">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <!--=======  slider banner  =======-->
-
-                                    <div class="slider-banner">
-                                        <img alt=""
-                                             class="img-fluid" src="{{url_for('static', filename = 'images/banners/home7-banner1-2.jpg')}}">
-                                        </a>
-                                    </div>
-
-                                    <!--=======  End of slider banner  =======-->
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <!--=======  slider banner  =======-->
-
-                                    <div class="slider-banner">
-                                        <a href="/shop">
-                                            <img alt=""
-                                                 class="img-fluid" src="{{url_for('static', filename = 'images/banners/home4-category3-banner2.jpg')}}">
-                                        </a>
-                                    </div>
-
-                                    <!--=======  End of slider banner  =======-->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--=======  End of banner slider wrapper =======-->
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--=====  End of Slider with banner ======-->
 
 <!--=============================================
 =            Multi sale slider         =
@@ -839,19 +394,26 @@
                 <div class="multisale-slider-wrapper">
                     <!--=======  single multisale slider product  =======-->
 
+                    {% for product in products %}
+                    {% if (product.prod_subcategory_id == 23) %}
+                    {% for picture in pictures %}
+                    {% if(product.picture_id == picture.picture_id) %}
+                    {% set url = 'images/products/Offers/' + picture.picture_url %}
                     <div class="gf-product multisale-slider-product">
                         <div class="image">
                             <a href="/product-details">
                                 <span class="onsale">Sale!</span>
                                 <img alt=""
-                                     class="img-fluid" src="{{url_for('static', filename = 'images/products/Offers/offer1.jpg')}}">
+                                     class="img-fluid"
+                                     src="{{url_for('static', filename=url)}}">
                             </a>
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
                                 <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> </a>
                                 <a data-tooltip="Compare" href="compare"> <span class="arrow_left-right_alt"></span>
                                 </a>
-                                <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
+                                <a data-target="#quick-view-modal-container" data-toggle="modal"
+                                   data-tooltip="Quick view"
                                    href="#"> <span class="icon_search"></span> </a>
                             </div>
                         </div>
@@ -860,7 +422,7 @@
                             <div class="product-categories">
                                 <a href="/shop">Deal</a>
                             </div>
-                            <h3 class="product-title"><a href="/product-details">Nestle Bunyad</a>
+                            <h3 class="product-title"><a href="/product-details">{{product.product_name}}</a>
                             </h3>
 
                         </div>
@@ -868,126 +430,10 @@
                     </div>
 
                     <!--=======  End of single multisale slider product  =======-->
-                    <!--=======  single multisale slider product  =======-->
-
-                    <div class="gf-product multisale-slider-product">
-                        <div class="image">
-                            <a href="product-details">
-                                <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/products/Offers/offer2.jpg')}}">
-                            </a>
-                            <div class="product-hover-icons">
-                                <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
-                                <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> </a>
-                                <a data-tooltip="Compare" href="compare"> <span class="arrow_left-right_alt"></span>
-                                </a>
-                                <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                   href="#"> <span class="icon_search"></span> </a>
-                            </div>
-                        </div>
-                        <div class="product-countdown" data-countdown="2020/01/07"></div>
-                        <div class="product-content">
-                            <div class="product-categories">
-                                <a href="shop">Deal</a>
-                            </div>
-                            <h3 class="product-title"><a href="product-details">Harpic</a>
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-                    <!--=======  End of single multisale slider product  =======-->
-                    <!--=======  single multisale slider product  =======-->
-
-                    <div class="gf-product multisale-slider-product">
-                        <div class="image">
-                            <a href="product-details">
-                                <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid" src="assets/images/products/Offers/offer3.jpg">
-                            </a>
-                            <div class="product-hover-icons">
-                                <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
-                                <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> </a>
-                                <a data-tooltip="Compare" href="compare"> <span class="arrow_left-right_alt"></span>
-                                </a>
-                                <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                   href="#"> <span class="icon_search"></span> </a>
-                            </div>
-                        </div>
-                        <div class="product-countdown" data-countdown="2020/01/06"></div>
-                        <div class="product-content">
-                            <div class="product-categories">
-                                <a href="shop">Deal</a>
-                            </div>
-                            <h3 class="product-title"><a href="product-details">Nestle Cerelac</a>
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-                    <!--=======  End of single multisale slider product  =======-->
-                    <!--=======  single multisale slider product  =======-->
-
-                    <div class="gf-product multisale-slider-product">
-                        <div class="image">
-                            <a href="product-details">
-                                <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid" src="assets/images/products/Offers/offer4.jpg">
-                            </a>
-                            <div class="product-hover-icons">
-                                <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
-                                <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> </a>
-                                <a data-tooltip="Compare" href="compare"> <span class="arrow_left-right_alt"></span>
-                                </a>
-                                <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                   href="#"> <span class="icon_search"></span> </a>
-                            </div>
-                        </div>
-                        <div class="product-countdown" data-countdown="2020/01/05"></div>
-                        <div class="product-content">
-                            <div class="product-categories">
-                                <a href="shop">Deal</a>
-                            </div>
-                            <h3 class="product-title"><a href="product-details">Fair & Lovely</a>
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-                    <!--=======  End of single multisale slider product  =======-->
-                    <!--=======  single multisale slider product  =======-->
-
-                    <div class="gf-product multisale-slider-product">
-                        <div class="image">
-                            <a href="product-details">
-                                <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid" src="assets/images/products/Offers/offer5.jpg">
-                            </a>
-                            <div class="product-hover-icons">
-                                <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
-                                <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> </a>
-                                <a data-tooltip="Compare" href="compare"> <span class="arrow_left-right_alt"></span>
-                                </a>
-                                <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                   href="#"> <span class="icon_search"></span> </a>
-                            </div>
-                        </div>
-                        <div class="product-countdown" data-countdown="2020/01/09"></div>
-                        <div class="product-content">
-                            <div class="product-categories">
-                                <a href="shop">Deal</a>
-                            </div>
-                            <h3 class="product-title"><a href="product-details">Lipton Yellow Label Tea</a>
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-                    <!--=======  End of single multisale slider product  =======-->
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
                 </div>
 
                 <!--=======  End of multi sale slider wrapper  =======-->
@@ -1021,241 +467,45 @@
 
                 <div class="best-seller-slider-container pt-15 pb-15">
 
+                    {% for i in range(0, 4) %}
                     <!--=======  single best seller product  =======-->
                     <div class="col">
                         <div class="single-best-seller-item">
+                            {% for j in range(0, 2) %}
+                            {% set count=index.pop() %}
                             <div class="best-seller-sub-product">
                                 <div class="row">
                                     <div class="col-lg-4 pl-0 pr-0">
                                         <div class="image">
                                             <a href="/product-details">
+                                                {% set url = 'images/products/' + best_seller_products_categories[count].category_name +
+                                                '/' + best_seller_products_images[count].picture_url %}
                                                 <img alt=""
                                                      class="img-fluid"
-                                                     src="{{url_for('static', filename = 'images/products/Beverages/8961008202129.jpg')}}">
+                                                     src="{{url_for('static', filename=url)}}">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="col-lg-8 pl-0 pr-0">
                                         <div class="product-content">
                                             <div class="product-categories">
-                                                <a href="/shop">Beverages</a>
+                                                <a href="/shop">{{best_seller_products_categories[count].category_name}}</a>
                                             </div>
-                                            <h3 class="product-title"><a href="/product-details">Nestle Fruita
-                                                Vitals - Apple</a></h3>
+
+                                            <h3 class="product-title"><a href="/product-details">{{best_seller_products[count].product_name}}</a></h3>
                                             <div class="price-box">
-                                                <span class="main-price">Rs 30</span>
+                                                <span class="main-price">Rs {{best_seller_products[count].product_price}}</span>
                                                 <span class="discounted-price">Rs 25</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="best-seller-sub-product">
-                                <div class="row">
-                                    <div class="col-lg-4 pl-0 pr-0">
-                                        <div class="image">
-                                            <a href="/product-details">
-                                                <img alt=""
-                                                     class="img-fluid"
-                                                     src="{{url_for('static', filename = 'images/products/Breakfast & Dairy/chicken spread.jpg')}}">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8 pl-0 pr-0">
-                                        <div class="product-content">
-                                            <div class="product-categories">
-                                                <a href="/shop">Breakfast & Dairy</a>
-                                            </div>
-                                            <h3 class="product-title"><a href="/product-details">Young's Chicken
-                                                SPread</a></h3>
-                                            <div class="price-box">
-                                                <span class="main-price">Rs 150</span>
-                                                <span class="discounted-price">Rs 120</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor%}
                         </div>
                     </div>
                     <!--=======  End of single best seller product  =======-->
-
-                    <!--=======  single best seller product  =======-->
-                    <div class="col">
-                        <div class="single-best-seller-item">
-                            <div class="best-seller-sub-product">
-                                <div class="row">
-                                    <div class="col-lg-4 pl-0 pr-0">
-                                        <div class="image">
-                                            <a href="product-details">
-                                                <img alt=""
-                                                     class="img-fluid"
-                                                     src="assets/images/products/Fruits & Vegetables/onions.jpg">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8 pl-0 pr-0">
-                                        <div class="product-content">
-                                            <div class="product-categories">
-                                                <a href="shop">Fruits & Vegetables</a>
-                                            </div>
-                                            <h3 class="product-title"><a href="product-details">Onions</a></h3>
-                                            <div class="price-box">
-                                                <span class="main-price">Rs 149</span>
-                                                <span class="discounted-price">Rs 110</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="best-seller-sub-product">
-                                <div class="row">
-                                    <div class="col-lg-4 pl-0 pr-0">
-                                        <div class="image">
-                                            <a href="product-details">
-                                                <img alt=""
-                                                     class="img-fluid"
-                                                     src="assets/images/products/Grocery and Staples/Sufi.jpg">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8 pl-0 pr-0">
-                                        <div class="product-content">
-                                            <div class="product-categories">
-                                                <a href="shop">Grocery & Staples</a>
-                                            </div>
-                                            <h3 class="product-title"><a href="product-details">Sufi Cooking
-                                                Oil</a></h3>
-                                            <div class="price-box">
-                                                <span class="main-price">Rs 250</span>
-                                                <span class="discounted-price">Rs 200</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--=======  End of single best seller product  =======-->
-
-                    <!--=======  single best seller product  =======-->
-                    <div class="col">
-                        <div class="single-best-seller-item">
-                            <div class="best-seller-sub-product">
-                                <div class="row">
-                                    <div class="col-lg-4 pl-0 pr-0">
-                                        <div class="image">
-                                            <a href="product-details">
-                                                <img alt=""
-                                                     class="img-fluid"
-                                                     src="assets/images/products/Household Needs/express.jpg">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8 pl-0 pr-0">
-                                        <div class="product-content">
-                                            <div class="product-categories">
-                                                <a href="shop">Household Needs</a>
-                                            </div>
-                                            <h3 class="product-title"><a href="product-details">Express Power</a>
-                                            </h3>
-                                            <div class="price-box">
-                                                <span class="main-price">Rs 289</span>
-                                                <span class="discounted-price">Rs 250</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="best-seller-sub-product">
-                                <div class="row">
-                                    <div class="col-lg-4 pl-0 pr-0">
-                                        <div class="image">
-                                            <a href="product-details">
-                                                <img alt=""
-                                                     class="img-fluid"
-                                                     src="assets/images/products/Ice Creams/King Kulfa Bucket.jpg">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8 pl-0 pr-0">
-                                        <div class="product-content">
-                                            <div class="product-categories">
-                                                <a href="shop">Ice Creams</a>
-                                            </div>
-                                            <h3 class="product-title"><a href="product-details">King Kulfa
-                                                Bucket</a></h3>
-                                            <div class="price-box">
-                                                <span class="main-price">Rs 250</span>
-                                                <span class="discounted-price">Rs 220</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--=======  End of single best seller product  =======-->
-
-                    <!--=======  single best seller product  =======-->
-                    <div class="col">
-                        <div class="single-best-seller-item">
-                            <div class="best-seller-sub-product">
-                                <div class="row">
-                                    <div class="col-lg-4 pl-0 pr-0">
-                                        <div class="image">
-                                            <a href="product-details">
-                                                <img alt=""
-                                                     class="img-fluid"
-                                                     src="assets/images/products/Noodles & Frozen Food/seekh kabab.jpg">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8 pl-0 pr-0">
-                                        <div class="product-content">
-                                            <div class="product-categories">
-                                                <a href="shop">Noodles & Frozen Food</a>
-                                            </div>
-                                            <h3 class="product-title"><a href="product-details">Sabroso Seekh
-                                                Kabab</a></h3>
-                                            <div class="price-box">
-                                                <span class="main-price">Rs 300</span>
-                                                <span class="discounted-price">Rs 250</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="best-seller-sub-product">
-                                <div class="row">
-                                    <div class="col-lg-4 pl-0 pr-0">
-                                        <div class="image">
-                                            <a href="product-details">
-                                                <img alt=""
-                                                     class="img-fluid"
-                                                     src="assets/images/products/Home and Kitchen/cleaner.jpg">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8 pl-0 pr-0">
-                                        <div class="product-content">
-                                            <div class="product-categories">
-                                                <a href="shop">Home and Kitchen</a>
-                                            </div>
-                                            <h3 class="product-title"><a href="product-details">Brush</a></h3>
-                                            <div class="price-box">
-                                                <span class="main-price">Rs 150</span>
-                                                <span class="discounted-price">Rs 110</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--=======  End of single best seller product  =======-->
-
-
+                    {% endfor%}
                 </div>
 
                 <!--=======  End of best seller slider container  =======-->
@@ -1296,7 +546,8 @@
                         <div class="single-brand-logo">
                             <a href="#">
                                 <img alt=""
-                                     class="img-fluid" src="{{url_for('static', filename = 'images/brands/brand1.png')}}">
+                                     class="img-fluid"
+                                     src="{{url_for('static', filename = 'images/brands/brand1.png')}}">
                             </a>
                         </div>
                     </div>
@@ -1307,7 +558,8 @@
                     <div class="col">
                         <div class="single-brand-logo">
                             <a href="#">
-                                <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/brands/brand2.png')}}">
+                                <img alt="" class="img-fluid"
+                                     src="{{url_for('static', filename = 'images/brands/brand2.png')}}">
                             </a>
                         </div>
                     </div>
@@ -1318,7 +570,8 @@
                     <div class="col">
                         <div class="single-brand-logo">
                             <a href="#">
-                                <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/brands/brand3.png')}}">
+                                <img alt="" class="img-fluid"
+                                     src="{{url_for('static', filename = 'images/brands/brand3.png')}}">
                             </a>
                         </div>
                     </div>
@@ -1329,7 +582,8 @@
                     <div class="col">
                         <div class="single-brand-logo">
                             <a href="#">
-                                <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/brands/brand4.png')}}">
+                                <img alt="" class="img-fluid"
+                                     src="{{url_for('static', filename = 'images/brands/brand4.png')}}">
                             </a>
                         </div>
                     </div>
@@ -1340,7 +594,8 @@
                     <div class="col">
                         <div class="single-brand-logo">
                             <a href="#">
-                                <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/brands/brand5.png')}}">
+                                <img alt="" class="img-fluid"
+                                     src="{{url_for('static', filename = 'images/brands/brand5.png')}}">
                             </a>
                         </div>
                     </div>
@@ -1351,7 +606,8 @@
                     <div class="col">
                         <div class="single-brand-logo">
                             <a href="#">
-                                <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/brands/brand6.png')}}">
+                                <img alt="" class="img-fluid"
+                                     src="{{url_for('static', filename = 'images/brands/brand6.png')}}">
                             </a>
                         </div>
                     </div>
@@ -1509,12 +765,14 @@
                         <div class="product-image-slider">
                             <!--Modal Tab Content Start-->
                             <div class="tab-content product-large-image-list" id="myTabContent">
-                                <div aria-labelledby="single-slide-tab-1" class="tab-pane fade show active" id="single-slide1"
+                                <div aria-labelledby="single-slide-tab-1" class="tab-pane fade show active"
+                                     id="single-slide1"
                                      role="tabpanel">
                                     <!--Single Product Image Start-->
                                     <div class="single-product-img img-full">
                                         <img alt=""
-                                             class="img-fluid" src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/11084.jpg')}}">
+                                             class="img-fluid"
+                                             src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/11084.jpg')}}">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -1523,7 +781,8 @@
                                     <!--Single Product Image Start-->
                                     <div class="single-product-img img-full">
                                         <img alt=""
-                                             class="img-fluid" src="assets/images/products/Fruits & Vegetables/lemon.jpg">
+                                             class="img-fluid"
+                                             src="assets/images/products/Fruits & Vegetables/lemon.jpg">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -1532,7 +791,8 @@
                                     <!--Single Product Image Start-->
                                     <div class="single-product-img img-full">
                                         <img alt=""
-                                             class="img-fluid" src="assets/images/products/Fruits & Vegetables/bananas.jpg">
+                                             class="img-fluid"
+                                             src="assets/images/products/Fruits & Vegetables/bananas.jpg">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -1541,7 +801,8 @@
                                     <!--Single Product Image Start-->
                                     <div class="single-product-img img-full">
                                         <img alt=""
-                                             class="img-fluid" src="assets/images/products/Fruits & Vegetables/oranges.jpg">
+                                             class="img-fluid"
+                                             src="assets/images/products/Fruits & Vegetables/oranges.jpg">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -1553,17 +814,20 @@
                                     <div class="single-small-image img-full">
                                         <a data-toggle="tab" href="#single-slide1" id="single-slide-tab-1"><img
                                                 alt=""
-                                                class="img-fluid" src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/11084.jpg')}}"></a>
+                                                class="img-fluid"
+                                                src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/11084.jpg')}}"></a>
                                     </div>
                                     <div class="single-small-image img-full">
                                         <a data-toggle="tab" href="#single-slide2" id="single-slide-tab-2"><img
                                                 alt=""
-                                                class="img-fluid" src="assets/images/products/Fruits & Vegetables/lemon.jpg"></a>
+                                                class="img-fluid"
+                                                src="assets/images/products/Fruits & Vegetables/lemon.jpg"></a>
                                     </div>
                                     <div class="single-small-image img-full">
                                         <a data-toggle="tab" href="#single-slide3" id="single-slide-tab-3"><img
                                                 alt=""
-                                                class="img-fluid" src="assets/images/products/Fruits & Vegetables/bananas.jpg"></a>
+                                                class="img-fluid"
+                                                src="assets/images/products/Fruits & Vegetables/bananas.jpg"></a>
                                     </div>
                                     <div class="single-small-image img-full">
                                         <a data-toggle="tab" href="#single-slide4" id="single-slide-tab-4"><img
