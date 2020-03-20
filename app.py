@@ -83,8 +83,10 @@ def index():
                         best_seller_products_categories.append(category)
 
     return render_template('index.html', categories=categories, pictures=pictures, products=products,
-                           best_seller_products_categories=best_seller_products_categories, index=best_seller_products_cat_index,
-                           best_seller_products=best_seller_products, best_seller_products_images=best_seller_products_images)
+                           best_seller_products_categories=best_seller_products_categories,
+                           index=best_seller_products_cat_index,
+                           best_seller_products=best_seller_products,
+                           best_seller_products_images=best_seller_products_images)
 
 
 @app.route('/about-us')
@@ -162,9 +164,12 @@ def return_n_refunds():
     return render_template('return-n-refunds.html')
 
 
-@app.route('/shop')
-def shop():
-    return render_template('shop.html')
+@app.route('/shop/<string:cate_slug>')
+def shop(cate_slug):
+    category = Category.query.filter_by(slug=cate_slug).first()
+    subcategories= Subcategory.query.filter_by(category_id=category.category_id).all()
+    products = Product.query.all()
+    return render_template('shop.html', category=category, subcategories=subcategories, products=products)
 
 
 @app.route('/terms-n-conditions')

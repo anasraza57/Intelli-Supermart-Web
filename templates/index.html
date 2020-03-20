@@ -8,7 +8,7 @@
     <meta content="" name="description">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Favicon -->
-    <link href="{{url_for('static', filename = 'images/icon.png')}}" rel="icon">
+    <link href="{{url_for('static', filename = 'images/icons/icon.png')}}" rel="icon">
 
     <!-- CSS
     ============================================ -->
@@ -79,7 +79,7 @@
                     <!-- logo -->
                     <div class="logo">
                         <a href="/">
-                            <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/logo.png')}}">
+                            <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/icons/logo.png')}}">
                         </a>
                     </div>
                     <!-- end of logo -->
@@ -273,7 +273,7 @@
 
                     <div class="single-policy">
                         <span><img alt="" class="img-fluid"
-                                   src="{{url_for('static', filename = 'images/policy-icon1.png')}}"></span>
+                                   src="{{url_for('static', filename = 'images/icons/policy-icon1.png')}}"></span>
                         <p> FREE SHIPPING ON ORDERS OVER Rs.1000</p>
                     </div>
 
@@ -284,7 +284,7 @@
 
                     <div class="single-policy">
                         <span><img alt="" class="img-fluid"
-                                   src="{{url_for('static', filename = 'images/policy-icon2.png')}}"></span>
+                                   src="{{url_for('static', filename = 'images/icons/policy-icon2.png')}}"></span>
                         <p>30 -DAY RETURNS MONEY BACK</p>
                     </div>
 
@@ -296,7 +296,7 @@
 
                     <div class="single-policy">
                         <span><img alt="" class="img-fluid"
-                                   src="{{url_for('static', filename = 'images/policy-icon3.png')}}"></span>
+                                   src="{{url_for('static', filename = 'images/icons/policy-icon3.png')}}"></span>
                         <p> 24/7 SUPPORT</p>
                     </div>
 
@@ -344,7 +344,7 @@
                         {% set url = 'images/categories/' + picture.picture_url %}
 
                         <div class="category-image">
-                            <a href="/shop" title={{ category.category_name }}>
+                            <a href="/shop/{{category.slug}}" title={{ category.category_name }}>
                                 <img alt="" class="img-fluid" src="{{url_for('static', filename=url)}}">
                             </a>
                         </div>
