@@ -164,7 +164,7 @@
                         <nav>
                             <ul>
                                 <li><a href="/">HOME</a></li>
-                                <li><a href="/shop">Shop</a></li>
+                                <li><a href="/shop/{{categories[0].slug}}">Shop</a></li>
                                 <li><a href="/contact-us">CONTACT</a></li>
                             </ul>
                         </nav>
@@ -195,7 +195,7 @@
                             <nav>
                                 <ul>
                                     <li><a href="/">HOME</a></li>
-                                    <li><a href="/shop">Shop</a></li>
+                                    <li><a href="/shop/{{categories[0].slug}}">Shop</a></li>
                                     <li><a href="/contact-us">CONTACT</a></li>
                                 </ul>
                             </nav>
@@ -232,20 +232,18 @@
             <div class="slider-content d-flex flex-column justify-content-center align-items-center">
                 <h1>Intelli Supermart</h1>
                 <p>get your favourite product in your prices</p>
-                <a class="slider-btn" href="/shop">SHOP NOW</a>
+                <a class="slider-btn" href="/shop/{{categories[0].slug}}">SHOP NOW</a>
             </div>
         </div>
-
         <!--=======  End of hero slider item  =======-->
 
 
         <!--=======  Hero slider item  =======-->
-
         <div class="hero-slider-item slider-bg-8">
             <div class="slider-content d-flex flex-column justify-content-center align-items-center">
                 <h1>Fresh & Pure</h1>
                 <p>where shopping is like pleasure </p>
-                <a class="slider-btn" href="/shop">SHOP NOW</a>
+                <a class="slider-btn" href="/shop/{{categories[0].slug}}">SHOP NOW</a>
             </div>
         </div>
 
@@ -344,7 +342,7 @@
                         {% set url = 'images/categories/' + picture.picture_url %}
 
                         <div class="category-image">
-                            <a href="/shop/{{category.slug}}" title={{ category.category_name }}>
+                            <a href="/shop/{{category.slug}}" title={{category.category_name}}>
                                 <img alt="" class="img-fluid" src="{{url_for('static', filename=url)}}">
                             </a>
                         </div>
@@ -352,7 +350,7 @@
                         {% endfor %}
                         <div class="category-title">
                             <h3>
-                                <a href="/shop">{{ category.category_name }}</a>
+                                <a href="/shop/{{category.slug}}">{{ category.category_name }}</a>
                             </h3>
                         </div>
                     </div>
@@ -383,7 +381,7 @@
                 <div class="section-title">
                     <h3>Intelli Supermart deal of the day</h3>
                 </div>
-
+                
                 <!--=======  End of multisale slider section title  =======-->
             </div>
         </div>
@@ -401,7 +399,7 @@
                     {% set url = 'images/products/Offers/' + picture.picture_url %}
                     <div class="gf-product multisale-slider-product">
                         <div class="image">
-                            <a href="/product-details">
+                            <a href="/product-details/{{product.slug}}">
                                 <span class="onsale">Sale!</span>
                                 <img alt=""
                                      class="img-fluid"
@@ -420,9 +418,9 @@
                         <div class="product-countdown" data-countdown="2020/01/08"></div>
                         <div class="product-content">
                             <div class="product-categories">
-                                <a href="/shop">Deal</a>
+                                <a href="/shop/Offers">Deal</a>
                             </div>
-                            <h3 class="product-title"><a href="/product-details">{{product.product_name}}</a>
+                            <h3 class="product-title"><a href="/product-details/{{product.slug}}">{{product.product_name}}</a>
                             </h3>
 
                         </div>
@@ -435,13 +433,11 @@
                     {% endif %}
                     {% endfor %}
                 </div>
-
                 <!--=======  End of multi sale slider wrapper  =======-->
             </div>
         </div>
     </div>
 </div>
-
 <!--=====  End of Multi sale slider  ======-->
 
 <!--=============================================
@@ -477,7 +473,7 @@
                                 <div class="row">
                                     <div class="col-lg-4 pl-0 pr-0">
                                         <div class="image">
-                                            <a href="/product-details">
+                                            <a href="/product-details/{{best_seller_products[count].slug}}">
                                                 {% set url = 'images/products/' + best_seller_products_categories[count].category_name +
                                                 '/' + best_seller_products_images[count].picture_url %}
                                                 <img alt=""
@@ -489,13 +485,13 @@
                                     <div class="col-lg-8 pl-0 pr-0">
                                         <div class="product-content">
                                             <div class="product-categories">
-                                                <a href="/shop">{{best_seller_products_categories[count].category_name}}</a>
+                                                <a href="/shop/{{best_seller_products_categories[count].slug}}">{{best_seller_products_categories[count].category_name}}</a>
                                             </div>
 
-                                            <h3 class="product-title"><a href="/product-details">{{best_seller_products[count].product_name}}</a></h3>
+                                            <h3 class="product-title"><a href="/product-details/{{best_seller_products[count].slug}}">{{best_seller_products[count].product_name}}</a></h3>
                                             <div class="price-box">
-                                                <span class="main-price">Rs {{best_seller_products[count].product_price}}</span>
-                                                <span class="discounted-price">Rs 25</span>
+<!--                                                <span class="main-price">Rs {{best_seller_products[count].product_price}}</span>-->
+                                                <span class="discounted-price">Rs {{best_seller_products[count].product_price}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -507,7 +503,6 @@
                     <!--=======  End of single best seller product  =======-->
                     {% endfor%}
                 </div>
-
                 <!--=======  End of best seller slider container  =======-->
             </div>
         </div>
@@ -541,77 +536,68 @@
                 <div class="brand-logo-wrapper pt-20 pb-20">
 
                     <!--=======  single-brand-logo  =======-->
-
-                    <div class="col">
-                        <div class="single-brand-logo">
-                            <a href="#">
-                                <img alt=""
-                                     class="img-fluid"
-                                     src="{{url_for('static', filename = 'images/brands/brand1.png')}}">
-                            </a>
-                        </div>
-                    </div>
-
-                    <!--=======  End of single-brand-logo  =======-->
-                    <!--=======  single-brand-logo  =======-->
-
                     <div class="col">
                         <div class="single-brand-logo">
                             <a href="#">
                                 <img alt="" class="img-fluid"
-                                     src="{{url_for('static', filename = 'images/brands/brand2.png')}}">
-                            </a>
+                                     src="{{url_for('static', filename = 'images/brands/brandpic1.png')}}"></a>
                         </div>
                     </div>
-
                     <!--=======  End of single-brand-logo  =======-->
-                    <!--=======  single-brand-logo  =======-->
 
+                    <!--=======  single-brand-logo  =======-->
                     <div class="col">
                         <div class="single-brand-logo">
                             <a href="#">
                                 <img alt="" class="img-fluid"
-                                     src="{{url_for('static', filename = 'images/brands/brand3.png')}}">
+                                     src="{{url_for('static', filename = 'images/brands/brandpic2.png')}}">
                             </a>
                         </div>
                     </div>
-
                     <!--=======  End of single-brand-logo  =======-->
-                    <!--=======  single-brand-logo  =======-->
 
+                    <!--=======  single-brand-logo  =======-->
                     <div class="col">
                         <div class="single-brand-logo">
                             <a href="#">
                                 <img alt="" class="img-fluid"
-                                     src="{{url_for('static', filename = 'images/brands/brand4.png')}}">
+                                     src="{{url_for('static', filename = 'images/brands/brandpic3.png')}}">
                             </a>
                         </div>
                     </div>
-
                     <!--=======  End of single-brand-logo  =======-->
-                    <!--=======  single-brand-logo  =======-->
 
+                    <!--=======  single-brand-logo  =======-->
                     <div class="col">
                         <div class="single-brand-logo">
                             <a href="#">
                                 <img alt="" class="img-fluid"
-                                     src="{{url_for('static', filename = 'images/brands/brand5.png')}}">
+                                     src="{{url_for('static', filename = 'images/brands/brandpic4.jpg')}}">
                             </a>
                         </div>
                     </div>
-
                     <!--=======  End of single-brand-logo  =======-->
-                    <!--=======  single-brand-logo  =======-->
 
+                    <!--=======  single-brand-logo  =======-->
                     <div class="col">
                         <div class="single-brand-logo">
                             <a href="#">
                                 <img alt="" class="img-fluid"
-                                     src="{{url_for('static', filename = 'images/brands/brand6.png')}}">
+                                     src="{{url_for('static', filename = 'images/brands/brandpic5.png')}}">
                             </a>
                         </div>
                     </div>
+                    <!--=======  End of single-brand-logo  =======-->
 
+                    <!--=======  single-brand-logo  =======-->
+                    <div class="col">
+                        <div class="single-brand-logo">
+                            <a href="#">
+                                <img alt="" class="img-fluid"
+                                     src="{{url_for('static', filename = 'images/brands/brandpic6.jpg')}}">
+                            </a>
+                        </div>
+                    </div>
                     <!--=======  End of single-brand-logo  =======-->
                 </div>
 
@@ -622,7 +608,6 @@
 </div>
 
 <!--=====  End of Brand logo slider  ======-->
-
 
 <!--=============================================
 =            Footer         =
@@ -772,7 +757,7 @@
                                     <div class="single-product-img img-full">
                                         <img alt=""
                                              class="img-fluid"
-                                             src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/11084.jpg')}}">
+                                             src="{{url_for('static', filename = '')}}">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -780,9 +765,7 @@
                                      role="tabpanel">
                                     <!--Single Product Image Start-->
                                     <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid"
-                                             src="assets/images/products/Fruits & Vegetables/lemon.jpg">
+                                        <img alt="" class="img-fluid" src="">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -790,9 +773,7 @@
                                      role="tabpanel">
                                     <!--Single Product Image Start-->
                                     <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid"
-                                             src="assets/images/products/Fruits & Vegetables/bananas.jpg">
+                                        <img alt="" class="img-fluid" src="">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -800,9 +781,7 @@
                                      role="tabpanel">
                                     <!--Single Product Image Start-->
                                     <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid"
-                                             src="assets/images/products/Fruits & Vegetables/oranges.jpg">
+                                        <img alt="" class="img-fluid" src="">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -815,24 +794,24 @@
                                         <a data-toggle="tab" href="#single-slide1" id="single-slide-tab-1"><img
                                                 alt=""
                                                 class="img-fluid"
-                                                src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/11084.jpg')}}"></a>
+                                                src="{{url_for('static', filename = '')}}"></a>
                                     </div>
                                     <div class="single-small-image img-full">
                                         <a data-toggle="tab" href="#single-slide2" id="single-slide-tab-2"><img
                                                 alt=""
                                                 class="img-fluid"
-                                                src="assets/images/products/Fruits & Vegetables/lemon.jpg"></a>
+                                                src=""></a>
                                     </div>
                                     <div class="single-small-image img-full">
                                         <a data-toggle="tab" href="#single-slide3" id="single-slide-tab-3"><img
                                                 alt=""
                                                 class="img-fluid"
-                                                src="assets/images/products/Fruits & Vegetables/bananas.jpg"></a>
+                                                src=""></a>
                                     </div>
                                     <div class="single-small-image img-full">
                                         <a data-toggle="tab" href="#single-slide4" id="single-slide-tab-4"><img
                                                 alt=""
-                                                src="assets/images/products/Fruits & Vegetables/oranges.jpg"></a>
+                                                src=""></a>
                                     </div>
                                 </div>
                             </div>
@@ -867,14 +846,12 @@
                                 </div>
                             </div>
 
-
                             <div class="social-share-buttons">
                                 <h3>share this product</h3>
                                 <ul>
-                                    <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a></li>
-                                    <li><a class="pinterest" href="#"><i class="fa fa-pinterest"></i></a></li>
+                                    <li><a class="twitter" href="http://www.twitter.com/"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a class="facebook" href="http://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a class="instagram" href="http://www.instagram.com/"><i class="fa fa-instagram"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -893,8 +870,7 @@
 <a class="scroll-top" href="#"></a>
 <!-- end of scroll to top -->
 
-<!-- JS
-============================================ -->
+<!-- JS ============================================ -->
 <!-- jQuery JS -->
 <script src="{{url_for('static', filename = 'js/vendor/jquery.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

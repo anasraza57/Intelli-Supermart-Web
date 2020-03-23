@@ -1943,29 +1943,6 @@ a.single-sale-add-to-cart-btn:hover {
 /*=============================================
 =            04. Hero section            =
 =============================================*/
-.slider-bg-1 {
-    background-image: url("../images/sliders/home1-slider1.jpg");
-}
-
-.slider-bg-2 {
-    background-image: url("../images/sliders/home1-slider2.jpg");
-}
-
-.slider-bg-3 {
-    background-image: url("../images/sliders/home2-slider1.jpg");
-}
-
-.slider-bg-4 {
-    background-image: url("../images/sliders/home2-slider2.jpg");
-}
-
-.slider-bg-5 {
-    background-image: url("../images/sliders/home3-slider1.jpg");
-}
-
-.slider-bg-6 {
-    background-image: url("../images/sliders/home3-slider2.jpg");
-}
 
 .slider-bg-7 {
     background-image: url("../images/sliders/home4-slider1.jpg");
@@ -1975,13 +1952,6 @@ a.single-sale-add-to-cart-btn:hover {
     background-image: url("../images/sliders/home4-slider2.jpg");
 }
 
-.slider-bg-9 {
-    background-image: url("../images/sliders/home7-slider1.jpg");
-}
-
-.slider-bg-10 {
-    background-image: url("../images/sliders/home7-slider2.jpg");
-}
 
 /*----------  04.1 Hero One ----------*/
 .hero-slider-one .hero-slider-item {
@@ -3444,13 +3414,6 @@ a.single-sale-add-to-cart-btn:hover {
 }
 
 /*----------  07.4 Gallery product  ----------*/
-.featured-product-image-gallery.section-bg {
-    background-color: #255612;
-    background-image: url("../images/banners/fullbanner-bg.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
 
 .featured-product-image-gallery .gallery-product-container {
     margin-bottom: -45px;

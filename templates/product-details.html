@@ -37,32 +37,7 @@
 
                     <!-- product image gallery -->
                     <div class="product-image-slider d-flex flex-custom-xs-wrap flex-sm-nowrap align-items-center mb-sm-35">
-                        <!--Modal Tab Menu Start-->
-                        <div class="product-small-image-list">
-                            <div class="nav small-image-slider-single-product" role="tablist">
-                                <div class="single-small-image img-full">
-                                    <a data-toggle="tab" id="single-slide-tab-1" href="#single-slide1"><img
-                                            src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/potato.jpg')}}"
-                                            class="img-fluid" alt=""></a>
-                                </div>
-                                <div class="single-small-image img-full">
-                                    <a data-toggle="tab" id="single-slide-tab-2" href="#single-slide2"><img
-                                            src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/onions.jpg')}}"
-                                            class="img-fluid" alt=""></a>
-                                </div>
-                                <div class="single-small-image img-full">
-                                    <a data-toggle="tab" id="single-slide-tab-3" href="#single-slide3"><img
-                                            src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/ladyfinger.jpg')}}"
-                                            class="img-fluid" alt=""></a>
-                                </div>
-                                <div class="single-small-image img-full">
-                                    <a data-toggle="tab" id="single-slide-tab-4" href="#single-slide4"><img
-                                            src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/bringles.jpg')}}"
-                                            class="img-fluid" alt=""></a>
-                                </div>
-                            </div>
-                        </div>
-                        <!--Modal Tab Menu End-->
+                        {% set url = 'images/products/'+ category.category_name + '/' + picture.picture_url %}
 
                         <!--Modal Tab Content Start-->
                         <div class="tab-content product-large-image-list">
@@ -70,8 +45,8 @@
                                  aria-labelledby="single-slide-tab-1">
                                 <!--Single Product Image Start-->
                                 <div class="single-product-img easyzoom img-full">
-                                    <img src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/potato.jpg')}}" class="img-fluid" alt="">
-                                    <a href="{{url_for('static', filename = 'images/products/Fruits & Vegetables/potato.jpg')}}" class="big-image-popup"><i
+                                    <img src="{{url_for('static', filename=url)}}" class="img-fluid" alt="">
+                                    <a href="{{url_for('static', filename=url)}}" class="big-image-popup"><i
                                             class="fa fa-search-plus"></i></a>
                                 </div>
                                 <!--Single Product Image End-->
@@ -80,8 +55,8 @@
                                  aria-labelledby="single-slide-tab-2">
                                 <!--Single Product Image Start-->
                                 <div class="single-product-img easyzoom img-full">
-                                    <img src="assets/images/products/Fruits & Vegetables/onions.jpg" class="img-fluid" alt="">
-                                    <a href="assets/images/products/Fruits & Vegetables/onions.jpg" class="big-image-popup"><i
+                                    <img src="{{url_for('static', filename=url)}}" class="img-fluid" alt="">
+                                    <a href="{{url_for('static', filename=url)}}" class="big-image-popup"><i
                                             class="fa fa-search-plus"></i></a>
                                 </div>
                                 <!--Single Product Image End-->
@@ -90,8 +65,8 @@
                                  aria-labelledby="single-slide-tab-3">
                                 <!--Single Product Image Start-->
                                 <div class="single-product-img easyzoom img-full">
-                                    <img src="assets/images/products/Fruits & Vegetables/ladyfinger.jpg" class="img-fluid" alt="">
-                                    <a href="assets/images/products/Fruits & Vegetables/ladyfinger.jpg" class="big-image-popup"><i
+                                    <img src="{{url_for('static', filename=url)}}" class="img-fluid" alt="">
+                                    <a href="{{url_for('static', filename=url)}}" class="big-image-popup"><i
                                             class="fa fa-search-plus"></i></a>
                                 </div>
                                 <!--Single Product Image End-->
@@ -100,8 +75,8 @@
                                  aria-labelledby="single-slide-tab-4">
                                 <!--Single Product Image Start-->
                                 <div class="single-product-img easyzoom img-full">
-                                    <img src="assets/images/products/Fruits & Vegetables/bringles.jpg" class="img-fluid" alt="">
-                                    <a href="assets/images/products/Fruits & Vegetables/bringles.jpg" class="big-image-popup"><i
+                                    <img src="{{url_for('static', filename=url)}}" class="img-fluid" alt="">
+                                    <a href="{{url_for('static', filename=url)}}" class="big-image-popup"><i
                                             class="fa fa-search-plus"></i></a>
                                 </div>
                                 <!--Single Product Image End-->
@@ -115,7 +90,7 @@
                 <div class="col-lg-6 col-md-12 col-xs-12">
                     <!-- product quick view description -->
                     <div class="product-feature-details">
-                        <h2 class="product-title mb-15">Potatoes</h2>
+                        <h2 class="product-title mb-15">{{product.product_name}}</h2>
 
                         <p class="product-rating">
                             <i class="fa fa-star active"></i>
@@ -128,15 +103,11 @@
                         </p>
 
                         <h2 class="product-price mb-15">
-                            <span class="main-price">Rs 100</span>
-                            <span class="discounted-price">Rs 80</span>
+<!--                            <span class="main-price">Rs 100</span>-->
+                            <span class="discounted-price">Rs {{product.product_price}}</span>
                         </h2>
 
-                        <p class="product-description mb-20">Potatoes are prepared in many ways: 
-							skin-on or peeled, whole or cut up, with seasonings or without.
-							The only requirement involves cooking to swell the starch granules.
-							Most potato dishes are served hot but some are first cooked, then served cold, notably potato salad and potato chips (crisps).
-							</p>
+                        <p class="product-description mb-20">{{product.product_description}}</p>
 
                         <div class="cart-buttons mb-20">
                             <div class="pro-qty mr-20 mb-xs-20">
@@ -156,18 +127,17 @@
 
 
                         <div class="single-product-category mb-20">
-                            <h3>Categories: <span><a href="/shop">Vegetables</a>, <a
-                                    href="/shop">Fruits & Vegetables</a></span></h3>
+                            <h3>Categories: <span><a href="/shop">{{subcategory.subcategory_name}}</a>, <a
+                                    href="/shop">{{category.category_name}}</a></span></h3>
                         </div>
 
 
                         <div class="social-share-buttons">
                             <h3>share this product</h3>
                             <ul>
-                                <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a></li>
-                                <li><a class="pinterest" href="#"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a class="twitter" href="http://www.twitter.com/"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a class="facebook" href="http://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a class="instagram" href="http://www.instagram.com/"><i class="fa fa-instagram"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -207,11 +177,7 @@
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="description" role="tabpanel"
                              aria-labelledby="description-tab">
-                            <p class="product-desc">Potatoes are prepared in many ways: 
-							skin-on or peeled, whole or cut up, with seasonings or without.
-							The only requirement involves cooking to swell the starch granules.
-							Most potato dishes are served hot but some are first cooked, then served cold, notably potato salad and potato chips (crisps).
-							</p>
+                            <p class="product-desc">{{product.product_description}}</p>
                         </div>
                         <div class="tab-pane fade" id="features" role="tabpanel" aria-labelledby="features-tab">
                             <table class="table-data-sheet">
@@ -219,12 +185,12 @@
                                 <tr class="odd">
 
                                     <td>Name</td>
-                                    <td>Potato</td>
+                                    <td>{{product.product_name}}</td>
                                 </tr>
                                 <tr class="even">
 
-                                    <td>Color</td>
-                                    <td>Yellow</td>
+                                    <td>Quantity</td>
+                                    <td>{{product.product_quantity}}</td>
                                 </tr>
 
                                 </tbody>

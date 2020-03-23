@@ -154,9 +154,19 @@ def privacy_policy():
     return render_template('privacy-policy.html')
 
 
-@app.route('/product-details')
-def product_details():
-    return render_template('product-details.html')
+@app.route('/product-details/<string:prod_slug>')
+def product_details(prod_slug):
+    product = Product.query.filter_by(slug=prod_slug).first()
+    subcategory = Subcategory.query.filter_by(subcategory_id=product.prod_subcategory_id).first()
+    category = Category.query.filter_by(category_id=subcategory.category_id).first()
+    pictures = Picture.query.all()
+
+    pic = ""
+    for picture in pictures:
+        if product.picture_id == picture.picture_id:
+            pic = picture
+
+    return render_template('product-details.html', product=product, picture=pic, category=category, subcategory=subcategory)
 
 
 @app.route('/return-n-refunds')
@@ -167,9 +177,28 @@ def return_n_refunds():
 @app.route('/shop/<string:cate_slug>')
 def shop(cate_slug):
     category = Category.query.filter_by(slug=cate_slug).first()
-    subcategories= Subcategory.query.filter_by(category_id=category.category_id).all()
+    subcategories = Subcategory.query.filter_by(category_id=category.category_id).all()
     products = Product.query.all()
-    return render_template('shop.html', category=category, subcategories=subcategories, products=products)
+    pictures = Picture.query.all()
+
+    print("Category: ", category)
+    print("Subcategories: ", subcategories)
+
+    cate_products = []
+    for subcategory in subcategories:
+        for product in products:
+            if product.prod_subcategory_id == subcategory.subcategory_id:
+                cate_products.append(product)
+
+    cate_products_pics = []
+    for product in cate_products:
+        for pic in pictures:
+            if product.picture_id == pic.picture_id:
+                cate_products_pics.append(pic)
+
+    print(len(cate_products), len(cate_products_pics))
+    return render_template('shop.html', category=category, subcategories=subcategories, products=cate_products,
+                           pictures=cate_products_pics)
 
 
 @app.route('/terms-n-conditions')
