@@ -59,7 +59,7 @@
                             <li><a href="/my-account">My account</a></li>
                             <li><a href="/wishlist">Wishlist</a></li>
                             <li><a href="/checkout">Checkout</a></li>
-                            <li><a id="loginBtn">Login</a></li>
+                            <li><a id="loginBtn" href="">Login</a></li>
                         </ul>
                     </div>
                     <!-- end of header top menu -->
@@ -79,7 +79,8 @@
                     <!-- logo -->
                     <div class="logo">
                         <a href="/">
-                            <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/icons/logo.png')}}">
+                            <img alt="" class="img-fluid"
+                                 src="{{url_for('static', filename = 'images/icons/logo.png')}}">
                         </a>
                     </div>
                     <!-- end of logo -->
@@ -120,7 +121,7 @@
                                         <div class="cart-float-single-item-image">
                                             <a href="/product-details"><img
                                                     alt="" class="img-fluid"
-                                                    src="{{url_for('static', filename = 'images/products/Beverages/bb-450g.png')}}"></a>
+                                                    src="{{url_for('static', filename = '')}}"></a>
                                         </div>
                                         <div class="cart-float-single-item-desc">
                                             <p class="product-title"><a href="/product-details">Supreme Tea</a></p>
@@ -133,7 +134,7 @@
                                             <a href="/product-details"><img
                                                     alt=""
                                                     class="img-fluid"
-                                                    src="{{url_for('static', filename = 'images/products/Breakfast & Dairy/Nutella.jpg')}}"></a>
+                                                    src="{{url_for('static', filename = '')}}"></a>
                                         </div>
                                         <div class="cart-float-single-item-desc">
                                             <p class="product-title"><a href="/product-details">Nutella</a></p>
@@ -381,7 +382,7 @@
                 <div class="section-title">
                     <h3>Intelli Supermart deal of the day</h3>
                 </div>
-                
+
                 <!--=======  End of multisale slider section title  =======-->
             </div>
         </div>
@@ -410,9 +411,8 @@
                                 <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> </a>
                                 <a data-tooltip="Compare" href="compare"> <span class="arrow_left-right_alt"></span>
                                 </a>
-                                <a data-target="#quick-view-modal-container" data-toggle="modal"
-                                   data-tooltip="Quick view"
-                                   href="#"> <span class="icon_search"></span> </a>
+                                <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
+                                   href="/?product=hello" methods="get"> <span class="icon_search"></span> </a>
                             </div>
                         </div>
                         <div class="product-countdown" data-countdown="2020/01/08"></div>
@@ -474,7 +474,8 @@
                                     <div class="col-lg-4 pl-0 pr-0">
                                         <div class="image">
                                             <a href="/product-details/{{best_seller_products[count].slug}}">
-                                                {% set url = 'images/products/' + best_seller_products_categories[count].category_name +
+                                                {% set url = 'images/products/' +
+                                                best_seller_products_categories[count].category_name +
                                                 '/' + best_seller_products_images[count].picture_url %}
                                                 <img alt=""
                                                      class="img-fluid"
@@ -488,9 +489,11 @@
                                                 <a href="/shop/{{best_seller_products_categories[count].slug}}">{{best_seller_products_categories[count].category_name}}</a>
                                             </div>
 
-                                            <h3 class="product-title"><a href="/product-details/{{best_seller_products[count].slug}}">{{best_seller_products[count].product_name}}</a></h3>
+                                            <h3 class="product-title"><a
+                                                    href="/product-details/{{best_seller_products[count].slug}}">{{best_seller_products[count].product_name}}</a>
+                                            </h3>
                                             <div class="price-box">
-<!--                                                <span class="main-price">Rs {{best_seller_products[count].product_price}}</span>-->
+                                                <!--<span class="main-price">Rs {{best_seller_products[count].product_price}}</span>-->
                                                 <span class="discounted-price">Rs {{best_seller_products[count].product_price}}</span>
                                             </div>
                                         </div>
@@ -849,9 +852,12 @@
                             <div class="social-share-buttons">
                                 <h3>share this product</h3>
                                 <ul>
-                                    <li><a class="twitter" href="http://www.twitter.com/"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a class="facebook" href="http://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a class="instagram" href="http://www.instagram.com/"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a class="twitter" href="http://www.twitter.com/"><i class="fa fa-twitter"></i></a>
+                                    </li>
+                                    <li><a class="facebook" href="http://www.facebook.com/"><i
+                                            class="fa fa-facebook"></i></a></li>
+                                    <li><a class="instagram" href="http://www.instagram.com/"><i
+                                            class="fa fa-instagram"></i></a></li>
                                 </ul>
                             </div>
                         </div>

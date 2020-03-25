@@ -1,3 +1,4 @@
+from math import *
 from random import randint
 
 from flask import *
@@ -166,7 +167,8 @@ def product_details(prod_slug):
         if product.picture_id == picture.picture_id:
             pic = picture
 
-    return render_template('product-details.html', product=product, picture=pic, category=category, subcategory=subcategory)
+    return render_template('product-details.html', product=product, picture=pic, category=category,
+                           subcategory=subcategory)
 
 
 @app.route('/return-n-refunds')
@@ -197,8 +199,20 @@ def shop(cate_slug):
                 cate_products_pics.append(pic)
 
     print(len(cate_products), len(cate_products_pics))
+
+    per_page = 9
+    number_of_pages = ceil(len(cate_products) / per_page)
+    print(number_of_pages)
+    if not number_of_pages == 1:
+        number_of_pages += 1
+    page = request.args.get('page')
+    if not str(page).isnumeric():
+        page = 1
+    page = int(page)
+    cate_products = cate_products[(page - 1) * per_page:((page - 1) * per_page) + per_page]
+
     return render_template('shop.html', category=category, subcategories=subcategories, products=cate_products,
-                           pictures=cate_products_pics)
+                           pictures=cate_products_pics, number_of_pages=number_of_pages)
 
 
 @app.route('/terms-n-conditions')

@@ -90,7 +90,7 @@
                                     <a href="/product-details">
                                         <img alt=""
                                              class="img-fluid"
-                                             src="assets/images/products/Fruits & Vegetables/bringles.jpg">
+                                             src="">
                                     </a>
                                 </div>
                                 <div class="content">
@@ -119,7 +119,7 @@
                                     <a href="product-details">
                                         <img alt=""
                                              class="img-fluid"
-                                             src="assets/images/products/Fruits & Vegetables/onions.jpg">
+                                             src="">
                                     </a>
                                 </div>
                                 <div class="content">
@@ -148,7 +148,7 @@
                                     <a href="product-details">
                                         <img alt=""
                                              class="img-fluid"
-                                             src="assets/images/products/Fruits & Vegetables/guava.jpg">
+                                             src="">
                                     </a>
                                 </div>
                                 <div class="content">
@@ -182,17 +182,6 @@
                 <!--=======  End of sidebar area  =======-->
             </div>
             <div class="col-lg-9 order-1 order-lg-2 mb-sm-35 mb-xs-35">
-
-                <!--=======  shop page banner  =======-->
-
-                <div class="shop-page-banner mb-35">
-                    <a href="/shop">
-                        <img alt="" class="img-fluid" src="assets/images/banners/blog03.jpg">
-                    </a>
-                </div>
-
-                <!--=======  End of shop page banner  =======-->
-
                 <!--=======  Shop header  =======-->
 
                 <div class="shop-header mb-35">
@@ -224,7 +213,7 @@
 
                             <!--=======  End of Sort by dropdown  =======-->
 
-                            <p class="result-show-message">Showing 1–12 of 41 results</p>
+                            <p class="result-show-message ">Showing 1–12 of 41 results</p>
                         </div>
                     </div>
                 </div>
@@ -296,9 +285,10 @@
                                 <div class="product-categories">
                                     <a href="/shop">{{subcategory.subcategory_name}}</a>
                                 </div>
-                                <h3 class="product-title"><a href="/product-details">{{product.product_name}} - {{product.product_quantity}}</a></h3>
+                                <h3 class="product-title"><a href="/product-details">{{product.product_name}} -
+                                    {{product.product_quantity}}</a></h3>
                                 <div class="price-box mb-20">
-<!--                                    <span class="main-price">Rs 120</span>-->
+                                    <!--                                    <span class="main-price">Rs 120</span>-->
                                     <span class="discounted-price">Rs {{product.product_price}}</span>
                                 </div>
                                 <p class="product-description">{{product.product_description}}</p>
@@ -335,11 +325,10 @@
 
                                 <div class="pagination-content text-center">
                                     <ul>
-                                        <li><a class="active" href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+                                        {% for i in range(1, number_of_pages) %}
+                                        <li><a href="?page={{i}}" id="pagination">{{i}}</a></li>
+                                        {% endfor %}
+                                        <!--<li><a href="#"><i class="fa fa-angle-right"></i></a></li>-->
                                     </ul>
                                 </div>
 
@@ -385,7 +374,7 @@
                                     <div class="single-product-img img-full">
                                         <img alt=""
                                              class="img-fluid"
-                                             src="assets/images/products/Fruits & Vegetables/11084.jpg">
+                                             src="">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -395,7 +384,7 @@
                                     <div class="single-product-img img-full">
                                         <img alt=""
                                              class="img-fluid"
-                                             src="assets/images/products/Fruits & Vegetables/lemon.jpg">
+                                             src="">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -405,7 +394,7 @@
                                     <div class="single-product-img img-full">
                                         <img alt=""
                                              class="img-fluid"
-                                             src="assets/images/products/Fruits & Vegetables/bananas.jpg">
+                                             src="">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -415,7 +404,7 @@
                                     <div class="single-product-img img-full">
                                         <img alt=""
                                              class="img-fluid"
-                                             src="assets/images/products/Fruits & Vegetables/oranges.jpg">
+                                             src="">
                                     </div>
                                     <!--Single Product Image End-->
                                 </div>
@@ -428,24 +417,24 @@
                                         <a data-toggle="tab" href="#single-slide1" id="single-slide-tab-1"><img
                                                 alt=""
                                                 class="img-fluid"
-                                                src="assets/images/products/Fruits & Vegetables/11084.jpg"></a>
+                                                src=""></a>
                                     </div>
                                     <div class="single-small-image img-full">
                                         <a data-toggle="tab" href="#single-slide2" id="single-slide-tab-2"><img
                                                 alt=""
                                                 class="img-fluid"
-                                                src="assets/images/products/Fruits & Vegetables/lemon.jpg"></a>
+                                                src=""></a>
                                     </div>
                                     <div class="single-small-image img-full">
                                         <a data-toggle="tab" href="#single-slide3" id="single-slide-tab-3"><img
                                                 alt=""
                                                 class="img-fluid"
-                                                src="assets/images/products/Fruits & Vegetables/bananas.jpg"></a>
+                                                src=""></a>
                                     </div>
                                     <div class="single-small-image img-full">
                                         <a data-toggle="tab" href="#single-slide4" id="single-slide-tab-4"><img
                                                 alt=""
-                                                src="assets/images/products/Fruits & Vegetables/oranges.jpg"></a>
+                                                src=""></a>
                                     </div>
                                 </div>
                             </div>
