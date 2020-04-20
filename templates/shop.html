@@ -213,7 +213,7 @@
 
                             <!--=======  End of Sort by dropdown  =======-->
 
-                            <p class="result-show-message ">Showing 1–12 of 41 results</p>
+                            <p class="result-show-message ">Showing {{start_val+1}}–{{end_val}} of {{total_prods}} results</p>
                         </div>
                     </div>
                 </div>
@@ -246,9 +246,6 @@
                                     </a>
                                     <a data-tooltip="Compare" href="/compare"> <span
                                             class="arrow_left-right_alt"></span> </a>
-                                    <a data-target="#quick-view-modal-container" data-toggle="modal"
-                                       data-tooltip="Quick view"
-                                       href="#"> <span class="icon_search"></span> </a>
                                 </div>
                             </div>
                             <div class="product-content">
@@ -275,11 +272,6 @@
                                     <img alt="" class="img-fluid"
                                          src="{{url_for('static', filename=url)}}">
                                 </a>
-                                <div class="product-hover-icons">
-                                    <a data-target="#quick-view-modal-container" data-toggle="modal"
-                                       data-tooltip="Quick view"
-                                       href="#"> <span class="icon_search"></span> </a>
-                                </div>
                             </div>
                             <div class="product-content">
                                 <div class="product-categories">
@@ -326,7 +318,7 @@
                                 <div class="pagination-content text-center">
                                     <ul>
                                         {% for i in range(1, number_of_pages) %}
-                                        <li><a href="?page={{i}}" id="pagination">{{i}}</a></li>
+                                        <li class="pagination"><a href="?page={{i}}">{{i}}</a></li>
                                         {% endfor %}
                                         <!--<li><a href="#"><i class="fa fa-angle-right"></i></a></li>-->
                                     </ul>
@@ -347,146 +339,4 @@
 
 <!--=====  End of Shop page container  ======-->
 
-<!--=============================================
-=            Quick view modal         =
-=============================================-->
-
-<div aria-hidden="true" class="modal fade quick-view-modal-container" id="quick-view-modal-container" role="dialog"
-     tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-5 col-md-6 col-xs-12">
-                        <!-- product quickview image gallery -->
-                        <div class="product-image-slider">
-                            <!--Modal Tab Content Start-->
-                            <div class="tab-content product-large-image-list" id="myTabContent">
-                                <div aria-labelledby="single-slide-tab-1" class="tab-pane fade show active"
-                                     id="single-slide1"
-                                     role="tabpanel">
-                                    <!--Single Product Image Start-->
-                                    <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid"
-                                             src="">
-                                    </div>
-                                    <!--Single Product Image End-->
-                                </div>
-                                <div aria-labelledby="single-slide-tab-2" class="tab-pane fade" id="single-slide2"
-                                     role="tabpanel">
-                                    <!--Single Product Image Start-->
-                                    <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid"
-                                             src="">
-                                    </div>
-                                    <!--Single Product Image End-->
-                                </div>
-                                <div aria-labelledby="single-slide-tab-3" class="tab-pane fade" id="single-slide3"
-                                     role="tabpanel">
-                                    <!--Single Product Image Start-->
-                                    <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid"
-                                             src="">
-                                    </div>
-                                    <!--Single Product Image End-->
-                                </div>
-                                <div aria-labelledby="single-slide-tab-4" class="tab-pane fade" id="single-slide4"
-                                     role="tabpanel">
-                                    <!--Single Product Image Start-->
-                                    <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid"
-                                             src="">
-                                    </div>
-                                    <!--Single Product Image End-->
-                                </div>
-                            </div>
-                            <!--Modal Content End-->
-                            <!--Modal Tab Menu Start-->
-                            <div class="product-small-image-list">
-                                <div class="nav small-image-slider" role="tablist">
-                                    <div class="single-small-image img-full">
-                                        <a data-toggle="tab" href="#single-slide1" id="single-slide-tab-1"><img
-                                                alt=""
-                                                class="img-fluid"
-                                                src=""></a>
-                                    </div>
-                                    <div class="single-small-image img-full">
-                                        <a data-toggle="tab" href="#single-slide2" id="single-slide-tab-2"><img
-                                                alt=""
-                                                class="img-fluid"
-                                                src=""></a>
-                                    </div>
-                                    <div class="single-small-image img-full">
-                                        <a data-toggle="tab" href="#single-slide3" id="single-slide-tab-3"><img
-                                                alt=""
-                                                class="img-fluid"
-                                                src=""></a>
-                                    </div>
-                                    <div class="single-small-image img-full">
-                                        <a data-toggle="tab" href="#single-slide4" id="single-slide-tab-4"><img
-                                                alt=""
-                                                src=""></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Modal Tab Menu End-->
-                        </div>
-                        <!-- end of product quickview image gallery -->
-                    </div>
-                    <div class="col-lg-7 col-md-6 col-xs-12">
-                        <!-- product quick view description -->
-                        <div class="product-feature-details">
-                            <h2 class="product-title mb-15">Potatoes</h2>
-
-                            <h2 class="product-price mb-15">
-                                <span class="main-price">Rs 100</span>
-                                <span class="discounted-price">Rs 80</span>
-                            </h2>
-
-                            <p class="product-description mb-20">Potatoes are prepared in many ways:
-                                skin-on or peeled, whole or cut up, with seasonings or without.
-                                The only requirement involves cooking to swell the starch granules.
-                                Most potato dishes are served hot but some are first cooked, then served cold, notably
-                                potato salad and potato chips (crisps).
-                            </p>
-
-
-                            <div class="cart-buttons mb-20">
-                                <div class="pro-qty mr-10">
-                                    <input type="text" value="1">
-                                </div>
-                                <div class="add-to-cart-btn">
-                                    <a href="#"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
-                                </div>
-                            </div>
-
-
-                            <div class="social-share-buttons">
-                                <h3>share this product</h3>
-                                <ul>
-                                    <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a></li>
-                                    <li><a class="pinterest" href="#"><i class="fa fa-pinterest"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- end of product quick view description -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-<!--=====  End of Quick view modal  ======-->
 {% endblock %}

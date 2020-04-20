@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.secret_key = 'super-secret-key'
 app.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin1@mysingleserver:Tempass12@mysingleserver.postgres.database.azure.com:5432/intellisupermart'
+    'SQLALCHEMY_DATABASE_URI'] = 'postgres://plbsmnpyhgnfkx:900ff23b99965614d20deeb707307f2add036274c83463f95e64dbff0384968b@ec2-107-20-234-175.compute-1.amazonaws.com:5432/d1hntjbagjg4ro'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
@@ -51,6 +51,15 @@ class Picture(db.Model):
     __tablename__ = 'picture'
     picture_id = db.Column(db.Integer, primary_key=True)
     picture_url = db.Column(db.String(200))
+
+
+class Cart(db.Model):
+    __tablename__ = 'cart'
+    cart_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer)
+    product_id = db.Column(db.Integer)
+    product_quantity = db.Column(db.Integer)
+    total_cost = db.Column(db.String(200))
 
 
 @app.route('/')
@@ -100,8 +109,14 @@ def careers():
     return render_template('careers.html')
 
 
-@app.route('/cart')
+@app.route('/cart', methods=['GET', 'POST', 'PUT'])
 def cart():
+    if request.method == 'POST':
+        return redirect('/checkout')
+    if request.method == 'PUT':
+        return redirect('/compare')
+    products = Cart.query.all()
+    print(len(products))
     return render_template('cart.html')
 
 
@@ -199,7 +214,7 @@ def shop(cate_slug):
                 cate_products_pics.append(pic)
 
     print(len(cate_products), len(cate_products_pics))
-
+    total_prods = len(cate_products)
     per_page = 9
     number_of_pages = ceil(len(cate_products) / per_page)
     print(number_of_pages)
@@ -209,10 +224,15 @@ def shop(cate_slug):
     if not str(page).isnumeric():
         page = 1
     page = int(page)
-    cate_products = cate_products[(page - 1) * per_page:((page - 1) * per_page) + per_page]
+    start_val = (page - 1) * per_page
+    end_val = ((page - 1) * per_page) + per_page
+    if end_val > total_prods:
+        end_val = total_prods
+    cate_products = cate_products[start_val:end_val]
 
     return render_template('shop.html', category=category, subcategories=subcategories, products=cate_products,
-                           pictures=cate_products_pics, number_of_pages=number_of_pages)
+                           pictures=cate_products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
+                           start_val=start_val, end_val=end_val)
 
 
 @app.route('/terms-n-conditions')
