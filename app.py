@@ -109,14 +109,15 @@ def careers():
     return render_template('careers.html')
 
 
-@app.route('/cart', methods=['GET', 'POST', 'PUT'])
-def cart():
+@app.route('/cart/<int:prod_id>', methods=['GET', 'POST'])
+def cart(prod_id):
     if request.method == 'POST':
-        return redirect('/checkout')
-    if request.method == 'PUT':
-        return redirect('/compare')
-    products = Cart.query.all()
-    print(len(products))
+        return
+        # products = Cart.query.all()
+        # cart = Cart(customer_id=1, product_id=prod_id, product_quantity=1, total_cost=100)
+        # db.session.add(cart)
+        # db.session.commit()
+        # print(len(products))
     return render_template('cart.html')
 
 
