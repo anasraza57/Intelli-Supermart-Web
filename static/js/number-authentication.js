@@ -1,8 +1,12 @@
-window.onload = function(){
-render();
-}
+// window.onload = function () {
+//     alert();
+// }
 
-function render(){
-window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-recaptchaVerifier.render();
+$(window).load(function () {
+    alert();
+});
+
+function render() {
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+    recaptchaVerifier.render();
 }

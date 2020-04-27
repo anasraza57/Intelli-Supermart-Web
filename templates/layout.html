@@ -52,7 +52,8 @@
                     <div class="header-top-menu">
                         <ul>
                             <li>
-                                <img alt="" height="20" src="{{url_for('static', filename = 'images/icons/contact-icon2.png')}}">
+                                <img alt="" height="20"
+                                     src="{{url_for('static', filename = 'images/icons/contact-icon2.png')}}">
                                 <span>+92-323-0496310</span>
                             </li>
                             <li><a href="/my-account">My account</a></li>
@@ -78,7 +79,8 @@
                     <!-- logo -->
                     <div class="logo">
                         <a href="/">
-                            <img alt="" class="img-fluid" src="{{url_for('static', filename = 'images/icons/logo.png')}}">
+                            <img alt="" class="img-fluid"
+                                 src="{{url_for('static', filename = 'images/icons/logo.png')}}">
                         </a>
                     </div>
                     <!-- end of logo -->
@@ -342,20 +344,48 @@
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
 
 <script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyCnfJW9IXONV7ZcKKAgYdC3fedXUqNMH9E",
-    authDomain: "intelli-super-mart.firebaseapp.com",
-    databaseURL: "https://intelli-super-mart.firebaseio.com",
-    projectId: "intelli-super-mart",
-    storageBucket: "intelli-super-mart.appspot.com",
-    messagingSenderId: "298617996174",
-    appId: "1:298617996174:web:3d206b0d0dda2aee845adf",
-    measurementId: "G-8FMZRBHGFX"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCnfJW9IXONV7ZcKKAgYdC3fedXUqNMH9E",
+        authDomain: "intelli-super-mart.firebaseapp.com",
+        databaseURL: "https://intelli-super-mart.firebaseio.com",
+        projectId: "intelli-super-mart",
+        storageBucket: "intelli-super-mart.appspot.com",
+        messagingSenderId: "298617996174",
+        appId: "1:298617996174:web:3d206b0d0dda2aee845adf",
+        measurementId: "G-8FMZRBHGFX"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+</script>
+
+<script>
+    $(window).on('load', function () {
+        render();
+    });
+
+    function render() {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+        recaptchaVerifier.render();
+        alert("hello");
+    }
+
+    $('#sendBtn').on('click', function () {
+        // alert("clicked");
+        var number = $('#number').val();
+        alert(number);
+        firebase.auth().signInWithPhoneNumber(number).then(function (confirmationResult) {
+            alert();
+            window.confirmationResult=confirmationResult;
+            coderesult=confirmationResult;
+            console.log(coderesult);
+            alert("Message Sent");
+        }).catch(function (error) {
+            alert(error.message);
+        });
+    });
+
 </script>
 </body>
 
