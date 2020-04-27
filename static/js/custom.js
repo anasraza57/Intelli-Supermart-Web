@@ -3,10 +3,6 @@ $('.pagination').on("click", function() {
     alert();
 });
 
-$('#cart').on("click", function() {
-    alert();
-});
-
 $('#loginBtn').on("click", function () {
     swal({
         title: "Phone Number Verification",

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" lang="zxx">
+<html class="no-js" lang="zxx" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="utf-8">
@@ -408,10 +408,21 @@
                                      src="{{url_for('static', filename=url)}}">
                             </a>
                             <div class="product-hover-icons">
-                                <a data-tooltip="Add to cart"> <span id="cart" class="icon_cart_alt"></span></a>
-                                <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> </a>
-                                <a data-tooltip="Compare" href="compare"> <span class="arrow_left-right_alt"></span>
-                                </a>
+                                <form action="/cart/{{product.product_id}}" method="post">
+                                    <button style="background-color: transparent; background-repeat: no-repeat;
+                                     border: none; cursor: pointer; overflow: hidden">
+                                        <a data-tooltip="Add to cart"> <span class="icon_cart_alt"></span></a>
+                                    </button>
+                                    <button style="background-color: transparent; background-repeat: no-repeat;
+                                     border: none; cursor: pointer; overflow: hidden">
+                                        <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span></a>
+                                    </button>
+                                    <button style="background-color: transparent; background-repeat: no-repeat;
+                                     border: none; cursor: pointer; overflow: hidden">
+                                        <a data-tooltip="Compare" href="compare"> <span
+                                                class="arrow_left-right_alt"></span></a>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                         <div class="product-countdown" data-countdown="2020/01/08"></div>
