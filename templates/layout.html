@@ -328,8 +328,35 @@
 <!-- Custom JS -->
 <script src="{{url_for('static', filename = 'js/custom.js')}}"></script>
 
+<!-- Number Authentication JS -->
+<script src="{{url_for('static', filename = 'js/number-authentication.js')}}"></script>
+
 <!-- AJAX mail JS -->
 <script src="{{url_for('static', filename = 'js/ajax-mail.js')}}"></script>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCnfJW9IXONV7ZcKKAgYdC3fedXUqNMH9E",
+    authDomain: "intelli-super-mart.firebaseapp.com",
+    databaseURL: "https://intelli-super-mart.firebaseio.com",
+    projectId: "intelli-super-mart",
+    storageBucket: "intelli-super-mart.appspot.com",
+    messagingSenderId: "298617996174",
+    appId: "1:298617996174:web:3d206b0d0dda2aee845adf",
+    measurementId: "G-8FMZRBHGFX"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
 </body>
 
 </html>
