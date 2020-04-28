@@ -248,4 +248,4 @@ def wishlist():
 
 if __name__ == '__main__':
     # manager.run()
-    app.run(debug=True)
+    app.run(host='localhost', port=8080, debug=True)

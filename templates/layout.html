@@ -59,7 +59,7 @@
                             <li><a href="/my-account">My account</a></li>
                             <li><a href="/wishlist">Wishlist</a></li>
                             <li><a href="/checkout">Checkout</a></li>
-                            <li><a id="loginBtn" href="">Login</a></li>
+                            <li><a href="" id="loginBtn">Login</a></li>
                         </ul>
                     </div>
                     <!-- end of header top menu -->
@@ -120,8 +120,7 @@
                                         <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
                                         <div class="cart-float-single-item-image">
                                             <a href="/product-details"><img
-                                                    alt="" class="img-fluid"
-                                                    src="{{url_for('static', filename = '')}}"></a>
+                                                    alt="" class="img-flui"></a>
                                         </div>
                                         <div class="cart-float-single-item-desc">
                                             <p class="product-title"><a href="/product-details">Supreme Tea</a></p>
@@ -133,7 +132,7 @@
                                         <div class="cart-float-single-item-image">
                                             <a href="/product-details"><img
                                                     alt=""
-                                                    class="img-fluid" src="{{url_for('static', filename = '')}}"></a>
+                                                    class="img-fluid"></a>
                                         </div>
                                         <div class="cart-float-single-item-desc">
                                             <p class="product-title"><a href="/product-details">Nutella</a></p>
@@ -330,20 +329,23 @@
 <!-- Custom JS -->
 <script src="{{url_for('static', filename = 'js/custom.js')}}"></script>
 
-<!-- Number Authentication JS -->
-<script src="{{url_for('static', filename = 'js/number-authentication.js')}}"></script>
-
 <!-- AJAX mail JS -->
 <script src="{{url_for('static', filename = 'js/ajax-mail.js')}}"></script>
+
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
 
 <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
+    https://firebase.google.com/docs/web/setup#available-libraries -->
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
 
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+
 <script>
+    var isAuthenticated = false;
     // Your web app's Firebase configuration
     var firebaseConfig = {
         apiKey: "AIzaSyCnfJW9IXONV7ZcKKAgYdC3fedXUqNMH9E",
@@ -358,35 +360,88 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
-</script>
 
-<script>
-    $(window).on('load', function () {
-        render();
-    });
 
-    function render() {
-        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-        recaptchaVerifier.render();
-        alert("hello");
+
+    // To apply the default browser preference instead of explicitly setting it.
+    firebase.auth().useDeviceLanguage();
+
+     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+          'size': 'invisible',
+          'callback': function(response) {
+            alert("recaptcha success");
+          },
+          'expired-callback': function() {
+            alert("recaptcha failed");
+          }
+      });
+
+
+     function getCodeFromUserInput() {
+            return $("#verificationCode").val();
+     }
+
+    function disableSendCodeBtn(){
+        $("#sendBtn").attr("disabled", true);
     }
 
-    $('#sendBtn').on('click', function () {
-        // alert("clicked");
+    function enableSendCodeBtn(){
+        $("#sendBtn").removeAttr("disabled");
+    }
+
+    function verifyPhoneNumber() {
+    disableSendCodeBtn();
+    setTimeout(function(){
         var number = $('#number').val();
-        alert(number);
-        firebase.auth().signInWithPhoneNumber(number).then(function (confirmationResult) {
-            alert();
-            window.confirmationResult=confirmationResult;
-            coderesult=confirmationResult;
-            console.log(coderesult);
-            alert("Message Sent");
+        var appVerifier = window.recaptchaVerifier;
+        firebase.auth().signInWithPhoneNumber(number, appVerifier)
+            .then(function (confirmationResult) {
+                // SMS sent. Prompt user to type the code from the message, then sign the
+                // user in with confirmationResult.confirm(code).
+                window.confirmationResult = confirmationResult;
+                enableSendCodeBtn();
+
+                $("#confirm_code_btn").on('click', function(){
+                        var code = getCodeFromUserInput();
+                        confirmationResult.confirm(code).then(function (result) {
+                            // User signed in successfully.
+                            var user = result.user;
+                            // ...
+                            alert("Phone number verified!")
+                            should_submit = true;
+                            isAuthenticated = true;
+                            console.log(user);
+                        }).catch(function (error) {
+                            // User couldn't sign in (bad verification code?)
+                            // ...
+                            alert("Phone number verification failed!");
+                        });
+                    })
+
         }).catch(function (error) {
-            alert(error.message);
+            console.log(error);
+            enableSendCodeBtn();
+            if(error['code'] == "auth/too-many-requests"){
+                alert("Too many attempts! please try again later.")
+            }else if(error['code'] == 'auth/invalid-phone-number'){
+                alert("Please provide a valid phone number!")
+            }else{
+                alert("Something went wrong! please try again later.")
+            }
         });
+             }, 1000);
+    }
+
+    $('#registrationForm').on('submit', function(){
+        if(!isAuthenticated){
+            alert("Please verify Your Phone Number First!");
+        }
+        return isAuthenticated;
+
     });
 
 </script>
+
 </body>
 
 </html>

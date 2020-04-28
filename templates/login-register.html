@@ -67,7 +67,7 @@
                 </form>
             </div>
             <div class="col-sm-12 col-md-12 col-xs-12 col-lg-6">
-                <form action="#">
+                <form id="registrationForm" onsubmit="handleSignUpFormSubmit()" action="/wishlist">
 
                     <div class="login-form">
                         <h4 class="login-title">Register</h4>
@@ -77,10 +77,9 @@
                                 <label>Phone Number</label>
                                 <input id="number" class="mb-0" type="text" placeholder="+923*********">
                             </div>
-                            <div id="recaptcha-container">
-                            </div>
+                            <div id="recaptcha-container"></div>
                             <div class="col-12">
-                                <button id="sendBtn" class="register-button mt-0">Send Code</button>
+                                <button id="sendBtn" type="button" class="register-button mt-0" onclick="verifyPhoneNumber()">Send Code</button>
                             </div>
                             <br><br>
                             <div class="col-md-12 mb-20">
@@ -88,7 +87,7 @@
                                 <input id="verificationCode" class="mb-0" type="text" placeholder="Verification Code">
                             </div>
                             <div class="col-12">
-                                <button class="register-button mt-0" onclick="codeVerify();">Verify Code</button>
+                                <button type="button" id="confirm_code_btn" class="register-button mt-0">Verify Code</button>
                             </div>
                             <br><br>
                             <div class="col-md-6 mb-20">
@@ -100,7 +99,7 @@
                                 <input class="mb-0" type="password" placeholder="Confirm Password">
                             </div>
                             <div class="col-12">
-                                <button class="register-button mt-0">Register</button>
+                                <button type="submit" class="register-button mt-0">Register</button>
                             </div>
                         </div>
                     </div>
