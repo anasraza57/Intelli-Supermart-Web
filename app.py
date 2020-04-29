@@ -161,6 +161,13 @@ def login_register():
     return render_template('login-register.html')
 
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        return redirect('/my-account')
+    return render_template('login-register.html')
+
+
 @app.route('/my-account')
 def my_account():
     return render_template('my-account.html')

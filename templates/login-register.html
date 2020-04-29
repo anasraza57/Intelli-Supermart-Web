@@ -1,5 +1,182 @@
-{% extends "layout.html" %}
-{% block body %}
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <title>Intelli Supermart</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <!-- Favicon -->
+    <link href="{{url_for('static', filename = 'images/icons/icon.png')}}" rel="icon">
+
+    <!-- CSS
+    ============================================ -->
+    <!-- Bootstrap CSS -->
+    <link href="{{url_for('static', filename = 'css/bootstrap.min.css')}}" rel="stylesheet">
+
+    <!-- FontAwesome CSS -->
+    <link href="{{url_for('static', filename = 'css/font-awesome.min.css')}}" rel="stylesheet">
+
+    <!-- Elegent CSS -->
+    <link href="{{url_for('static', filename = 'css/elegent.min.css')}}" rel="stylesheet">
+
+    <!-- Plugins CSS -->
+    <link href="{{url_for('static', filename = 'css/plugins.css')}}" rel="stylesheet">
+
+    <!-- Helper CSS -->
+    <link href="{{url_for('static', filename = 'css/helper.css')}}" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link href="{{url_for('static', filename = 'css/main.css')}}" rel="stylesheet">
+
+    <!-- Modernizer JS -->
+    <script src="{{url_for('static', filename = 'js/vendor/modernizr-2.8.3.min.js')}}"></script>
+
+</head>
+
+<body>
+
+<!--=============================================
+=            Header         =
+=============================================-->
+
+<header>
+    <!--=======  header top  =======-->
+
+    <div class="header-top pt-10 pb-10 pt-lg-10 pb-lg-10 pt-md-10 pb-md-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  text-center text-sm-right">
+                    <!-- header top menu -->
+                    <div class="header-top-menu">
+                        <ul>
+                            <li>
+                                <img alt="" height="20"
+                                     src="{{url_for('static', filename = 'images/icons/contact-icon2.png')}}">
+                                <span>+92-323-0496310</span>
+                            </li>
+                            <li><a href="/my-account">My account</a></li>
+                            <li><a href="/wishlist">Wishlist</a></li>
+                            <li><a href="/checkout">Checkout</a></li>
+                            <li><a href="" id="loginBtn">Login</a></li>
+                        </ul>
+                    </div>
+                    <!-- end of header top menu -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--=======  End of header top  =======-->
+
+    <!--=======  header bottom  =======-->
+
+    <div class="header-bottom header-bottom-other header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 col-sm-12 col-xs-12 text-lg-left text-md-center text-sm-center">
+                    <!-- logo -->
+                    <div class="logo">
+                        <a href="/">
+                            <img alt="" class="img-fluid"
+                                 src="{{url_for('static', filename = 'images/icons/logo.png')}}">
+                        </a>
+                    </div>
+                    <!-- end of logo -->
+                </div>
+                <div class="col-md-7 col-sm-12 col-xs-12">
+                    <div class="menubar-top d-flex justify-content-between align-items-center flex-sm-wrap flex-md-wrap flex-lg-nowrap mt-sm-15">
+                        <!-- search bar -->
+                        <div class="header-advance-search">
+                            <form action="#">
+                                <label>
+                                    <input placeholder="Search your product" type="text">
+                                </label>
+                                <button><span class="icon_search"></span></button>
+                            </form>
+                        </div>
+                        <!-- end of search bar -->
+                        <!-- shopping cart -->
+                        <div class="shopping-cart" id="shopping-cart">
+                            <a href="/cart">
+                                <div class="cart-icon d-inline-block">
+                                    <span class="icon_bag_alt"></span>
+                                </div>
+                                <div class="cart-info d-inline-block">
+                                    <p>Shopping Cart
+                                        <span>
+												2 items - Rs 450
+											</span>
+                                    </p>
+                                </div>
+                            </a>
+                            <!-- end of shopping cart -->
+
+                            <!-- cart floating box -->
+                            <div class="cart-floating-box" id="cart-floating-box">
+                                <div class="cart-items">
+                                    <div class="cart-float-single-item d-flex">
+                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
+                                        <div class="cart-float-single-item-image">
+                                            <a href="/product-details"><img
+                                                    alt="" class="img-flui"></a>
+                                        </div>
+                                        <div class="cart-float-single-item-desc">
+                                            <p class="product-title"><a href="/product-details">Supreme Tea</a></p>
+                                            <p class="price"><span class="count">1x</span>Rs 250</p>
+                                        </div>
+                                    </div>
+                                    <div class="cart-float-single-item d-flex">
+                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
+                                        <div class="cart-float-single-item-image">
+                                            <a href="/product-details"><img
+                                                    alt=""
+                                                    class="img-fluid"></a>
+                                        </div>
+                                        <div class="cart-float-single-item-desc">
+                                            <p class="product-title"><a href="/product-details">Nutella</a></p>
+                                            <p class="price"><span class="count">1x</span>Rs 200</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cart-calculation">
+                                    <div class="calculation-details">
+                                        <p class="total">Subtotal <span>Rs 450</span></p>
+                                    </div>
+                                    <div class="floating-cart-btn text-center">
+                                        <a href="/checkout">Checkout</a>
+                                        <a href="/cart">View Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of cart floating box -->
+                        </div>
+                    </div>
+
+                    <!-- navigation section -->
+                    <div class="main-menu">
+                        <nav>
+                            <ul>
+                                <li><a href="/">HOME</a></li>
+                                <li><a href="/shop">Shop</a></li>
+                                <li><a href="/contact-us">CONTACT</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- end of navigation section -->
+                </div>
+                <div class="col-12">
+                    <!-- Mobile Menu -->
+                    <div class="mobile-menu d-block d-lg-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--=======  End of header bottom  =======-->
+</header>
+
 <!--=============================================
 =            breadcrumb area         =
 =============================================-->
@@ -67,39 +244,39 @@
                 </form>
             </div>
             <div class="col-sm-12 col-md-12 col-xs-12 col-lg-6">
-                <form id="registrationForm" onsubmit="handleSignUpFormSubmit()" action="/wishlist">
+                <form id="registrationForm" action="/register" method="post">
 
                     <div class="login-form">
                         <h4 class="login-title">Register</h4>
 
                         <div class="row">
                             <div class="col-md-6 col-12 mb-20">
-                                <label>Phone Number</label>
+                                <label>Phone Number <img id="verifiedImg"></img></label>
                                 <input id="number" class="mb-0" type="text" placeholder="+923*********">
                             </div>
-                            <div id="recaptcha-container"></div>
-                            <div class="col-12">
-                                <button id="sendBtn" type="button" class="register-button mt-0" onclick="verifyPhoneNumber()">Send Code</button>
-                            </div>
-                            <br><br>
-                            <div class="col-md-12 mb-20">
+                            <div class="col-md-6 col-12 mb-20">
                                 <label>Verify Number*</label>
                                 <input id="verificationCode" class="mb-0" type="text" placeholder="Verification Code">
                             </div>
-                            <div class="col-12">
-                                <button type="button" id="confirm_code_btn" class="register-button mt-0">Verify Code</button>
+                            <div id="recaptcha-container"></div>
+                            <div class="col-md-6 col-12">
+                                <button id="sendBtn" type="button" class="register-button mt-0">Send Code</button>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <button id="confirm_code_btn" type="button" class="register-button mt-0">Verify Code</button>
                             </div>
                             <br><br>
                             <div class="col-md-6 mb-20">
                                 <label>Password</label>
-                                <input class="mb-0" type="password" placeholder="Password">
+                                <input id="passField" class="requiredField mb-0" type="password" placeholder="Password">
                             </div>
                             <div class="col-md-6 mb-20">
                                 <label>Confirm Password</label>
-                                <input class="mb-0" type="password" placeholder="Confirm Password">
+                                <input id="confirmPassField" class="requiredField mb-0" type="password" placeholder="Confirm Password">
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="register-button mt-0">Register</button>
+                                <span style="margin-left:20px; color:green" id="registerMsg"></span>
                             </div>
                         </div>
                     </div>
@@ -112,4 +289,312 @@
 
 <!--=====  End of Login register page content  ======-->
 
-{% endblock %}
+<!--=============================================
+=            Footer         =
+=============================================-->
+
+<footer>
+    <!--=======  footer navigation  =======-->
+
+    <div class="footer-navigation-section pt-40 pb-40">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mb-xs-30">
+                    <!--=======  single navigation section  =======-->
+
+                    <div class="single-navigation-section">
+                        <h3 class="nav-section-title">Intelli Supermart</h3>
+                        <ul>
+                            <li><a href="/about-us">About Us</a></li>
+                            <li><a href="/careers">Careers</a></li>
+                            <li><a href="/terms-n-conditions">Terms & Condition</a></li>
+                            <li><a href="/privacy-policy">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <!--=======  End of single navigation section  =======-->
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mb-xs-30">
+                    <!--=======  single navigation section  =======-->
+
+                    <div class="single-navigation-section">
+                        <h3 class="nav-section-title">Help</h3>
+                        <ul>
+                            <li><a href="/faqs">FAQs</a></li>
+                            <li><a href="/how-to-order">How to Order</a></li>
+                            <li><a href="/how-to-pay">How to Pay</a></li>
+                            <li><a href="/return-n-refunds">Return & Refunds</a></li>
+                            <li><a href="/contact-us">Contact us</a></li>
+                            <li><a href="/delivery">Delivery</a></li>
+                        </ul>
+                    </div>
+
+                    <!--=======  End of single navigation section  =======-->
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 mb-xs-30">
+                    <!--=======  single navigation section  =======-->
+
+                    <div class="single-navigation-section">
+                        <h3 class="nav-section-title">Contact Information</h3>
+                        <ul>
+                            <li>
+                                <span class="icon_mobile"></span> Phone<br>
+                                <span class="text-lowercase">+92-323-0496310</span>
+                            </li>
+                            <li><span class="icon_mail_alt"></span> Email <br>
+                                <span class="text-lowercase">bitf16a022@pucit.edu.pk</span>
+                            </li>
+                            <li><span class="icon_pin_alt"></span>Address <br>
+                                <span class="text-capitalize">PUCIT, Anarkali Bazar, Lahore, Pakistan</span></li>
+                        </ul>
+                    </div>
+
+                    <!--=======  End of single navigation section  =======-->
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <!--=======  single navigation section  =======-->
+
+                    <div>
+                        <div class="single-navigation-section">
+                            <h3 class="nav-section-title">Follow us</h3>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="social-links">
+                                    <a class="facebook" data-tooltip="Facebook" href="http://www.facebook.com/"><i
+                                            class="fa fa-facebook"></i></a>
+                                    <a class="twitter" data-tooltip="Twitter" href="http://www.twitter.com/"><i
+                                            class="fa fa-twitter"></i></a>
+                                    <a class="instagram" data-tooltip="Instagram" href="http://www.instagram.com/"><i
+                                            class="fa fa-instagram"></i></a>
+                                    <a class="linkedin" data-tooltip="Linkedin" href="http://www.linkedin.com/"><i
+                                            class="fa fa-linkedin"></i></a>
+                                    <a class="rss" data-tooltip="RSS" href="http://www.rss.com/"><i
+                                            class="fa fa-rss"></i></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!--=======  End of single navigation section  =======-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--=======  End of footer navigation  =======-->
+
+
+    <!--=======  copyright section  =======-->
+
+    <div class="copyright-section pt-35 pb-35">
+        <div class="container">
+            <div class="row align-items-md-center align-items-sm-center">
+                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-center text-md-left">
+                    <!--=======  copyright text	  =======-->
+
+                    <div class="copyright-segment">
+                        <p class="copyright-text">&copy; 2019 <a href="/">Intelli Supermart</a>. All
+                            Rights Reserved</p>
+                    </div>
+
+                    <!--=======  End of copyright text	  =======-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--=======  End of copyright section  =======-->
+</footer>
+
+<!--=====  End of Footer  ======-->
+
+
+<!-- scroll to top  -->
+<a class="scroll-top" href="#"></a>
+<!-- end of scroll to top -->
+
+<!-- JS
+============================================ -->
+<!-- jQuery JS -->
+<script src="{{url_for('static', filename = 'js/vendor/jquery.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- SweetAlert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<!-- Popper JS -->
+<script src="{{url_for('static', filename = 'js/popper.min.js')}}"></script>
+
+<!-- Bootstrap JS -->
+<script src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+
+<!-- Plugins JS -->
+<script src="{{url_for('static', filename = 'js/plugins.js')}}"></script>
+
+<!-- Main JS -->
+<script src="{{url_for('static', filename = 'js/main.js')}}"></script>
+
+<!-- Custom JS -->
+<script src="{{url_for('static', filename = 'js/custom.js')}}"></script>
+
+<!-- AJAX mail JS -->
+<script src="{{url_for('static', filename = 'js/ajax-mail.js')}}"></script>
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+
+<!-- Number Authenticate JS -->
+<script src="{{url_for('static', filename = 'js/number-authentication.js')}}"></script>
+
+<!--<script>-->
+<!--    var isAuthenticated = false;-->
+<!--    var disabledBtn = false;-->
+<!--    // Your web app's Firebase configuration-->
+<!--    var firebaseConfig = {-->
+<!--        apiKey: "AIzaSyCnfJW9IXONV7ZcKKAgYdC3fedXUqNMH9E",-->
+<!--        authDomain: "intelli-super-mart.firebaseapp.com",-->
+<!--        databaseURL: "https://intelli-super-mart.firebaseio.com",-->
+<!--        projectId: "intelli-super-mart",-->
+<!--        storageBucket: "intelli-super-mart.appspot.com",-->
+<!--        messagingSenderId: "298617996174",-->
+<!--        appId: "1:298617996174:web:3d206b0d0dda2aee845adf",-->
+<!--        measurementId: "G-8FMZRBHGFX"-->
+<!--    };-->
+<!--    // Initialize Firebase-->
+<!--    firebase.initializeApp(firebaseConfig);-->
+<!--    firebase.analytics();-->
+
+<!--    // To apply the default browser preference instead of explicitly setting it.-->
+<!--    firebase.auth().useDeviceLanguage();-->
+
+<!--     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {-->
+<!--          'size': 'invisible',-->
+<!--          'callback': function(response) {-->
+<!--            //alert("recaptcha success");-->
+<!--          },-->
+<!--          'expired-callback': function() {-->
+<!--            //alert("recaptcha failed");-->
+<!--          }-->
+<!--      });-->
+
+<!--    function disableSendCodeBtn(){-->
+<!--        $("#sendBtn").attr("disabled", true);-->
+<!--        $("#sendBtn").css('cursor', 'default');-->
+<!--        $("#sendBtn").css('background-color', 'grey');-->
+<!--    }-->
+
+<!--    function enableSendCodeBtn(){-->
+<!--        $("#sendBtn").removeAttr("disabled");-->
+<!--        $("#sendBtn").css('cursor', 'pointer');-->
+<!--        $("#sendBtn").css('background-color', '#5B3F91');-->
+<!--    }-->
+
+<!--    function disableVerifyCodeBtn(){-->
+<!--        $("#verificationCode").val("");-->
+<!--        $("#confirm_code_btn").attr("disabled", true);-->
+<!--        $("#confirm_code_btn").css('cursor', 'default');-->
+<!--        $("#confirm_code_btn").css('background-color', 'grey');-->
+<!--        disabledBtn = true;-->
+<!--    }-->
+
+<!--    function enableVerifyCodeBtn(){-->
+<!--        $("#confirm_code_btn").removeAttr("disabled");-->
+<!--        $("#confirm_code_btn").css('cursor', 'pointer');-->
+<!--        $("#confirm_code_btn").css('background-color', '#5B3F91');-->
+<!--        disabledBtn = false;-->
+<!--    }-->
+
+<!--    function makePassRequired(){-->
+<!--        $('#verifiedImg').attr('src', '../static/images/icons/greentick.png');-->
+<!--        $('#verifiedImg').attr('height', '15dp');-->
+<!--        $('#verifiedImg').attr('width', '15dp');-->
+<!--        $(".requiredField").attr("required", true);-->
+<!--    }-->
+
+<!--    $("#sendBtn").on('click', function() {-->
+<!--        disableSendCodeBtn();-->
+<!--        setTimeout(function(){-->
+<!--            var number = $('#number').val();-->
+<!--            var appVerifier = window.recaptchaVerifier;-->
+<!--            firebase.auth().signInWithPhoneNumber(number, appVerifier)-->
+<!--            .then(function (confirmationResult) {-->
+<!--                // SMS sent. Prompt user to type the code from the message, then sign the-->
+<!--                // user in with confirmationResult.confirm(code).-->
+<!--                window.confirmationResult = confirmationResult;-->
+<!--                if(disabledBtn){-->
+<!--                    enableVerifyCodeBtn();-->
+<!--                }-->
+<!--                enableSendCodeBtn();-->
+
+<!--                $("#confirm_code_btn").on('click', function(){-->
+<!--                    var code = $("#verificationCode").val();-->
+<!--                    confirmationResult.confirm(code).then(function (result) {-->
+<!--                        // User signed in successfully.-->
+<!--                        var user = result.user;-->
+<!--                        // ...-->
+<!--                        alert("Phone number verified!")-->
+<!--                        disableVerifyCodeBtn();-->
+<!--                        makePassRequired();-->
+<!--                        should_submit = true;-->
+<!--                        isAuthenticated = true;-->
+<!--                        console.log(user);-->
+<!--                    }).catch(function (error) {-->
+<!--                        // User couldn't sign in (bad verification code?)-->
+<!--                        // ...-->
+<!--                        alert("Phone number verification failed!");-->
+<!--                    });-->
+<!--                });-->
+<!--            }).catch(function (error) {-->
+<!--                console.log(error);-->
+<!--                enableSendCodeBtn();-->
+<!--                if(error['code'] == "auth/too-many-requests"){-->
+<!--                    alert("Too many attempts! please try again later.")-->
+<!--                }else if(error['code'] == 'auth/invalid-phone-number'){-->
+<!--                    alert("Please provide a valid phone number!")-->
+<!--                }else{-->
+<!--                    alert("Something went wrong! please try again later.")-->
+<!--                }-->
+<!--            });-->
+<!--        }, 5000);-->
+<!--    });-->
+
+<!--    function comparePassword(){-->
+<!--        var pass = $('passField').val();-->
+<!--        var confrmPass = $('confirmPassField').val();-->
+<!--        if(pass === confrmPass){-->
+<!--            return true;-->
+<!--        }-->
+<!--        return false;-->
+<!--    }-->
+
+<!--    $('#registrationForm').on('submit', function(){-->
+<!--        if(!isAuthenticated){-->
+<!--            alert("Please verify Your Phone Number First!");-->
+<!--            return false;-->
+<!--        } else {-->
+<!--            if(comparePassword()){-->
+<!--                alert("Password and Confirm Password doesn't match!");-->
+<!--                return false;-->
+<!--            }-->
+<!--        }-->
+<!--        return true;-->
+
+<!--    });-->
+
+
+<!--</script>-->
+
+</body>
+
+</html>
