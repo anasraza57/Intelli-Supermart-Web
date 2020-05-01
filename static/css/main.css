@@ -774,7 +774,7 @@ header {
 .cart-floating-box {
     position: absolute;
     top: 80px;
-    z-index: 999999;
+    height:300px;
     right: 0;
     width: 360px;
     background-color: #ffffff;
@@ -782,6 +782,7 @@ header {
     -webkit-box-shadow: 0 0 10px #ddd;
     box-shadow: 0 0 10px #ddd;
     display: none;
+    overflow:auto;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {

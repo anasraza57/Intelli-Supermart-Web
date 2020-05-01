@@ -11,7 +11,7 @@
                 <div class="breadcrumb-container">
                     <ul>
                         <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-                        <li class="active">Cart</li>
+                        <li class="active">Cart ({{count}})</li>
                     </ul>
                 </div>
             </div>
@@ -31,81 +31,67 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form action="#">
-                    <!--=======  cart table  =======-->
+                <!--=======  cart table  =======-->
+                <div class="cart-table table-responsive mb-40">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="pro-thumbnail">Image</th>
+                            <th class="pro-title">Product</th>
+                            <th class="pro-price">Price</th>
+                            <th class="pro-quantity">Quantity</th>
+                            <th class="pro-subtotal">Total</th>
+                            <th class="pro-remove">Update</th>
+                            <th class="pro-remove">Remove</th>
+                        </tr>
+                        </thead>
+                        {% for product in products %}
+                        {% for subcat in subcategories %}
+                        {% if product.prod_subcategory_id == subcat.subcategory_id %}
+                        {% for category in categories %}
+                        {% if subcat.category_id == category.category_id %}
+                        {% for picture in pictures %}
+                        {% if(product.picture_id == picture.picture_id) %}
+                        {% set url = 'images/products/' + category.category_name+ '/' + picture.picture_url %}
+                        {% set quantity=quantities.pop() %}
+                        {% set totalAmount=total.pop() %}
+                        <tbody>
+                        <tr>
+                            <td class="pro-thumbnail"><a href="#"><img alt="Product" class="img-fluid"
+                                                                       src="{{url_for('static', filename=url)}}"></a>
+                            </td>
+                            <td class="pro-title"><a href="#">{{product.product_name}}
+                                {{product.product_quantity}}</a></td>
+                            <td class="pro-price"><span>Rs {{product.product_price}}</span></td>
 
-                    <div class="cart-table table-responsive mb-40">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th class="pro-thumbnail">Image</th>
-                                <th class="pro-title">Product</th>
-                                <th class="pro-price">Price</th>
-                                <th class="pro-quantity">Quantity</th>
-                                <th class="pro-subtotal">Total</th>
-                                <th class="pro-remove">Remove</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="pro-thumbnail"><a href="#"><img src="{{url_for('static', filename = 'images/products/Beverages/bb-450g.png')}}"
-                                                                           class="img-fluid" alt="Product"></a></td>
-                                <td class="pro-title"><a href="#">Supreme Tea 450g</a></td>
-                                <td class="pro-price"><span>Rs 250</span></td>
-                                <td class="pro-quantity">
-                                    <div class="pro-qty"><input type="text" value="1"></div>
-                                </td>
-                                <td class="pro-subtotal"><span>Rs 250</span></td>
-                                <td class="pro-remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                            </tr>
-                            <tr>
-                                <td class="pro-thumbnail"><a href="#"><img src="{{url_for('static', filename = 'images/products/Breakfast & Dairy/Nutella.jpg')}}"
-                                                                           class="img-fluid" alt="Product"></a></td>
-                                <td class="pro-title"><a href="#">Nutella - Chocolate Spread</a></td>
-                                <td class="pro-price"><span>Rs 200</span></td>
-                                <td class="pro-quantity">
-                                    <div class="pro-qty"><input type="text" value="1"></div>
-                                </td>
-                                <td class="pro-subtotal"><span>Rs 200</span></td>
-                                <td class="pro-remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                            </tr>                          
-                          
-                            </tbody>
-                        </table>
-                    </div>
+                            <td class="pro-quantity">
+                                <div class="pro-qty"><input name="quantity{{product.product_id}}"
+                                                            min="1" type="number" value="{{quantity}}"></div>
+                            </td>
+                            <td class="pro-subtotal"><span id="hello" class="total{{product.product_id}}">Rs {{totalAmount}}</span></td>
+                            <td>
+                                <a class="updateButton" name="{{product.product_id}}"><i class="fa fa-refresh"></i></a>
+                            </td>
+                            <td class="pro-remove">
+                                <a class="deleteButton" name="{{product.product_id}}"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                    </table>
+                </div>
 
-                    <!--=======  End of cart table  =======-->
-
-
-                </form>
+                <!--=======  End of cart table  =======-->
 
                 <div class="row">
 
                     <div class="col-lg-6 col-12">
-                        <!--=======  Calculate Shipping  =======-->
-
-                        <div class="calculate-shipping">
-                            <h4>Calculate Shipping</h4>
-                            <form action="#">
-                                <div class="row">
-                                    <div class="col-md-6 col-12 mb-25">
-                                        <select class="nice-select">
-                                            <option>Town</option>
-                                            <option>Iqbal Town</option>
-                                            <option>Defence</option>
-                                            <option>Wapda Town</option>
-                                            <option>Johar Town</option>
-                                        </select>
-                                    </div>
-                                   
-                                    <div class="col-md-6 col-12 mb-25">
-                                        <input type="submit" value="Estimate">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!--=======  End of Calculate Shipping  =======-->
 
                         <!--=======  Discount Coupon  =======-->
 
@@ -114,7 +100,7 @@
                             <form action="#">
                                 <div class="row">
                                     <div class="col-md-6 col-12 mb-25">
-                                        <input type="text" placeholder="Coupon Code">
+                                        <input placeholder="Coupon Code" type="text">
                                     </div>
                                     <div class="col-md-6 col-12 mb-25">
                                         <input type="submit" value="Apply Code">
@@ -134,13 +120,12 @@
                         <div class="cart-summary">
                             <div class="cart-summary-wrap">
                                 <h4>Cart Summary</h4>
-                                <p>Sub Total <span>Rs 450.00</span></p>
-                                <p>Shipping Cost <span>Rs 100.00</span></p>
-                                <h2>Grand Total <span>Rs 550.00</span></h2>
+                                <p>Sub Total <span class="grand_total">Rs {{grand_total}}</span></p>
+                                <p>Shipping Cost <span>Rs 0</span></p>
+                                <h2>Grand Total <span class="grand_total">Rs {{grand_total}}</span></h2>
                             </div>
                             <div class="cart-summary-button">
                                 <button class="checkout-btn"><a href="/checkout">Checkout</a></button>
-                                <button class="update-btn">Update Cart</button>
                             </div>
                         </div>
 

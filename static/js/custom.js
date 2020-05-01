@@ -3,6 +3,39 @@ $('.pagination').on("click", function() {
     alert();
 });
 
+$('.updateButton').on("click", function(){
+    prod_id = $(this).attr("name");
+    quan= "quantity" + prod_id;
+    quantity = $('input[name='+quan+']').val();
+
+    $.ajax({
+        url: '/updateCart',
+        type: 'PUT',
+        data:{'id' : prod_id, 'quantity': quantity},
+        success: function(result) {
+            $('.total'+prod_id).html("Rs " + result['total']);
+            $('.grand_total').html("Rs " + result['grand_total']);
+        }
+    });
+
+});
+
+$('.deleteButton').on("click", function(){
+    prod_id = $(this).attr("name");
+    $.ajax({
+        url: '/deleteFromCart',
+        type: 'DELETE',
+        data:{'id' : prod_id},
+        success: function(result) {
+            window.location.reload();
+        },
+        failure: function(){
+            alert("failed");
+        }
+    });
+
+});
+
 $('#loginBtn').on("click", function () {
     swal({
         title: "Phone Number Verification",

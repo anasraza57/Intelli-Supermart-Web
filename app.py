@@ -56,13 +56,27 @@ class Picture(db.Model):
 class Cart(db.Model):
     __tablename__ = 'cart'
     cart_id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.Integer)
     product_id = db.Column(db.Integer)
     product_quantity = db.Column(db.Integer)
-    total_cost = db.Column(db.String(200))
 
 
-@app.route('/')
+def cartItemsAndPrice():
+    cart_count = len(session['Shoppingcart'])
+    if len(session['Shoppingcart']) <= 0:
+        return cart_count, 0
+    else:
+        total_price_of_all_prods = []
+        for key, item in session['Shoppingcart'].items():
+            product = Product.query.filter_by(product_id=key).first()
+            res = int(item['quantity']) * product.product_price
+            print(type(res))
+            total_price_of_all_prods.append(res)
+        grand_total = sum(total_price_of_all_prods)
+        print(type(cart_count), type(grand_total))
+        return cart_count, total_price_of_all_prods, grand_total
+
+
+@app.route('/', methods=['GET', 'DELETE'])
 def index():
     products = Product.query.all()
     no_of_prod = len(products)
@@ -92,90 +106,181 @@ def index():
                     if subcategory.category_id == category.category_id:
                         best_seller_products_categories.append(category)
 
+    cart_count, totals, grand_total = cartItemsAndPrice()
     return render_template('index.html', categories=categories, pictures=pictures, products=products,
                            best_seller_products_categories=best_seller_products_categories,
-                           index=best_seller_products_cat_index,
+                           index=best_seller_products_cat_index, grand_total=grand_total,
                            best_seller_products=best_seller_products,
-                           best_seller_products_images=best_seller_products_images)
+                           best_seller_products_images=best_seller_products_images, count=cart_count)
 
 
 @app.route('/about-us')
 def about_us():
-    return render_template('about-us.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('about-us.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/careers')
 def careers():
-    return render_template('careers.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('careers.html', grand_total=grand_total, count=cart_count)
 
 
-@app.route('/cart/<int:prod_id>', methods=['GET', 'POST'])
-def cart(prod_id):
+def mergeDict(dict1, dict2):
+    if isinstance(dict1, list) and isinstance(dict2, list):
+        return dict1 + dict2
+    elif isinstance(dict1, dict) and isinstance(dict2, dict):
+        return dict(list(dict1.items()) + list(dict2.items()))
+    return False
+
+
+@app.route('/cart', methods=['GET', 'POST', 'DELETE'])
+def cart():
     if request.method == 'POST':
-        return
-        # products = Cart.query.all()
-        # cart = Cart(customer_id=1, product_id=prod_id, product_quantity=1, total_cost=100)
-        # db.session.add(cart)
-        # db.session.commit()
-        # print(len(products))
-    return render_template('cart.html')
+        product_id = request.form['product_id']
+        quantity = request.form['quantity']
+        DictItems = {product_id: {'quantity': quantity}}
+
+        if 'Shoppingcart' in session:
+            if product_id in session['Shoppingcart']:
+                print("This product is already in cart!")
+            else:
+                session['Shoppingcart'] = mergeDict(session['Shoppingcart'], DictItems)
+            return redirect(request.referrer)
+        else:
+            session['Shoppingcart'] = DictItems
+            return redirect(request.referrer)
+
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+        return redirect('/')
+    else:
+        pictures = Picture.query.all()
+        subcategories = Subcategory.query.all()
+        categories = Category.query.all()
+
+        products = []
+        quantities = []
+        for key, item in session['Shoppingcart'].items():
+            quantity = item['quantity']
+            quantities.append(quantity)
+            product = Product.query.filter_by(product_id=key).first()
+            products.append(product)
+        products.reverse()
+        cart_products_pics = []
+        for product in products:
+            for pic in pictures:
+                if product.picture_id == pic.picture_id:
+                    cart_products_pics.append(pic)
+
+        cart_count, total, grand_total = cartItemsAndPrice()
+        return render_template('cart.html', products=products, pictures=cart_products_pics,
+                               subcategories=subcategories, categories=categories, quantities=quantities,
+                               total=total, grand_total=grand_total, count=cart_count)
+
+
+@app.route('/updateCart', methods=['PUT'])
+def updateCart():
+    if request.method == 'PUT':
+        quantity = int(request.form['quantity'])
+        id = int(request.form['id'])
+        session.modified = True
+        total_price_of_all_prods = []
+        total_prod_price = 0
+        for key, item in session['Shoppingcart'].items():
+            if int(key) == id:
+                item['quantity'] = quantity
+                product = Product.query.filter_by(product_id=id).first()
+                total_prod_price = product.product_price * quantity
+            product = Product.query.filter_by(product_id=key).first()
+            res = int(item['quantity']) * product.product_price
+            total_price_of_all_prods.append(res)
+        grand_total = sum(total_price_of_all_prods)
+        return jsonify(
+            total=total_prod_price,
+            grand_total=grand_total,
+        )
+
+
+@app.route('/deleteFromCart', methods=['DELETE'])
+def deleteFromCart():
+    if request.method == 'DELETE':
+        id = int(request.form['id'])
+        try:
+            session.modified = True
+            for key, item in session['Shoppingcart'].items():
+                if int(key) == id:
+                    session['Shoppingcart'].pop(key, None)
+        except Exception as e:
+            print(e)
+    return redirect('/cart')
 
 
 @app.route('/checkout')
 def checkout():
-    return render_template('checkout.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('checkout.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/compare')
 def compare():
-    return render_template('compare.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('compare.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/contact-us')
 def contact_us():
-    return render_template('contact-us.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('contact-us.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/delivery')
 def delivery():
-    return render_template('delivery.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('delivery.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/faqs')
 def faqs():
-    return render_template('faqs.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('faqs.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/how-to-order')
 def how_to_order():
-    return render_template('how-to-order.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('how-to-order.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/how-to-pay')
 def how_to_pay():
-    return render_template('how-to-pay.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('how-to-pay.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/login-register')
 def login_register():
-    return render_template('login-register.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('login-register.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         return redirect('/my-account')
-    return render_template('login-register.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('login-register.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/my-account')
 def my_account():
-    return render_template('my-account.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('my-account.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/privacy-policy')
 def privacy_policy():
-    return render_template('privacy-policy.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('privacy-policy.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/product-details/<string:prod_slug>')
@@ -190,13 +295,15 @@ def product_details(prod_slug):
         if product.picture_id == picture.picture_id:
             pic = picture
 
+    cart_count, totals, grand_total = cartItemsAndPrice()
     return render_template('product-details.html', product=product, picture=pic, category=category,
-                           subcategory=subcategory)
+                           subcategory=subcategory, grand_total=grand_total, count=cart_count)
 
 
 @app.route('/return-n-refunds')
 def return_n_refunds():
-    return render_template('return-n-refunds.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('return-n-refunds.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/shop/<string:cate_slug>')
@@ -237,20 +344,22 @@ def shop(cate_slug):
     if end_val > total_prods:
         end_val = total_prods
     cate_products = cate_products[start_val:end_val]
-
+    cart_count, totals, grand_total = cartItemsAndPrice()
     return render_template('shop.html', category=category, subcategories=subcategories, products=cate_products,
                            pictures=cate_products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
-                           start_val=start_val, end_val=end_val)
+                           start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count)
 
 
 @app.route('/terms-n-conditions')
 def terms_n_conditions():
-    return render_template('terms-n-conditions.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('terms-n-conditions.html', grand_total=grand_total, count=cart_count)
 
 
 @app.route('/wishlist')
 def wishlist():
-    return render_template('wishlist.html')
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return render_template('wishlist.html', grand_total=grand_total, count=cart_count)
 
 
 if __name__ == '__main__':
