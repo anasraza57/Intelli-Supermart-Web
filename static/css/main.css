@@ -6434,6 +6434,27 @@ p.result-show-message {
     }
 }
 
+.cart-table td.pro-update a {
+    display: block;
+    font-weight: 500;
+    color: #666666;
+}
+
+.cart-table td.pro-update a i {
+    font-size: 15px;
+}
+
+.cart-table td.pro-update a:hover {
+    color: #00ff00;
+}
+
+@media only screen and (max-width: 767px) {
+    .cart-table td.pro-update a {
+        width: 60px;
+        text-align: center;
+    }
+}
+
 /*-- Calculate Shipping --*/
 .calculate-shipping {
     margin-bottom: 23px;

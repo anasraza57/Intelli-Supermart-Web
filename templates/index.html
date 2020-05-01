@@ -112,87 +112,6 @@
                                     </p>
                                 </div>
                             </a>
-                            <!-- end of shopping cart -->
-
-                            <!-- cart floating box -->
-                            <div class="cart-floating-box" id="cart-floating-box">
-                                <div class="cart-items">
-                                    <div class="cart-float-single-item d-flex">
-                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
-                                        <div class="cart-float-single-item-image">
-                                            <a href="/product-details"><img
-                                                    alt="" class="img-fluid"
-                                                    src="{{url_for('static', filename = '')}}"></a>
-                                        </div>
-                                        <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="/product-details">Supreme Tea</a></p>
-                                            <p class="price"><span class="count">1x</span>Rs 250</p>
-                                        </div>
-                                    </div>
-                                    <div class="cart-float-single-item d-flex">
-                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
-                                        <div class="cart-float-single-item-image">
-                                            <a href="/product-details"><img
-                                                    alt=""
-                                                    class="img-fluid"
-                                                    src="{{url_for('static', filename = '')}}"></a>
-                                        </div>
-                                        <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="/product-details">Nutella</a></p>
-                                            <p class="price"><span class="count">1x</span>Rs 200</p>
-                                        </div>
-                                    </div>
-                                    <div class="cart-float-single-item d-flex">
-                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
-                                        <div class="cart-float-single-item-image">
-                                            <a href="/product-details"><img
-                                                    alt=""
-                                                    class="img-fluid"
-                                                    src="{{url_for('static', filename = '')}}"></a>
-                                        </div>
-                                        <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="/product-details">Nutella</a></p>
-                                            <p class="price"><span class="count">1x</span>Rs 200</p>
-                                        </div>
-                                    </div>
-                                    <div class="cart-float-single-item d-flex">
-                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
-                                        <div class="cart-float-single-item-image">
-                                            <a href="/product-details"><img
-                                                    alt=""
-                                                    class="img-fluid"
-                                                    src="{{url_for('static', filename = '')}}"></a>
-                                        </div>
-                                        <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="/product-details">Nutella</a></p>
-                                            <p class="price"><span class="count">1x</span>Rs 200</p>
-                                        </div>
-                                    </div>
-                                    <div class="cart-float-single-item d-flex">
-                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
-                                        <div class="cart-float-single-item-image">
-                                            <a href="/product-details"><img
-                                                    alt=""
-                                                    class="img-fluid"
-                                                    src="{{url_for('static', filename = '')}}"></a>
-                                        </div>
-                                        <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="/product-details">Nutella</a></p>
-                                            <p class="price"><span class="count">1x</span>Rs 200</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="cart-calculation">
-                                    <div class="calculation-details">
-                                        <p class="total">Subtotal <span>Rs 450</span></p>
-                                    </div>
-                                    <div class="floating-cart-btn text-center">
-                                        <a href="/checkout">Checkout</a>
-                                        <a href="/cart">View Cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of cart floating box -->
                         </div>
                     </div>
 
@@ -207,6 +126,8 @@
                                 <li><a href="/">HOME</a></li>
                                 <li><a href="/shop/{{categories[0].slug}}">Shop</a></li>
                                 <li><a href="/contact-us">CONTACT</a></li>
+                                <li><a href="/wishlist">WishList ({{wishlist_count}})</a></li>
+                                <li><a href="/cart">Cart ({{count}})</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -447,23 +368,10 @@
                                      src="{{url_for('static', filename=url)}}">
                             </a>
                             <div class="product-hover-icons">
-                                <form action="/cart" method="post">
-                                    <input name="product_id" type="hidden" value="{{product.product_id}}">
-                                    <input name="quantity" type="hidden" value="1">
-                                    <button style="background-color: transparent; background-repeat: no-repeat;
-                                     border: none; cursor: pointer; overflow: hidden">
-                                        <a data-tooltip="Add to cart"> <span class="icon_cart_alt"></span></a>
-                                    </button>
-                                    <button style="background-color: transparent; background-repeat: no-repeat;
-                                     border: none; cursor: pointer; overflow: hidden">
-                                        <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span></a>
-                                    </button>
-                                    <button style="background-color: transparent; background-repeat: no-repeat;
-                                     border: none; cursor: pointer; overflow: hidden">
-                                        <a data-tooltip="Compare" href="compare"> <span
-                                                class="arrow_left-right_alt"></span></a>
-                                    </button>
-                                </form>
+                                <input name="quantity{{product.product_id}}" type="hidden" value="1">
+                                <a class="addToCartButton" name="{{product.product_id}}" data-tooltip="Add to cart"> <span class="icon_cart_alt"></span></a>
+                                <a class="addToWishlistButton" name="{{product.product_id}}" data-tooltip="Add to wishlist"> <span class="icon_heart_alt"></span> </a>
+                                <a href="compare.html" data-tooltip="Compare"> <span class="arrow_left-right_alt"></span> </a>
                             </div>
                         </div>
                         <div class="product-countdown" data-countdown="2020/01/08"></div>

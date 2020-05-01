@@ -60,8 +60,7 @@
                             <td class="pro-thumbnail"><a href="#"><img alt="Product" class="img-fluid"
                                                                        src="{{url_for('static', filename=url)}}"></a>
                             </td>
-                            <td class="pro-title"><a href="#">{{product.product_name}}
-                                {{product.product_quantity}}</a></td>
+                            <td class="pro-title"><a href="#">{{product.product_name}} {{product.product_quantity}}</a></td>
                             <td class="pro-price"><span>Rs {{product.product_price}}</span></td>
 
                             <td class="pro-quantity">
@@ -69,11 +68,11 @@
                                                             min="1" type="number" value="{{quantity}}"></div>
                             </td>
                             <td class="pro-subtotal"><span id="hello" class="total{{product.product_id}}">Rs {{totalAmount}}</span></td>
-                            <td>
-                                <a class="updateButton" name="{{product.product_id}}"><i class="fa fa-refresh"></i></a>
+                            <td class="pro-update">
+                                <a class="updateInCartButton" name="{{product.product_id}}"><i class="fa fa-refresh"></i></a>
                             </td>
                             <td class="pro-remove">
-                                <a class="deleteButton" name="{{product.product_id}}"><i class="fa fa-trash-o"></i></a>
+                                <a class="deleteFromCartButton" name="{{product.product_id}}"><i class="fa fa-trash-o"></i></a>
                             </td>
                         </tr>
                         </tbody>

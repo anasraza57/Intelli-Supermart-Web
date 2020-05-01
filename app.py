@@ -63,20 +63,26 @@ class Cart(db.Model):
 def cartItemsAndPrice():
     cart_count = len(session['Shoppingcart'])
     if len(session['Shoppingcart']) <= 0:
-        return cart_count, 0
+        return 0, 0, 0
     else:
         total_price_of_all_prods = []
         for key, item in session['Shoppingcart'].items():
             product = Product.query.filter_by(product_id=key).first()
             res = int(item['quantity']) * product.product_price
-            print(type(res))
             total_price_of_all_prods.append(res)
         grand_total = sum(total_price_of_all_prods)
-        print(type(cart_count), type(grand_total))
         return cart_count, total_price_of_all_prods, grand_total
 
 
-@app.route('/', methods=['GET', 'DELETE'])
+def wishListCount():
+    wishlist_count = len(session['Wishlist'])
+    if len(session['Wishlist']) <= 0:
+        return 0
+    else:
+        return wishlist_count
+
+
+@app.route('/', methods=['GET', 'POST', 'DELETE'])
 def index():
     products = Product.query.all()
     no_of_prod = len(products)
@@ -107,23 +113,27 @@ def index():
                         best_seller_products_categories.append(category)
 
     cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
     return render_template('index.html', categories=categories, pictures=pictures, products=products,
                            best_seller_products_categories=best_seller_products_categories,
                            index=best_seller_products_cat_index, grand_total=grand_total,
                            best_seller_products=best_seller_products,
-                           best_seller_products_images=best_seller_products_images, count=cart_count)
+                           best_seller_products_images=best_seller_products_images, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/about-us')
 def about_us():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('about-us.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('about-us.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/careers')
 def careers():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('careers.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('careers.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 def mergeDict(dict1, dict2):
@@ -146,10 +156,10 @@ def cart():
                 print("This product is already in cart!")
             else:
                 session['Shoppingcart'] = mergeDict(session['Shoppingcart'], DictItems)
-            return redirect(request.referrer)
+            # return redirect(request.referrer)
         else:
             session['Shoppingcart'] = DictItems
-            return redirect(request.referrer)
+            # return redirect(request.referrer)
 
     if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
         return redirect('/')
@@ -173,9 +183,10 @@ def cart():
                     cart_products_pics.append(pic)
 
         cart_count, total, grand_total = cartItemsAndPrice()
+        wishlist_count = wishListCount()
         return render_template('cart.html', products=products, pictures=cart_products_pics,
                                subcategories=subcategories, categories=categories, quantities=quantities,
-                               total=total, grand_total=grand_total, count=cart_count)
+                               total=total, grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/updateCart', methods=['PUT'])
@@ -204,63 +215,126 @@ def updateCart():
 @app.route('/deleteFromCart', methods=['DELETE'])
 def deleteFromCart():
     if request.method == 'DELETE':
-        id = int(request.form['id'])
+        id = int(request.form['product_id'])
+        print(session['Shoppingcart'])
+        print(id)
         try:
             session.modified = True
             for key, item in session['Shoppingcart'].items():
                 if int(key) == id:
                     session['Shoppingcart'].pop(key, None)
+                    return "Deleted"
         except Exception as e:
             print(e)
-    return redirect('/cart')
+
+
+@app.route('/wishlist', methods=['GET', 'POST', 'DELETE'])
+def wishlist():
+    if request.method == 'POST':
+        product_id = int(request.form['product_id'])
+        ListItems = [product_id]
+        if 'Wishlist' in session:
+            if product_id in session['Wishlist']:
+                print("This product is already in wishList!")
+            else:
+                session['Wishlist'] = mergeDict(session['Wishlist'], ListItems)
+        else:
+            session['Wishlist'] = ListItems
+    if 'Wishlist' not in session or len(session['Wishlist']) <= 0:
+        return redirect('/')
+    else:
+        pictures = Picture.query.all()
+        subcategories = Subcategory.query.all()
+        categories = Category.query.all()
+
+        products = []
+        for key in session['Wishlist']:
+            product = Product.query.filter_by(product_id=key).first()
+            products.append(product)
+        products.reverse()
+        wishlist_products_pics = []
+        for product in products:
+            for pic in pictures:
+                if product.picture_id == pic.picture_id:
+                    wishlist_products_pics.append(pic)
+
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('wishlist.html', products=products, pictures=wishlist_products_pics,
+                           subcategories=subcategories, categories=categories, grand_total=grand_total,
+                           count=cart_count, wishlist_count=wishlist_count)
+
+
+@app.route('/deleteFromWishlist', methods=['DELETE'])
+def deleteFromWishlist():
+    if request.method == 'DELETE':
+        id = int(request.form['product_id'])
+        try:
+            session.modified = True
+            for key in session['Wishlist']:
+                if int(key) == id:
+                    session['Wishlist'].remove(key)
+                    return "Deleted"
+        except Exception as e:
+            print(e)
 
 
 @app.route('/checkout')
 def checkout():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('checkout.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('checkout.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/compare')
 def compare():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('compare.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('compare.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/contact-us')
 def contact_us():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('contact-us.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('contact-us.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/delivery')
 def delivery():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('delivery.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('delivery.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/faqs')
 def faqs():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('faqs.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('faqs.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/how-to-order')
 def how_to_order():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('how-to-order.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('how-to-order.html', grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/how-to-pay')
 def how_to_pay():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('how-to-pay.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('how-to-pay.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/login-register')
 def login_register():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('login-register.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('login-register.html', grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -268,19 +342,24 @@ def register():
     if request.method == 'POST':
         return redirect('/my-account')
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('login-register.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('login-register.html', grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/my-account')
 def my_account():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('my-account.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('my-account.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/privacy-policy')
 def privacy_policy():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('privacy-policy.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('privacy-policy.html', grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/product-details/<string:prod_slug>')
@@ -296,14 +375,18 @@ def product_details(prod_slug):
             pic = picture
 
     cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
     return render_template('product-details.html', product=product, picture=pic, category=category,
-                           subcategory=subcategory, grand_total=grand_total, count=cart_count)
+                           subcategory=subcategory, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/return-n-refunds')
 def return_n_refunds():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('return-n-refunds.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('return-n-refunds.html', grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/shop/<string:cate_slug>')
@@ -345,21 +428,19 @@ def shop(cate_slug):
         end_val = total_prods
     cate_products = cate_products[start_val:end_val]
     cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
     return render_template('shop.html', category=category, subcategories=subcategories, products=cate_products,
                            pictures=cate_products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
-                           start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count)
+                           start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/terms-n-conditions')
 def terms_n_conditions():
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('terms-n-conditions.html', grand_total=grand_total, count=cart_count)
-
-
-@app.route('/wishlist')
-def wishlist():
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    return render_template('wishlist.html', grand_total=grand_total, count=cart_count)
+    wishlist_count = wishListCount()
+    return render_template('terms-n-conditions.html', grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 if __name__ == '__main__':
