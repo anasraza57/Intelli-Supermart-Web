@@ -59,7 +59,7 @@
                             <li><a href="/my-account">My account</a></li>
                             <li><a href="/wishlist">Wishlist</a></li>
                             <li><a href="/checkout">Checkout</a></li>
-                            <li><a href="" id="loginBtn">Login</a></li>
+                            <li><a href="/login-register">Login</a></li>
                         </ul>
                     </div>
                     <!-- end of header top menu -->
@@ -109,46 +109,6 @@
                                     </p>
                                 </div>
                             </a>
-                            <!-- end of shopping cart -->
-
-                            <!-- cart floating box -->
-                            <div class="cart-floating-box" id="cart-floating-box">
-                                <div class="cart-items">
-                                    <div class="cart-float-single-item d-flex">
-                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
-                                        <div class="cart-float-single-item-image">
-                                            <a href="/product-details"><img
-                                                    alt="" class="img-flui"></a>
-                                        </div>
-                                        <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="/product-details">Supreme Tea</a></p>
-                                            <p class="price"><span class="count">1x</span>Rs 250</p>
-                                        </div>
-                                    </div>
-                                    <div class="cart-float-single-item d-flex">
-                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
-                                        <div class="cart-float-single-item-image">
-                                            <a href="/product-details"><img
-                                                    alt=""
-                                                    class="img-fluid"></a>
-                                        </div>
-                                        <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="/product-details">Nutella</a></p>
-                                            <p class="price"><span class="count">1x</span>Rs 200</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="cart-calculation">
-                                    <div class="calculation-details">
-                                        <p class="total">Subtotal <span>Rs 450</span></p>
-                                    </div>
-                                    <div class="floating-cart-btn text-center">
-                                        <a href="/checkout">Checkout</a>
-                                        <a href="/cart">View Cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of cart floating box -->
                         </div>
                     </div>
 
@@ -157,8 +117,10 @@
                         <nav>
                             <ul>
                                 <li><a href="/">HOME</a></li>
-                                <li><a href="/shop">Shop</a></li>
+                                <li><a href="/shop/{{category.slug}}">Shop</a></li>
                                 <li><a href="/contact-us">CONTACT</a></li>
+                                <li><a href="/wishlist">WishList ({{wishlist_count}})</a></li>
+                                <li><a href="/cart">Cart ({{count}})</a></li>
                             </ul>
                         </nav>
                     </div>

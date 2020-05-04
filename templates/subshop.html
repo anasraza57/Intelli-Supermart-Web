@@ -40,7 +40,7 @@
                         <h3 class="sidebar-title">{{category.category_name}}</h3>
                         <ul class="product-categories">
                             {% for subcategory in subcategories%}
-                            <li><a href="/subshop/{{category.slug}}/{{subcategory.slug}}">{{subcategory.subcategory_name}}</a></li>
+                            <li class="addFocus"><a class="temp" href="/subshop/{{category.slug}}/{{subcategory.slug}}">{{subcategory.subcategory_name}}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -135,7 +135,6 @@
 
                 <div class="shop-product-wrap grid row no-gutters mb-35">
 
-                    {% for subcategory in subcategories %}
                     {% for product in products %}
                     {% if (product.prod_subcategory_id == subcategory.subcategory_id) %}
                     {% for picture in pictures %}
@@ -162,7 +161,7 @@
                             </div>
                             <div class="product-content">
                                 <div class="product-categories">
-                                    <a href="/subshop/{{category.slug}}/{{subcategory.slug}}">{{subcategory.subcategory_name}}</a>
+                                    <a href="/shop">{{subcategory.subcategory_name}}</a>
                                 </div>
                                 <h3 class="product-title"><a href="/product-details/{{product.slug}}">{{product.product_name}} -
                                     {{product.product_quantity}}</a></h3>
@@ -187,7 +186,7 @@
                             </div>
                             <div class="product-content">
                                 <div class="product-categories">
-                                    <a href="/subshop/{{category.slug}}/{{subcategory.slug}}">{{subcategory.subcategory_name}}</a>
+                                    <a href="/shop">{{subcategory.subcategory_name}}</a>
                                 </div>
                                 <h3 class="product-title"><a href="/product-details/{{product.slug}}">{{product.product_name}} -
                                     {{product.product_quantity}}</a></h3>
@@ -213,7 +212,6 @@
                     {% endif %}
                     {% endfor %}
                     {% endif %}
-                    {% endfor %}
                     {% endfor %}
 
                 </div>

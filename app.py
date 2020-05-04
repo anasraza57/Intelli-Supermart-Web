@@ -167,6 +167,7 @@ def cart():
         pictures = Picture.query.all()
         subcategories = Subcategory.query.all()
         categories = Category.query.all()
+        category = categories[0]
 
         products = []
         quantities = []
@@ -184,7 +185,7 @@ def cart():
 
         cart_count, total, grand_total = cartItemsAndPrice()
         wishlist_count = wishListCount()
-        return render_template('cart.html', products=products, pictures=cart_products_pics,
+        return render_template('cart.html', products=products, pictures=cart_products_pics, category=category,
                                subcategories=subcategories, categories=categories, quantities=quantities,
                                total=total, grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
@@ -246,7 +247,7 @@ def wishlist():
         pictures = Picture.query.all()
         subcategories = Subcategory.query.all()
         categories = Category.query.all()
-
+        category = categories[0]  # for layout.html
         products = []
         for key in session['Wishlist']:
             product = Product.query.filter_by(product_id=key).first()
@@ -261,7 +262,8 @@ def wishlist():
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
     return render_template('wishlist.html', products=products, pictures=wishlist_products_pics,
-                           subcategories=subcategories, categories=categories, grand_total=grand_total,
+                           subcategories=subcategories, category=category, categories=categories,
+                           grand_total=grand_total,
                            count=cart_count, wishlist_count=wishlist_count)
 
 
@@ -396,9 +398,6 @@ def shop(cate_slug):
     products = Product.query.all()
     pictures = Picture.query.all()
 
-    print("Category: ", category)
-    print("Subcategories: ", subcategories)
-
     cate_products = []
     for subcategory in subcategories:
         for product in products:
@@ -411,12 +410,10 @@ def shop(cate_slug):
             if product.picture_id == pic.picture_id:
                 cate_products_pics.append(pic)
 
-    print(len(cate_products), len(cate_products_pics))
     total_prods = len(cate_products)
     per_page = 9
-    number_of_pages = ceil(len(cate_products) / per_page)
-    print(number_of_pages)
-    if not number_of_pages == 1:
+    number_of_pages = ceil(len(cate_products) / per_page) + 1
+    if number_of_pages == 1:
         number_of_pages += 1
     page = request.args.get('page')
     if not str(page).isnumeric():
@@ -427,10 +424,50 @@ def shop(cate_slug):
     if end_val > total_prods:
         end_val = total_prods
     cate_products = cate_products[start_val:end_val]
+    if not len(products) == 0:
+        start_val += 1
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
     return render_template('shop.html', category=category, subcategories=subcategories, products=cate_products,
                            pictures=cate_products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
+                           start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
+
+
+@app.route('/subshop/<string:cate_slug>/<string:subcate_slug>')
+def Shopwithsubcategory(cate_slug, subcate_slug):
+    category = Category.query.filter_by(slug=cate_slug).first()
+    subcategories = Subcategory.query.filter_by(category_id=category.category_id).all()
+    subcategory = Subcategory.query.filter_by(slug=subcate_slug).first()
+    products = Product.query.filter_by(prod_subcategory_id=subcategory.subcategory_id).all()
+    pictures = Picture.query.all()
+
+    subcate_products_pics = []
+    for product in products:
+        for pic in pictures:
+            if product.picture_id == pic.picture_id:
+                subcate_products_pics.append(pic)
+
+    total_prods = len(products)
+    per_page = 9
+    number_of_pages = ceil(len(products) / per_page) + 1
+    if number_of_pages == 1:
+        number_of_pages += 1
+    page = request.args.get('page')
+    if not str(page).isnumeric():
+        page = 1
+    page = int(page)
+    start_val = (page - 1) * per_page
+    end_val = ((page - 1) * per_page) + per_page
+    if end_val > total_prods:
+        end_val = total_prods
+    products = products[start_val:end_val]
+    if not len(products) == 0:
+        start_val += 1
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('subshop.html', category=category, subcategories=subcategories, subcategory=subcategory, products=products,
+                           pictures=subcate_products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
                            start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
 

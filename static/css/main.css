@@ -467,9 +467,16 @@ select {
     display: block;
 }
 
-.pagination-content ul li a:hover {
+/*.pagination-content ul li a:hover {
     background-color: #5B3F91;
 }
+*/
+
+.pagination-content ul li.pageNumber:hover a,
+.pagination-content ul li.pageNumber.active1 a{
+    background-color: #5B3F91;
+}
+
 
 .pagination-content ul li a.active {
     background-color: #5B3F91;

@@ -11,9 +11,9 @@
                 <div class="breadcrumb-container">
                     <ul>
                         <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-                        <li><a href="/shop">Fruits & Vegetables</a></li>
-                        <li><a href="/shop">Vegetables</a></li>
-                        <li class="active">Potatoes</li>
+                        <li><a href="/shop/{{category.category_name}}">{{category.category_name}}</a></li>
+                        <li><a href="/shop">{{subcategory.subcategory_name}}</a></li>
+                        <li class="active">{{product.product_name}}</li>
                     </ul>
                 </div>
             </div>
@@ -51,36 +51,6 @@
                                 </div>
                                 <!--Single Product Image End-->
                             </div>
-                            <div aria-labelledby="single-slide-tab-2" class="tab-pane fade" id="single-slide2"
-                                 role="tabpanel">
-                                <!--Single Product Image Start-->
-                                <div class="single-product-img easyzoom img-full">
-                                    <img alt="" class="img-fluid" src="{{url_for('static', filename=url)}}">
-                                    <a class="big-image-popup" href="{{url_for('static', filename=url)}}"><i
-                                            class="fa fa-search-plus"></i></a>
-                                </div>
-                                <!--Single Product Image End-->
-                            </div>
-                            <div aria-labelledby="single-slide-tab-3" class="tab-pane fade" id="single-slide3"
-                                 role="tabpanel">
-                                <!--Single Product Image Start-->
-                                <div class="single-product-img easyzoom img-full">
-                                    <img alt="" class="img-fluid" src="{{url_for('static', filename=url)}}">
-                                    <a class="big-image-popup" href="{{url_for('static', filename=url)}}"><i
-                                            class="fa fa-search-plus"></i></a>
-                                </div>
-                                <!--Single Product Image End-->
-                            </div>
-                            <div aria-labelledby="single-slide-tab-4" class="tab-pane fade" id="single-slide4"
-                                 role="tabpanel">
-                                <!--Single Product Image Start-->
-                                <div class="single-product-img easyzoom img-full">
-                                    <img alt="" class="img-fluid" src="{{url_for('static', filename=url)}}">
-                                    <a class="big-image-popup" href="{{url_for('static', filename=url)}}"><i
-                                            class="fa fa-search-plus"></i></a>
-                                </div>
-                                <!--Single Product Image End-->
-                            </div>
                         </div>
                         <!--Modal Content End-->
 
@@ -92,50 +62,30 @@
                     <div class="product-feature-details">
                         <h2 class="product-title mb-15">{{product.product_name}}</h2>
 
-                        <p class="product-rating">
-                            <i class="fa fa-star active"></i>
-                            <i class="fa fa-star active"></i>
-                            <i class="fa fa-star active"></i>
-                            <i class="fa fa-star active"></i>
-                            <i class="fa fa-star"></i>
-
-                            <a href="#">(1 customer review)</a>
-                        </p>
-
                         <h2 class="product-price mb-15">
-                            <!--                            <span class="main-price">Rs 100</span>-->
                             <span class="discounted-price">Rs {{product.product_price}}</span>
                         </h2>
 
                         <p class="product-description mb-20">{{product.product_description}}</p>
 
-                        <form action="/cart" method="post">
                             <div class="cart-buttons mb-20">
                                 <div class="pro-qty mr-20 mb-xs-20">
-                                    <input min="1" name="quantity" type="number" value="1">
+                                    <input name="quantity{{product.product_id}}" min="1" type="number" value="1">
                                 </div>
                                 <div class="add-to-cart-btn">
-                                    <input name="product_id" type="hidden" value="{{product.product_id}}">
-                                    <button style="background-color: transparent; background-repeat: no-repeat;
-                                     border: none; cursor: pointer; overflow: hidden" type="submit">
-                                        <a><i class="fa fa-shopping-cart"></i> Add to Cart</a>
-                                    </button>
+                                    <a class="addToCartButton" name="{{product.product_id}}"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
                                 </div>
                             </div>
-                        </form>
 
                         <div class="single-product-action-btn mb-20">
-                            <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> Add to
-                                wishlist</a>
-                            <a data-tooltip="Add to compare" href="/compare"> <span class="arrow_left-right_alt"></span>
-                                Add to
-                                compare</a>
+                            <a class="addToWishlistButton" name="{{product.product_id}}" data-tooltip="Add to wishlist">
+                                <span class="icon_heart_alt"></span> Add to wishlist</a>
                         </div>
 
 
                         <div class="single-product-category mb-20">
                             <h3>Categories: <span><a href="/shop">{{subcategory.subcategory_name}}</a>, <a
-                                    href="/shop">{{category.category_name}}</a></span></h3>
+                                    href="/shop/{{category.category_name}}">{{category.category_name}}</a></span></h3>
                         </div>
 
 
@@ -180,8 +130,6 @@
                                role="tab">Description</a>
                             <a aria-selected="false" class="nav-item nav-link" data-toggle="tab" href="#features" id="features-tab"
                                role="tab">Features</a>
-                            <a aria-selected="false" class="nav-item nav-link" data-toggle="tab" href="#review" id="review-tab"
-                               role="tab">Reviews (3)</a>
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -205,137 +153,6 @@
 
                                 </tbody>
                             </table>
-                        </div>
-                        <div aria-labelledby="review-tab" class="tab-pane fade" id="review" role="tabpanel">
-                            <div class="product-ratting-wrap">
-                                <div class="pro-avg-ratting">
-                                    <h4>4.5 <span>(Overall)</span></h4>
-                                    <span>Based on 9 Comments</span>
-                                </div>
-                                <div class="ratting-list">
-                                    <div class="sin-list float-left">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <span>(5)</span>
-                                    </div>
-                                    <div class="sin-list float-left">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <span>(3)</span>
-                                    </div>
-                                    <div class="sin-list float-left">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <span>(1)</span>
-                                    </div>
-                                    <div class="sin-list float-left">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <span>(0)</span>
-                                    </div>
-                                    <div class="sin-list float-left">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <span>(0)</span>
-                                    </div>
-                                </div>
-                                <div class="rattings-wrapper">
-
-                                    <div class="sin-rattings">
-                                        <div class="ratting-author">
-                                            <h3>Asif</h3>
-                                            <div class="ratting-star">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <span>(5)</span>
-                                            </div>
-                                        </div>
-                                        <p>Fresh and Pure</p>
-                                    </div>
-
-                                    <div class="sin-rattings">
-                                        <div class="ratting-author">
-                                            <h3>Noman Khan</h3>
-                                            <div class="ratting-star">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <span>(5)</span>
-                                            </div>
-                                        </div>
-                                        <p>So fresh</p>
-                                    </div>
-
-                                    <div class="sin-rattings">
-                                        <div class="ratting-author">
-                                            <h3>Dr. Amir</h3>
-                                            <div class="ratting-star">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <span>(5)</span>
-                                            </div>
-                                        </div>
-                                        <p>Great service</p>
-                                    </div>
-
-                                </div>
-                                <div class="ratting-form-wrapper fix">
-                                    <h3>Add your Comments</h3>
-                                    <form action="#">
-                                        <div class="ratting-form row">
-                                            <div class="col-12 mb-15">
-                                                <h5>Rating:</h5>
-                                                <div class="ratting-star fix">
-                                                    <i class="fa fa-star-o"></i>
-                                                    <i class="fa fa-star-o"></i>
-                                                    <i class="fa fa-star-o"></i>
-                                                    <i class="fa fa-star-o"></i>
-                                                    <i class="fa fa-star-o"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-12 mb-15">
-                                                <label for="name">Name:</label>
-                                                <input id="name" placeholder="Name" type="text">
-                                            </div>
-                                            <div class="col-md-6 col-12 mb-15">
-                                                <label for="email">Email:</label>
-                                                <input id="email" placeholder="Email" type="text">
-                                            </div>
-                                            <div class="col-12 mb-15">
-                                                <label for="your-review">Your Review:</label>
-                                                <textarea id="your-review" name="review"
-                                                          placeholder="Write a review"></textarea>
-                                            </div>
-                                            <div class="col-12">
-                                                <input type="submit" value="add review">
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -380,10 +197,6 @@
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
                                 <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> </a>
-                                <a data-tooltip="Compare" href="/compare"> <span class="arrow_left-right_alt"></span>
-                                </a>
-                                <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                   href="#"> <span class="icon_search"></span> </a>
                             </div>
                         </div>
                         <div class="product-content">
@@ -407,8 +220,6 @@
                         <div class="image">
                             <a href="product-details">
                                 <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid"
-                                     src="assets/images/products/Fruits & Vegetables/lemon.jpg">
                             </a>
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
@@ -440,8 +251,6 @@
                         <div class="image">
                             <a href="product-details">
                                 <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid"
-                                     src="assets/images/products/Fruits & Vegetables/ginger.jpg">
                             </a>
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
@@ -473,8 +282,6 @@
                         <div class="image">
                             <a href="product-details">
                                 <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid"
-                                     src="assets/images/products/Fruits & Vegetables/garlic_2.jpg">
                             </a>
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
@@ -506,16 +313,10 @@
                         <div class="image">
                             <a href="product-details">
                                 <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid"
-                                     src="assets/images/products/Fruits & Vegetables/oranges.jpg">
                             </a>
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
                                 <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> </a>
-                                <a data-tooltip="Compare" href="compare"> <span class="arrow_left-right_alt"></span>
-                                </a>
-                                <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                   href="#"> <span class="icon_search"></span> </a>
                             </div>
                         </div>
                         <div class="product-content">
@@ -525,7 +326,6 @@
                             <h3 class="product-title"><a href="product-details">Oranges</a>
                             </h3>
                             <div class="price-box">
-                                <span class="main-price">Rs 120</span>
                                 <span class="discounted-price">Rs 100</span>
                             </div>
                         </div>
@@ -572,16 +372,11 @@
                         <div class="image">
                             <a href="/product-details">
                                 <span class="onsale">Sale!</span>
-                                <img alt=""
-                                     class="img-fluid" src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/guava.jpg')}}">
+                                <img alt="" class="img-fluid" src="">
                             </a>
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
                                 <a data-tooltip="Add to wishlist" href="#"> <span class="icon_heart_alt"></span> </a>
-                                <a data-tooltip="Compare" href="compare"> <span class="arrow_left-right_alt"></span>
-                                </a>
-                                <a data-target="#quick-view-modal-container" data-toggle="modal" data-tooltip="Quick view"
-                                   href="#"> <span class="icon_search"></span> </a>
                             </div>
                         </div>
                         <div class="product-content">
@@ -591,7 +386,6 @@
                             <h3 class="product-title"><a href="/product-details">Guavas</a>
                             </h3>
                             <div class="price-box">
-                                <span class="main-price">Rs 100</span>
                                 <span class="discounted-price">Rs 80</span>
                             </div>
                         </div>
@@ -605,8 +399,6 @@
                         <div class="image">
                             <a href="product-details">
                                 <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid"
-                                     src="assets/images/products/Fruits & Vegetables/capsicum.jpg">
                             </a>
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
@@ -638,8 +430,6 @@
                         <div class="image">
                             <a href="product-details">
                                 <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid"
-                                     src="assets/images/products/Fruits & Vegetables/cauliflower.jpg">
                             </a>
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
@@ -671,8 +461,6 @@
                         <div class="image">
                             <a href="product-details">
                                 <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid"
-                                     src="assets/images/products/Fruits & Vegetables/salad_patta.jpg">
                             </a>
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
@@ -704,8 +492,6 @@
                         <div class="image">
                             <a href="product-details">
                                 <span class="onsale">Sale!</span>
-                                <img alt="" class="img-fluid"
-                                     src="assets/images/products/Fruits & Vegetables/product04.jpg">
                             </a>
                             <div class="product-hover-icons">
                                 <a data-tooltip="Add to cart" href="#"> <span class="icon_cart_alt"></span></a>
@@ -741,140 +527,5 @@
 </div>
 
 <!--=====  End of Upsell product slider  ======-->
-
-<!--=============================================
-=            Quick view modal         =
-=============================================-->
-
-<div aria-hidden="true" class="modal fade quick-view-modal-container" id="quick-view-modal-container" role="dialog"
-     tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-lg-5 col-md-6 col-xs-12">
-                        <!-- product quickview image gallery -->
-                        <div class="product-image-slider">
-                            <!--Modal Tab Content Start-->
-                            <div class="tab-content product-large-image-list" id="myTabContent">
-                                <div aria-labelledby="single-slide-tab-1" class="tab-pane fade show active" id="quick-single-slide1"
-                                     role="tabpanel">
-                                    <!--Single Product Image Start-->
-                                    <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid" src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/11084.jpg')}}">
-                                    </div>
-                                    <!--Single Product Image End-->
-                                </div>
-                                <div aria-labelledby="single-slide-tab-2" class="tab-pane fade" id="quick-single-slide2"
-                                     role="tabpanel">
-                                    <!--Single Product Image Start-->
-                                    <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid" src="assets/images/products/Fruits & Vegetables/lemon.jpg">
-                                    </div>
-                                    <!--Single Product Image End-->
-                                </div>
-                                <div aria-labelledby="single-slide-tab-3" class="tab-pane fade" id="quick-single-slide3"
-                                     role="tabpanel">
-                                    <!--Single Product Image Start-->
-                                    <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid" src="assets/images/products/Fruits & Vegetables/bananas.jpg">
-                                    </div>
-                                    <!--Single Product Image End-->
-                                </div>
-                                <div aria-labelledby="single-slide-tab-4" class="tab-pane fade" id="quick-single-slide4"
-                                     role="tabpanel">
-                                    <!--Single Product Image Start-->
-                                    <div class="single-product-img img-full">
-                                        <img alt=""
-                                             class="img-fluid" src="assets/images/products/Fruits & Vegetables/oranges.jpg">
-                                    </div>
-                                    <!--Single Product Image End-->
-                                </div>
-                            </div>
-                            <!--Modal Content End-->
-                            <!--Modal Tab Menu Start-->
-                            <div class="product-small-image-list">
-                                <div class="nav small-image-slider" role="tablist">
-                                    <div class="single-small-image img-full">
-                                        <a data-toggle="tab" href="#single-slide1" id="quick-single-slide-tab-1"><img
-                                                alt=""
-                                                class="img-fluid" src="{{url_for('static', filename = 'images/products/Fruits & Vegetables/11084.jpg')}}"></a>
-                                    </div>
-                                    <div class="single-small-image img-full">
-                                        <a data-toggle="tab" href="#single-slide2" id="quick-single-slide-tab-2"><img
-                                                alt=""
-                                                class="img-fluid" src="assets/images/products/Fruits & Vegetables/lemon.jpg"></a>
-                                    </div>
-                                    <div class="single-small-image img-full">
-                                        <a data-toggle="tab" href="#single-slide3" id="quick-single-slide-tab-3"><img
-                                                alt=""
-                                                class="img-fluid" src="assets/images/products/Fruits & Vegetables/bananas.jpg"></a>
-                                    </div>
-                                    <div class="single-small-image img-full">
-                                        <a data-toggle="tab" href="#single-slide4" id="quick-single-slide-tab-4"><img
-                                                alt=""
-                                                src="assets/images/products/Fruits & Vegetables/oranges.jpg"></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Modal Tab Menu End-->
-                        </div>
-                        <!-- end of product quickview image gallery -->
-                    </div>
-                    <div class="col-lg-7 col-md-6 col-xs-12">
-                        <!-- product quick view description -->
-                        <div class="product-feature-details">
-                            <h2 class="product-title mb-15">Potatoes</h2>
-
-                            <h2 class="product-price mb-15">
-                                <span class="main-price">Rs 100</span>
-                                <span class="discounted-price">Rs 80</span>
-                            </h2>
-
-                            <p class="product-description mb-20">Potatoes are prepared in many ways:
-                                skin-on or peeled, whole or cut up, with seasonings or without.
-                                The only requirement involves cooking to swell the starch granules.
-                                Most potato dishes are served hot but some are first cooked, then served cold, notably
-                                potato salad and potato chips (crisps).
-                            </p>
-
-
-                            <div class="cart-buttons mb-20">
-                                <div class="pro-qty mr-10">
-                                    <input type="text" value="1">
-                                </div>
-                                <div class="add-to-cart-btn">
-                                    <a href="#"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
-                                </div>
-                            </div>
-
-
-                            <div class="social-share-buttons">
-                                <h3>share this product</h3>
-                                <ul>
-                                    <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a class="google-plus" href="#"><i class="fa fa-google-plus"></i></a></li>
-                                    <li><a class="pinterest" href="#"><i class="fa fa-pinterest"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- end of product quick view description -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-<!--=====  End of Quick view modal  ======-->
 
 {% endblock %}

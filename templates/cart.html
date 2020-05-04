@@ -48,19 +48,19 @@
                         {% for product in products %}
                         {% for subcat in subcategories %}
                         {% if product.prod_subcategory_id == subcat.subcategory_id %}
-                        {% for category in categories %}
-                        {% if subcat.category_id == category.category_id %}
+                        {% for cat in categories %}
+                        {% if subcat.category_id == cat.category_id %}
                         {% for picture in pictures %}
                         {% if(product.picture_id == picture.picture_id) %}
-                        {% set url = 'images/products/' + category.category_name+ '/' + picture.picture_url %}
+                        {% set url = 'images/products/' + cat.category_name+ '/' + picture.picture_url %}
                         {% set quantity=quantities.pop() %}
                         {% set totalAmount=total.pop() %}
                         <tbody>
                         <tr>
-                            <td class="pro-thumbnail"><a href="#"><img alt="Product" class="img-fluid"
+                            <td class="pro-thumbnail"><a href="/product-details/{{product.slug}}"><img alt="Product" class="img-fluid"
                                                                        src="{{url_for('static', filename=url)}}"></a>
                             </td>
-                            <td class="pro-title"><a href="#">{{product.product_name}} {{product.product_quantity}}</a></td>
+                            <td class="pro-title"><a href="/product-details/{{product.slug}}">{{product.product_name}} {{product.product_quantity}}</a></td>
                             <td class="pro-price"><span>Rs {{product.product_price}}</span></td>
 
                             <td class="pro-quantity">
