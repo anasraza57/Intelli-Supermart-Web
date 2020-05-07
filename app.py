@@ -484,9 +484,11 @@ def wishListCount():
     else:
         return 0
 
+
 @app.route('/mobileShop')
 def mobileShop():
     return "Mobile Shop"
+
 
 if __name__ == '__main__':
     # manager.run()
