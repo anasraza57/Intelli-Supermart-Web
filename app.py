@@ -60,19 +60,21 @@ class Cart(db.Model):
     product_quantity = db.Column(db.Integer)
 
 
+session['Wishlist'] = ""
+session['Shoppingcart'] = ""
+
 def cartItemsAndPrice():
-    return 0,0,0
-    # cart_count = len(session['Shoppingcart'])
-    # if len(session['Shoppingcart']) <= 0:
-    #     return 0, 0, 0
-    # else:
-    #     total_price_of_all_prods = []
-    #     for key, item in session['Shoppingcart'].items():
-    #         product = Product.query.filter_by(product_id=key).first()
-    #         res = int(item['quantity']) * product.product_price
-    #         total_price_of_all_prods.append(res)
-    #     grand_total = sum(total_price_of_all_prods)
-    #     return cart_count, total_price_of_all_prods, grand_total
+    cart_count = len(session['Shoppingcart'])
+    if len(session['Shoppingcart']) <= 0:
+        return 0, 0, 0
+    else:
+        total_price_of_all_prods = []
+        for key, item in session['Shoppingcart'].items():
+            product = Product.query.filter_by(product_id=key).first()
+            res = int(item['quantity']) * product.product_price
+            total_price_of_all_prods.append(res)
+        grand_total = sum(total_price_of_all_prods)
+        return cart_count, total_price_of_all_prods, grand_total
 
 
 def wishListCount():
@@ -145,89 +147,89 @@ def mergeDict(dict1, dict2):
     return False
 
 
-# @app.route('/cart', methods=['GET', 'POST', 'DELETE'])
-# def cart():
-#     if request.method == 'POST':
-#         product_id = request.form['product_id']
-#         quantity = request.form['quantity']
-#         DictItems = {product_id: {'quantity': quantity}}
-#
-#         if 'Shoppingcart' in session:
-#             if product_id in session['Shoppingcart']:
-#                 print("This product is already in cart!")
-#             else:
-#                 session['Shoppingcart'] = mergeDict(session['Shoppingcart'], DictItems)
-#             # return redirect(request.referrer)
-#         else:
-#             session['Shoppingcart'] = DictItems
-#             # return redirect(request.referrer)
-#
-#     if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
-#         return redirect('/')
-#     else:
-#         pictures = Picture.query.all()
-#         subcategories = Subcategory.query.all()
-#         categories = Category.query.all()
-#         category = categories[0]
-#
-#         products = []
-#         quantities = []
-#         for key, item in session['Shoppingcart'].items():
-#             quantity = item['quantity']
-#             quantities.append(quantity)
-#             product = Product.query.filter_by(product_id=key).first()
-#             products.append(product)
-#         products.reverse()
-#         cart_products_pics = []
-#         for product in products:
-#             for pic in pictures:
-#                 if product.picture_id == pic.picture_id:
-#                     cart_products_pics.append(pic)
-#
-#         cart_count, total, grand_total = cartItemsAndPrice()
-#         wishlist_count = wishListCount()
-#         return render_template('cart.html', products=products, pictures=cart_products_pics, category=category,
-#                                subcategories=subcategories, categories=categories, quantities=quantities,
-#                                total=total, grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
-#
-#
-# @app.route('/updateCart', methods=['PUT'])
-# def updateCart():
-#     if request.method == 'PUT':
-#         quantity = int(request.form['quantity'])
-#         id = int(request.form['id'])
-#         session.modified = True
-#         total_price_of_all_prods = []
-#         total_prod_price = 0
-#         for key, item in session['Shoppingcart'].items():
-#             if int(key) == id:
-#                 item['quantity'] = quantity
-#                 product = Product.query.filter_by(product_id=id).first()
-#                 total_prod_price = product.product_price * quantity
-#             product = Product.query.filter_by(product_id=key).first()
-#             res = int(item['quantity']) * product.product_price
-#             total_price_of_all_prods.append(res)
-#         grand_total = sum(total_price_of_all_prods)
-#         return jsonify(
-#             total=total_prod_price,
-#             grand_total=grand_total,
-#         )
-#
-#
-# @app.route('/deleteFromCart', methods=['DELETE'])
-# def deleteFromCart():
-#     if request.method == 'DELETE':
-#         id = int(request.form['product_id'])
-#         print(session['Shoppingcart'])
-#         print(id)
-#         try:
-#             session.modified = True
-#             for key, item in session['Shoppingcart'].items():
-#                 if int(key) == id:
-#                     session['Shoppingcart'].pop(key, None)
-#                     return "Deleted"
-#         except Exception as e:
-#             print(e)
+@app.route('/cart', methods=['GET', 'POST', 'DELETE'])
+def cart():
+    if request.method == 'POST':
+        product_id = request.form['product_id']
+        quantity = request.form['quantity']
+        DictItems = {product_id: {'quantity': quantity}}
+
+        if 'Shoppingcart' in session:
+            if product_id in session['Shoppingcart']:
+                print("This product is already in cart!")
+            else:
+                session['Shoppingcart'] = mergeDict(session['Shoppingcart'], DictItems)
+            # return redirect(request.referrer)
+        else:
+            session['Shoppingcart'] = DictItems
+            # return redirect(request.referrer)
+
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+        return redirect('/')
+    else:
+        pictures = Picture.query.all()
+        subcategories = Subcategory.query.all()
+        categories = Category.query.all()
+        category = categories[0]
+
+        products = []
+        quantities = []
+        for key, item in session['Shoppingcart'].items():
+            quantity = item['quantity']
+            quantities.append(quantity)
+            product = Product.query.filter_by(product_id=key).first()
+            products.append(product)
+        products.reverse()
+        cart_products_pics = []
+        for product in products:
+            for pic in pictures:
+                if product.picture_id == pic.picture_id:
+                    cart_products_pics.append(pic)
+
+        cart_count, total, grand_total = cartItemsAndPrice()
+        wishlist_count = wishListCount()
+        return render_template('cart.html', products=products, pictures=cart_products_pics, category=category,
+                               subcategories=subcategories, categories=categories, quantities=quantities,
+                               total=total, grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
+
+
+@app.route('/updateCart', methods=['PUT'])
+def updateCart():
+    if request.method == 'PUT':
+        quantity = int(request.form['quantity'])
+        id = int(request.form['id'])
+        session.modified = True
+        total_price_of_all_prods = []
+        total_prod_price = 0
+        for key, item in session['Shoppingcart'].items():
+            if int(key) == id:
+                item['quantity'] = quantity
+                product = Product.query.filter_by(product_id=id).first()
+                total_prod_price = product.product_price * quantity
+            product = Product.query.filter_by(product_id=key).first()
+            res = int(item['quantity']) * product.product_price
+            total_price_of_all_prods.append(res)
+        grand_total = sum(total_price_of_all_prods)
+        return jsonify(
+            total=total_prod_price,
+            grand_total=grand_total,
+        )
+
+
+@app.route('/deleteFromCart', methods=['DELETE'])
+def deleteFromCart():
+    if request.method == 'DELETE':
+        id = int(request.form['product_id'])
+        print(session['Shoppingcart'])
+        print(id)
+        try:
+            session.modified = True
+            for key, item in session['Shoppingcart'].items():
+                if int(key) == id:
+                    session['Shoppingcart'].pop(key, None)
+                    return "Deleted"
+        except Exception as e:
+            print(e)
 
 
 @app.route('/wishlist', methods=['GET', 'POST', 'DELETE'])
