@@ -60,31 +60,6 @@ class Cart(db.Model):
     product_quantity = db.Column(db.Integer)
 
 
-session['Wishlist'] = ""
-session['Shoppingcart'] = ""
-
-def cartItemsAndPrice():
-    cart_count = len(session['Shoppingcart'])
-    if len(session['Shoppingcart']) <= 0:
-        return 0, 0, 0
-    else:
-        total_price_of_all_prods = []
-        for key, item in session['Shoppingcart'].items():
-            product = Product.query.filter_by(product_id=key).first()
-            res = int(item['quantity']) * product.product_price
-            total_price_of_all_prods.append(res)
-        grand_total = sum(total_price_of_all_prods)
-        return cart_count, total_price_of_all_prods, grand_total
-
-
-def wishListCount():
-    wishlist_count = len(session['Wishlist'])
-    if len(session['Wishlist']) <= 0:
-        return 0
-    else:
-        return wishlist_count
-
-
 @app.route('/', methods=['GET', 'POST', 'DELETE'])
 def index():
     products = Product.query.all()
@@ -481,6 +456,27 @@ def terms_n_conditions():
     wishlist_count = wishListCount()
     return render_template('terms-n-conditions.html', grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
+
+def cartItemsAndPrice():
+    cart_count = len(session['Shoppingcart'])
+    if len(session['Shoppingcart']) <= 0:
+        return 0, 0, 0
+    else:
+        total_price_of_all_prods = []
+        for key, item in session['Shoppingcart'].items():
+            product = Product.query.filter_by(product_id=key).first()
+            res = int(item['quantity']) * product.product_price
+            total_price_of_all_prods.append(res)
+        grand_total = sum(total_price_of_all_prods)
+        return cart_count, total_price_of_all_prods, grand_total
+
+
+def wishListCount():
+    wishlist_count = len(session['Wishlist'])
+    if len(session['Wishlist']) <= 0:
+        return 0
+    else:
+        return wishlist_count
 
 
 if __name__ == '__main__':
