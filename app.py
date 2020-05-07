@@ -458,25 +458,31 @@ def terms_n_conditions():
                            wishlist_count=wishlist_count)
 
 def cartItemsAndPrice():
-    cart_count = len(session['Shoppingcart'])
-    if len(session['Shoppingcart']) <= 0:
-        return 0, 0, 0
+    if 'Shoppingcart' in session:
+        cart_count = len(session['Shoppingcart'])
+        if len(session['Shoppingcart']) <= 0:
+            return 0, 0, 0
+        else:
+            total_price_of_all_prods = []
+            for key, item in session['Shoppingcart'].items():
+                product = Product.query.filter_by(product_id=key).first()
+                res = int(item['quantity']) * product.product_price
+                total_price_of_all_prods.append(res)
+            grand_total = sum(total_price_of_all_prods)
+            return cart_count, total_price_of_all_prods, grand_total
     else:
-        total_price_of_all_prods = []
-        for key, item in session['Shoppingcart'].items():
-            product = Product.query.filter_by(product_id=key).first()
-            res = int(item['quantity']) * product.product_price
-            total_price_of_all_prods.append(res)
-        grand_total = sum(total_price_of_all_prods)
-        return cart_count, total_price_of_all_prods, grand_total
+        return 0, 0, 0
 
 
 def wishListCount():
-    wishlist_count = len(session['Wishlist'])
-    if len(session['Wishlist']) <= 0:
-        return 0
+    if 'Wishlist' in session:
+        wishlist_count = len(session['Wishlist'])
+        if len(session['Wishlist']) <= 0:
+            return 0
+        else:
+            return wishlist_count
     else:
-        return wishlist_count
+        return 0
 
 
 if __name__ == '__main__':
