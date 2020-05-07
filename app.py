@@ -76,12 +76,11 @@ def cartItemsAndPrice():
 
 
 def wishListCount():
-    return 0
-    # wishlist_count = len(session['Wishlist'])
-    # if len(session['Wishlist']) <= 0:
-    #     return 0
-    # else:
-    #     return wishlist_count
+    wishlist_count = len(session['Wishlist'])
+    if len(session['Wishlist']) <= 0:
+        return 0
+    else:
+        return wishlist_count
 
 
 @app.route('/', methods=['GET', 'POST', 'DELETE'])
@@ -229,58 +228,58 @@ def mergeDict(dict1, dict2):
 #                     return "Deleted"
 #         except Exception as e:
 #             print(e)
-#
-#
-# @app.route('/wishlist', methods=['GET', 'POST', 'DELETE'])
-# def wishlist():
-#     if request.method == 'POST':
-#         product_id = int(request.form['product_id'])
-#         ListItems = [product_id]
-#         if 'Wishlist' in session:
-#             if product_id in session['Wishlist']:
-#                 print("This product is already in wishList!")
-#             else:
-#                 session['Wishlist'] = mergeDict(session['Wishlist'], ListItems)
-#         else:
-#             session['Wishlist'] = ListItems
-#     if 'Wishlist' not in session or len(session['Wishlist']) <= 0:
-#         return redirect('/')
-#     else:
-#         pictures = Picture.query.all()
-#         subcategories = Subcategory.query.all()
-#         categories = Category.query.all()
-#         category = categories[0]  # for layout.html
-#         products = []
-#         for key in session['Wishlist']:
-#             product = Product.query.filter_by(product_id=key).first()
-#             products.append(product)
-#         products.reverse()
-#         wishlist_products_pics = []
-#         for product in products:
-#             for pic in pictures:
-#                 if product.picture_id == pic.picture_id:
-#                     wishlist_products_pics.append(pic)
-#
-#     cart_count, totals, grand_total = cartItemsAndPrice()
-#     wishlist_count = wishListCount()
-#     return render_template('wishlist.html', products=products, pictures=wishlist_products_pics,
-#                            subcategories=subcategories, category=category, categories=categories,
-#                            grand_total=grand_total,
-#                            count=cart_count, wishlist_count=wishlist_count)
-#
-#
-# @app.route('/deleteFromWishlist', methods=['DELETE'])
-# def deleteFromWishlist():
-#     if request.method == 'DELETE':
-#         id = int(request.form['product_id'])
-#         try:
-#             session.modified = True
-#             for key in session['Wishlist']:
-#                 if int(key) == id:
-#                     session['Wishlist'].remove(key)
-#                     return "Deleted"
-#         except Exception as e:
-#             print(e)
+
+
+@app.route('/wishlist', methods=['GET', 'POST', 'DELETE'])
+def wishlist():
+    if request.method == 'POST':
+        product_id = int(request.form['product_id'])
+        ListItems = [product_id]
+        if 'Wishlist' in session:
+            if product_id in session['Wishlist']:
+                print("This product is already in wishList!")
+            else:
+                session['Wishlist'] = mergeDict(session['Wishlist'], ListItems)
+        else:
+            session['Wishlist'] = ListItems
+    if 'Wishlist' not in session or len(session['Wishlist']) <= 0:
+        return redirect('/')
+    else:
+        pictures = Picture.query.all()
+        subcategories = Subcategory.query.all()
+        categories = Category.query.all()
+        category = categories[0]  # for layout.html
+        products = []
+        for key in session['Wishlist']:
+            product = Product.query.filter_by(product_id=key).first()
+            products.append(product)
+        products.reverse()
+        wishlist_products_pics = []
+        for product in products:
+            for pic in pictures:
+                if product.picture_id == pic.picture_id:
+                    wishlist_products_pics.append(pic)
+
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('wishlist.html', products=products, pictures=wishlist_products_pics,
+                           subcategories=subcategories, category=category, categories=categories,
+                           grand_total=grand_total,
+                           count=cart_count, wishlist_count=wishlist_count)
+
+
+@app.route('/deleteFromWishlist', methods=['DELETE'])
+def deleteFromWishlist():
+    if request.method == 'DELETE':
+        id = int(request.form['product_id'])
+        try:
+            session.modified = True
+            for key in session['Wishlist']:
+                if int(key) == id:
+                    session['Wishlist'].remove(key)
+                    return "Deleted"
+        except Exception as e:
+            print(e)
 
 
 @app.route('/checkout')
