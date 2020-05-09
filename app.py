@@ -59,6 +59,12 @@ class Cart(db.Model):
     product_id = db.Column(db.Integer)
     product_quantity = db.Column(db.Integer)
 
+class Customer(db.Model):
+    __tablename__ = 'customer'
+    customer_id = db.Column(db.Integer, primary_key=True)
+    customer_phone = db.Column(db.Integer)
+    cart_id = db.Column(db.Integer)
+
 
 @app.route('/', methods=['GET', 'POST', 'DELETE'])
 def index():
@@ -541,6 +547,16 @@ def mobileProduct_details(prod_slug):
 
     return jsonify( product=product, picture=pic, category=category,
                            subcategory=subcategory, grand_total=grand_total, count=cart_count)
+@app.route('/mobileLogin', methods=['POST'])
+def mobileLogin():
+    customer_phone = request.form.get('PhoneNo')
+    customer = Customer.query.filter_by(PhoneNo=customer_phone)
+    if customer:
+        flash('Number Already Exists')
+        cart_count, totals, grand_total = cartItemsAndPrice()
+        return jsonify('/main.xml', grand_total=grand_total, count=cart_count)
+    else:
+        return jsonify('/verification.xml')
 
 if __name__ == '__main__':
     # manager.run()
