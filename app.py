@@ -489,6 +489,58 @@ def wishListCount():
 def mobileShop():
     return "Mobile Shop"
 
+@app.route('/mobileMainCtaegory', methods=['GET'])
+def mobileMainCategory():
+    categories = Category.query.all()
+    pictures = Picture.query.all()
+    category_images = []
+    for category in categories:
+        for picture in pictures:
+            if category.picture_id == picture.picture_id:
+                category_images.append(picture)
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return jsonify(categories=categories, pictures=pictures,category_images=category_images,grand_total=grand_total, count=cart_count)
+
+@app.route('/mobileProduct/<string:cate_slug>')
+def mobileProduct(cate_slug):
+    category = Category.query.filter_by(slug=cate_slug).first()
+    subcategories = Subcategory.query.filter_by(category_id=category.category_id).all()
+    products = Product.query.all()
+    pictures = Picture.query.all()
+
+    cate_products = []
+    for subcategory in subcategories:
+        for product in products:
+            if product.prod_subcategory_id == subcategory.subcategory_id:
+                cate_products.append(product)
+
+    cate_products_pics = []
+    for product in cate_products:
+        for pic in pictures:
+            if product.picture_id == pic.picture_id:
+                cate_products_pics.append(pic)
+
+    total_prods = len(cate_products)
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    return jsonify(category=category, subcategories=subcategories, products=cate_products,
+                           pictures=cate_products_pics,  total_prods=total_prods, grand_total=grand_total, count=cart_count)
+
+@app.route('/mobileProduct-details/<string:prod_slug>')
+def mobileProduct_details(prod_slug):
+    product = Product.query.filter_by(slug=prod_slug).first()
+    subcategory = Subcategory.query.filter_by(subcategory_id=product.prod_subcategory_id).first()
+    category = Category.query.filter_by(category_id=subcategory.category_id).first()
+    pictures = Picture.query.all()
+
+    pic = ""
+    for picture in pictures:
+        if product.picture_id == picture.picture_id:
+            pic = picture
+
+    cart_count, totals, grand_total = cartItemsAndPrice()
+
+    return jsonify( product=product, picture=pic, category=category,
+                           subcategory=subcategory, grand_total=grand_total, count=cart_count)
 
 if __name__ == '__main__':
     # manager.run()
