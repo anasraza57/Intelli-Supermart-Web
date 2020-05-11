@@ -11,8 +11,8 @@
                 <div class="breadcrumb-container">
                     <ul>
                         <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-                        <li><a href="/shop/{{category.category_name}}">{{category.category_name}}</a></li>
-                        <li><a href="/shop">{{subcategory.subcategory_name}}</a></li>
+                        <li><a href="/shop/{{category.slug}}">{{category.category_name}}</a></li>
+                        <li><a href="/subshop/{{category.slug}}/{{subcategory.slug}}">{{subcategory.subcategory_name}}</a></li>
                         <li class="active">{{product.product_name}}</li>
                     </ul>
                 </div>

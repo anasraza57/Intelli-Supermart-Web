@@ -59,6 +59,7 @@ class Cart(db.Model):
     product_id = db.Column(db.Integer)
     product_quantity = db.Column(db.Integer)
 
+
 class Customer(db.Model):
     __tablename__ = 'customer'
     customer_id = db.Column(db.Integer, primary_key=True)
@@ -108,24 +109,22 @@ def index():
 
 @app.route('/about-us')
 def about_us():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('about-us.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
+    return render_template('about-us.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/careers')
 def careers():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('careers.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
-
-
-def mergeDict(dict1, dict2):
-    if isinstance(dict1, list) and isinstance(dict2, list):
-        return dict1 + dict2
-    elif isinstance(dict1, dict) and isinstance(dict2, dict):
-        return dict(list(dict1.items()) + list(dict2.items()))
-    return False
+    return render_template('careers.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/cart', methods=['GET', 'POST', 'DELETE'])
@@ -267,59 +266,81 @@ def deleteFromWishlist():
 
 @app.route('/checkout')
 def checkout():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('checkout.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
+    return render_template('checkout.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/compare')
 def compare():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('compare.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
+    return render_template('compare.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/contact-us')
 def contact_us():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('contact-us.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
+    return render_template('contact-us.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/delivery')
 def delivery():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('delivery.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
+    return render_template('delivery.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/faqs')
 def faqs():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('faqs.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
+    return render_template('faqs.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/how-to-order')
 def how_to_order():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('how-to-order.html', grand_total=grand_total, count=cart_count,
+    return render_template('how-to-order.html', category=category, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
 
 
 @app.route('/how-to-pay')
 def how_to_pay():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('how-to-pay.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
+    return render_template('how-to-pay.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
-@app.route('/login-register')
-def login_register():
+@app.route('/phone-verification')
+def phone_verification():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('login-register.html', grand_total=grand_total, count=cart_count,
+    return render_template('phone-verification.html', category=category, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
 
 
@@ -327,24 +348,31 @@ def login_register():
 def register():
     if request.method == 'POST':
         return redirect('/my-account')
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('login-register.html', grand_total=grand_total, count=cart_count,
+    return render_template('phone-verification.html', category=category, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
 
 
 @app.route('/my-account')
 def my_account():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('my-account.html', grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
+    return render_template('my-account.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
 
 
 @app.route('/privacy-policy')
 def privacy_policy():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('privacy-policy.html', grand_total=grand_total, count=cart_count,
+    return render_template('privacy-policy.html', category=category, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
 
 
@@ -369,9 +397,11 @@ def product_details(prod_slug):
 
 @app.route('/return-n-refunds')
 def return_n_refunds():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('return-n-refunds.html', grand_total=grand_total, count=cart_count,
+    return render_template('return-n-refunds.html', category=category, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
 
 
@@ -450,7 +480,8 @@ def Shopwithsubcategory(cate_slug, subcate_slug):
         start_val += 1
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('subshop.html', category=category, subcategories=subcategories, subcategory=subcategory, products=products,
+    return render_template('subshop.html', category=category, subcategories=subcategories, subcategory=subcategory,
+                           products=products,
                            pictures=subcate_products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
                            start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
@@ -458,26 +489,21 @@ def Shopwithsubcategory(cate_slug, subcate_slug):
 
 @app.route('/terms-n-conditions')
 def terms_n_conditions():
+    categories = Category.query.all()
+    category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('terms-n-conditions.html', grand_total=grand_total, count=cart_count,
+    return render_template('terms-n-conditions.html', category=category, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
 
 
-
-
-
-
-
-
-
-@app.route('/mobileCart' , methods = ['GET','POST','DELETE'])
+@app.route('/mobileCart', methods=['GET', 'POST', 'DELETE'])
 def mobileCart():
-    if request.method == "POST" :
-        total_products = request.form.get ['total_products']
-        sub_total = request.form.get ['sub_total']
-        delivery_charges = request.form.get ['delivery_charges']
-        prod_id = request.form.get ['prod_id']
+    if request.method == "POST":
+        total_products = request.form.get['total_products']
+        sub_total = request.form.get['sub_total']
+        delivery_charges = request.form.get['delivery_charges']
+        prod_id = request.form.get['prod_id']
         show_Items = {prod_id: {'total_products': total_products}}
 
         if 'MyCart' in session:
@@ -496,17 +522,19 @@ def mobileCart():
             total_quantity.append(total_quantities)
             mob_product = Product.query.filter_by(prod_id=key).first()
             mob_products.append(mob_product)
-        cart_pictures=[]
+        cart_pictures = []
         for product in mob_products:
             for pic in mob_pictures:
                 if product.picture_id == pic.picture_id:
                     cart_pictures.append(pic)
-    return jsonify('/MyCart', total_quantity=total_products, grand_total = sub_total, delivery_charges=delivery_charges,pic=pic)
+    return jsonify('/MyCart', total_quantity=total_products, grand_total=sub_total, delivery_charges=delivery_charges,
+                   pic=pic)
 
-@app.route('/DeletefromMobCart' , methods = ['PUT'])
+
+@app.route('/DeletefromMobCart', methods=['PUT'])
 def DeletefromMobCart():
     if request.method == 'DELETE':
-        prod_id = request.form.get ['product_id']
+        prod_id = request.form.get['product_id']
         print(session['MyCart'])
         try:
             session.modified = True
@@ -518,14 +546,12 @@ def DeletefromMobCart():
             print(e)
 
 
-
-
-
-
-
-
-
-
+def mergeDict(dict1, dict2):
+    if isinstance(dict1, list) and isinstance(dict2, list):
+        return dict1 + dict2
+    elif isinstance(dict1, dict) and isinstance(dict2, dict):
+        return dict(list(dict1.items()) + list(dict2.items()))
+    return False
 
 
 def cartItemsAndPrice():
@@ -556,12 +582,6 @@ def wishListCount():
         return 0
 
 
-
-
-@app.route('/mobileShop')
-def mobileShop():
-    return "Mobile Shop"
-
 @app.route('/mobileMainCtaegory', methods=['GET'])
 def mobileMainCategory():
     categories = Category.query.all()
@@ -572,7 +592,9 @@ def mobileMainCategory():
             if category.picture_id == picture.picture_id:
                 category_images.append(picture)
     cart_count, totals, grand_total = cartItemsAndPrice()
-    return jsonify(categories=categories, pictures=pictures,category_images=category_images,grand_total=grand_total, count=cart_count)
+    return jsonify(categories=categories, pictures=pictures, category_images=category_images, grand_total=grand_total,
+                   count=cart_count)
+
 
 @app.route('/mobileProduct/<string:cate_slug>')
 def mobileProduct(cate_slug):
@@ -596,7 +618,8 @@ def mobileProduct(cate_slug):
     total_prods = len(cate_products)
     cart_count, totals, grand_total = cartItemsAndPrice()
     return jsonify(category=category, subcategories=subcategories, products=cate_products,
-                           pictures=cate_products_pics,  total_prods=total_prods, grand_total=grand_total, count=cart_count)
+                   pictures=cate_products_pics, total_prods=total_prods, grand_total=grand_total, count=cart_count)
+
 
 @app.route('/mobileProduct-details/<string:prod_slug>')
 def mobileProduct_details(prod_slug):
@@ -612,8 +635,10 @@ def mobileProduct_details(prod_slug):
 
     cart_count, totals, grand_total = cartItemsAndPrice()
 
-    return jsonify( product=product, picture=pic, category=category,
-                           subcategory=subcategory, grand_total=grand_total, count=cart_count)
+    return jsonify(product=product, picture=pic, category=category,
+                   subcategory=subcategory, grand_total=grand_total, count=cart_count)
+
+
 @app.route('/mobileLogin', methods=['POST'])
 def mobileLogin():
     customer_phone = request.form.get('PhoneNo')
@@ -624,6 +649,7 @@ def mobileLogin():
         return jsonify('/main.xml', grand_total=grand_total, count=cart_count)
     else:
         return jsonify('/verification.xml')
+
 
 if __name__ == '__main__':
     # manager.run()

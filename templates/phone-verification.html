@@ -188,7 +188,7 @@
                 <div class="breadcrumb-container">
                     <ul>
                         <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-                        <li class="active">Login - Register</li>
+                        <li class="active">Phone Verification</li>
                     </ul>
                 </div>
             </div>
@@ -207,81 +207,29 @@
         <div class="row">
             <div class="col-sm-12 col-md-12 col-xs-12 col-lg-6 mb-30">
                 <!-- Login Form s-->
-                <form action="#">
+                <div class="login-form">
+                    <h4 class="login-title">Phone Verification</h4>
 
-                    <div class="login-form">
-                        <h4 class="login-title">Login</h4>
+                    <div class="row">
+                        <div class="col-md-12 col-12 mb-20">
+                            <label>Phone Number <img id="verifiedImg"/></label>
+                            <input class="mb-0" id="number" placeholder="+923*********" type="text">
+                        </div>
+                        <div class="col-md-12">
+                            <button class="register-button mt-0" id="sendBtn" type="button">Send Code</button>
+                        </div><br><br>
+                        <div class="col-12 mb-20">
+                            <label>Verify Number*</label>
+                            <input class="mb-0" id="verificationCode" placeholder="Verification Code" type="text">
+                        </div>
+                        <div id="recaptcha-container"></div>
 
-                        <div class="row">
-                            <div class="col-md-12 col-12 mb-20">
-                                <label>Phone Number*</label>
-                                <input class="mb-0" type="number" placeholder="Phone Number">
-                            </div>
-                            <div class="col-12 mb-20">
-                                <label>Password</label>
-                                <input class="mb-0" type="password" placeholder="Password">
-                            </div>
-                            <div class="col-md-8">
-
-                                <div class="check-box d-inline-block ml-0 ml-md-2 mt-10">
-                                    <input type="checkbox" id="remember_me">
-                                    <label for="remember_me">Remember me</label>
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-4 mt-10 mb-20 text-left text-md-right">
-                                <a href="#"> Forgotten pasward?</a>
-                            </div>
-
-                            <div class="col-md-12">
-                                <button class="register-button mt-0">Login</button>
-                            </div>
-
+                        <div class="col-md-12">
+                            <button class="register-button mt-0" id="confirm_code_btn" type="button">Verify Code
+                            </button>
                         </div>
                     </div>
-
-                </form>
-            </div>
-            <div class="col-sm-12 col-md-12 col-xs-12 col-lg-6">
-                <form id="registrationForm" action="/register" method="post">
-
-                    <div class="login-form">
-                        <h4 class="login-title">Register</h4>
-
-                        <div class="row">
-                            <div class="col-md-6 col-12 mb-20">
-                                <label>Phone Number <img id="verifiedImg"></img></label>
-                                <input id="number" class="mb-0" type="text" placeholder="+923*********">
-                            </div>
-                            <div class="col-md-6 col-12 mb-20">
-                                <label>Verify Number*</label>
-                                <input id="verificationCode" class="mb-0" type="text" placeholder="Verification Code">
-                            </div>
-                            <div id="recaptcha-container"></div>
-                            <div class="col-md-6 col-12">
-                                <button id="sendBtn" type="button" class="register-button mt-0">Send Code</button>
-                            </div>
-                            <div class="col-md-6 col-12">
-                                <button id="confirm_code_btn" type="button" class="register-button mt-0">Verify Code</button>
-                            </div>
-                            <br><br>
-                            <div class="col-md-6 mb-20">
-                                <label>Password</label>
-                                <input id="passField" class="requiredField mb-0" type="password" placeholder="Password">
-                            </div>
-                            <div class="col-md-6 mb-20">
-                                <label>Confirm Password</label>
-                                <input id="confirmPassField" class="requiredField mb-0" type="password" placeholder="Confirm Password">
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" class="register-button mt-0">Register</button>
-                                <span style="margin-left:20px; color:green" id="registerMsg"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
+                </div>
             </div>
         </div>
     </div>
