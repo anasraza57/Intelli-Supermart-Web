@@ -497,9 +497,8 @@ def terms_n_conditions():
                            wishlist_count=wishlist_count)
 
 
-@app.route('/mobileCart', methods=['GET', 'POST', 'DELETE'])
+@app.route('/mobileCart')
 def mobileCart():
-    if request.method == "POST":
         total_products = request.form.get['total_products']
         sub_total = request.form.get['sub_total']
         delivery_charges = request.form.get['delivery_charges']
@@ -513,7 +512,7 @@ def mobileCart():
                 return redirect('/')
         else:
             session['MyCart'] = show_Items
-    else:
+
         mob_pictures = Picture.query.all()
         mob_products = []
         total_quantity = []
@@ -527,11 +526,11 @@ def mobileCart():
             for pic in mob_pictures:
                 if product.picture_id == pic.picture_id:
                     cart_pictures.append(pic)
-    return jsonify('/MyCart', total_quantity=total_products, grand_total=sub_total, delivery_charges=delivery_charges,
-                   pic=pic)
+        return jsonify(total_quantity=total_products, grand_total=sub_total, delivery_charges=delivery_charges,
+                       pic=mob_pictures, product=mob_products)
 
 
-@app.route('/DeletefromMobCart', methods=['PUT'])
+@app.route('/DeletefromMobCart', methods=['DELETE'])
 def DeletefromMobCart():
     if request.method == 'DELETE':
         prod_id = request.form.get['product_id']
