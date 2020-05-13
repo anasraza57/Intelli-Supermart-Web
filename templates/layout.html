@@ -59,7 +59,11 @@
                             <li><a href="/my-account">My account</a></li>
                             <li><a href="/wishlist">Wishlist</a></li>
                             <li><a href="/checkout">Checkout</a></li>
+                            {% if 'user' in session %}
+                            <li><a href="/logout">Logout</a></li>
+                            {% else %}
                             <li><a href="/phone-verification">Login</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                     <!-- end of header top menu -->

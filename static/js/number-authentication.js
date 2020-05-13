@@ -55,14 +55,14 @@ function enableVerifyCodeBtn(){
     disabledBtn = false;
 }
 
-function makePassRequired(){
+function showVerifiedIcon(){
     $('#verifiedImg').attr('src', '../static/images/icons/greentick.png');
     $('#verifiedImg').attr('height', '15px');
     $('#verifiedImg').attr('width', '15px');
-    $(".requiredField").attr("required", true);
 }
 
 $("#sendBtn").on('click', function() {
+//    generateRequest();
     disableSendCodeBtn();
     setTimeout(function(){
         var number = $('#number').val();
@@ -85,10 +85,11 @@ $("#sendBtn").on('click', function() {
                     // ...
                     alert("Phone number verified!")
                     disableVerifyCodeBtn();
-                    makePassRequired();
+                    showVerifiedIcon();
                     should_submit = true;
-                    isAuthenticated = true;
-                    console.log(user);
+                    var phone = user.phoneNumber;
+                    var uid = user.uid
+                    generateRequest(uid, phone);
                 }).catch(function (error) {
                     // User couldn't sign in (bad verification code?)
                     // ...
@@ -108,31 +109,16 @@ $("#sendBtn").on('click', function() {
         });
     }, 6000);
 });
-
-function comparePassword(){
-    var pass = $('#passField').val();
-    var confrmPass = $('#confirmPassField').val();
-    if(pass != confrmPass || pass.size== 0 || confrmPass==0){
-        return false;
-    }
-    return true;
+function generateRequest(id, phone){
+    $.ajax({
+            url: '/phone-verification',
+            type: 'POST',
+            data:{'customer_id' : id, "phone": phone},
+            success: function(result) {
+                window.location.replace("/");
+            },
+            failure: function(){
+                alert("failed");
+            }
+    });
 }
-
-$('#registrationForm').on('submit', function(){
-        if(!comparePassword()){
-            alert("Password and Confirm Password doesn't match!");
-            return false;
-        }
-//    if(!isAuthenticated){
-//        alert("Please verify Your Phone Number First!");
-//        return false;
-//    } else {
-//        if(!comparePassword()){
-//            alert("Password and Confirm Password doesn't match!");
-//            return false;
-//        }
-//    }
-    $('#registerMsg').html("**Registered Successfully");
-    return true;
-
-});

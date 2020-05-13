@@ -25,7 +25,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="bd995765-9b30-471c-a1ef-2c1fd0f223c7">
-        <schema name="public" object-types="table, view" />
+        <schema name="public" object-types="view, table" />
       </connection>
     </loaded-nodes>
   </component>
@@ -50,6 +50,7 @@
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="bd995765-9b30-471c-a1ef-2c1fd0f223c7" dataset="public.cart" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="bd995765-9b30-471c-a1ef-2c1fd0f223c7" dataset="public.customer" active-filter-id="" />
     <filter-actions connection-id="bd995765-9b30-471c-a1ef-2c1fd0f223c7" dataset="public.subcategory" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">

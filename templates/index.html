@@ -59,7 +59,11 @@
                             <li><a href="/my-account">My account</a></li>
                             <li><a href="/wishlist">Wishlist</a></li>
                             <li><a href="/checkout">Checkout</a></li>
+                            {% if 'user' in session %}
+                            <li><a href="/logout">Logout</a></li>
+                            {% else %}
                             <li><a href="/phone-verification">Login</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                     <!-- end of header top menu -->
@@ -368,8 +372,10 @@
                             </a>
                             <div class="product-hover-icons">
                                 <input name="quantity{{product.product_id}}" type="hidden" value="1">
-                                <a class="addToCartButton" name="{{product.product_id}}" data-tooltip="Add to cart"> <span class="icon_cart_alt"></span></a>
-                                <a class="addToWishlistButton" name="{{product.product_id}}" data-tooltip="Add to wishlist"> <span class="icon_heart_alt"></span> </a>
+                                <a class="addToCartButton" data-tooltip="Add to cart" name="{{product.product_id}}">
+                                    <span class="icon_cart_alt"></span></a>
+                                <a class="addToWishlistButton" data-tooltip="Add to wishlist"
+                                   name="{{product.product_id}}"> <span class="icon_heart_alt"></span> </a>
                             </div>
                         </div>
                         <div class="product-countdown" data-countdown="2020/01/08"></div>
@@ -739,6 +745,7 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
+
 </script>
 
 </body>

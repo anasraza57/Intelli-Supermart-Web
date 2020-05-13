@@ -2,6 +2,7 @@ from math import *
 from random import randint
 
 from flask import *
+from flask_mail import Mail
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
@@ -11,7 +12,15 @@ app.secret_key = 'super-secret-key'
 app.config[
     'SQLALCHEMY_DATABASE_URI'] = 'postgres://plbsmnpyhgnfkx:900ff23b99965614d20deeb707307f2add036274c83463f95e64dbff0384968b@ec2-107-20-234-175.compute-1.amazonaws.com:5432/d1hntjbagjg4ro'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config.update(
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT='465',
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME='bitf16a022@gmail.com',
+    MAIL_PASSWORD='Tempass@123'
+)
 
+mail = Mail(app)
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
@@ -62,9 +71,17 @@ class Cart(db.Model):
 
 class Customer(db.Model):
     __tablename__ = 'customer'
-    customer_id = db.Column(db.Integer, primary_key=True)
-    customer_phone = db.Column(db.Integer)
-    cart_id = db.Column(db.Integer)
+    customer_id = db.Column(db.String(200), primary_key=True)
+    customer_phone = db.Column(db.String(200))
+
+
+class Contact(db.Model):
+    __tablename__ = 'contact'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200))
+    email = db.Column(db.String(200))
+    subject = db.Column(db.String(200))
+    message = db.Column(db.String(1000))
 
 
 @app.route('/', methods=['GET', 'POST', 'DELETE'])
@@ -104,26 +121,6 @@ def index():
                            index=best_seller_products_cat_index, grand_total=grand_total,
                            best_seller_products=best_seller_products,
                            best_seller_products_images=best_seller_products_images, count=cart_count,
-                           wishlist_count=wishlist_count)
-
-
-@app.route('/about-us')
-def about_us():
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    return render_template('about-us.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
-
-
-@app.route('/careers')
-def careers():
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    return render_template('careers.html', category=category, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
 
 
@@ -274,18 +271,20 @@ def checkout():
                            wishlist_count=wishlist_count)
 
 
-@app.route('/compare')
-def compare():
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    return render_template('compare.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
-
-
-@app.route('/contact-us')
+@app.route('/contact-us', methods=['GET', 'POST'])
 def contact_us():
+    if request.method == 'POST':
+        name = request.form['customerName']
+        email = request.form['customerEmail']
+        subject = request.form['contactSubject']
+        message = request.form['contactMessage']
+        info = Contact(name=name, email=email, subject=subject, message=message)
+        db.session.add(info)
+        db.session.commit()
+        mail.send_message(subject,
+                          sender=email,
+                          recipients=["bitf16a022@gmail.com"],
+                          body=message + '\n\nRegards,' + '\n' + name + '\n' + email + '\n\nThanks!')
     categories = Category.query.all()
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
@@ -294,54 +293,36 @@ def contact_us():
                            wishlist_count=wishlist_count)
 
 
-@app.route('/delivery')
-def delivery():
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    return render_template('delivery.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
-
-
-@app.route('/faqs')
-def faqs():
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    return render_template('faqs.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
-
-
-@app.route('/how-to-order')
-def how_to_order():
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    return render_template('how-to-order.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
-
-
-@app.route('/how-to-pay')
-def how_to_pay():
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    return render_template('how-to-pay.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
-
-
-@app.route('/phone-verification')
+@app.route('/phone-verification', methods=['GET', 'POST'])
 def phone_verification():
+    if 'user' in session:
+        return redirect('/')
+    if request.method == 'POST':
+        customer_id = request.form['customer_id']
+        customer_phone = request.form['phone']
+        print(customer_id)
+        print(customer_phone)
+        if customer_id and customer_phone:
+            customer = Customer.query.filter_by(customer_id=customer_id).first()
+            if not customer:
+                customer = Customer(customer_id=customer_id, customer_phone=customer_phone)
+                db.session.add(customer)
+                db.session.commit()
+            session['user'] = customer_id
+            print(session['user'])
+            return "Success"
     categories = Category.query.all()
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
     return render_template('phone-verification.html', category=category, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('user')
+    return redirect('/')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -366,16 +347,6 @@ def my_account():
                            wishlist_count=wishlist_count)
 
 
-@app.route('/privacy-policy')
-def privacy_policy():
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    return render_template('privacy-policy.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
-
-
 @app.route('/product-details/<string:prod_slug>')
 def product_details(prod_slug):
     product = Product.query.filter_by(slug=prod_slug).first()
@@ -392,16 +363,6 @@ def product_details(prod_slug):
     wishlist_count = wishListCount()
     return render_template('product-details.html', product=product, picture=pic, category=category,
                            subcategory=subcategory, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
-
-
-@app.route('/return-n-refunds')
-def return_n_refunds():
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    return render_template('return-n-refunds.html', category=category, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
 
 
@@ -484,6 +445,86 @@ def Shopwithsubcategory(cate_slug, subcate_slug):
                            products=products,
                            pictures=subcate_products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
                            start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
+
+
+@app.route('/privacy-policy')
+def privacy_policy():
+    categories = Category.query.all()
+    category = categories[0]
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('privacy-policy.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
+
+
+@app.route('/about-us')
+def about_us():
+    categories = Category.query.all()
+    category = categories[0]
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('about-us.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
+
+
+@app.route('/careers')
+def careers():
+    categories = Category.query.all()
+    category = categories[0]
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('careers.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
+
+
+@app.route('/return-n-refunds')
+def return_n_refunds():
+    categories = Category.query.all()
+    category = categories[0]
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('return-n-refunds.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
+
+
+@app.route('/delivery')
+def delivery():
+    categories = Category.query.all()
+    category = categories[0]
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('delivery.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
+
+
+@app.route('/faqs')
+def faqs():
+    categories = Category.query.all()
+    category = categories[0]
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('faqs.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
+
+
+@app.route('/how-to-order')
+def how_to_order():
+    categories = Category.query.all()
+    category = categories[0]
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('how-to-order.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count)
+
+
+@app.route('/how-to-pay')
+def how_to_pay():
+    categories = Category.query.all()
+    category = categories[0]
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    return render_template('how-to-pay.html', category=category, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count)
 
 
