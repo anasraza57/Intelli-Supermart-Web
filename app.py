@@ -65,6 +65,7 @@ class Picture(db.Model):
 class Cart(db.Model):
     __tablename__ = 'cart'
     cart_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String(200))
     product_id = db.Column(db.Integer)
     product_quantity = db.Column(db.Integer)
 
@@ -78,10 +79,10 @@ class Customer(db.Model):
 class Contact(db.Model):
     __tablename__ = 'contact'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200))
     email = db.Column(db.String(200))
-    subject = db.Column(db.String(200))
     message = db.Column(db.String(1000))
+    name = db.Column(db.String(200))
+    subject = db.Column(db.String(200))
 
 
 @app.route('/', methods=['GET', 'POST', 'DELETE'])
@@ -129,33 +130,48 @@ def cart():
     if request.method == 'POST':
         product_id = request.form['product_id']
         quantity = request.form['quantity']
-        DictItems = {product_id: {'quantity': quantity}}
-
-        if 'Shoppingcart' in session:
-            if product_id in session['Shoppingcart']:
-                print("This product is already in cart!")
+        if 'user' in session:
+            cart_prod = Cart.query.filter_by(product_id=product_id, customer_id=session['user']).first()
+            if not cart_prod:
+                cart = Cart(customer_id=session['user'], product_id=product_id, product_quantity=quantity)
+                db.session.add(cart)
+                db.session.commit()
             else:
-                session['Shoppingcart'] = mergeDict(session['Shoppingcart'], DictItems)
-            # return redirect(request.referrer)
+                print("This product is already in cart!")
         else:
-            session['Shoppingcart'] = DictItems
-            # return redirect(request.referrer)
+            DictItems = {product_id: {'quantity': quantity}}
+            if 'Shoppingcart' in session:
+                if product_id in session['Shoppingcart']:
+                    print("This product is already in cart!")
+                else:
+                    session['Shoppingcart'] = mergeDict(session['Shoppingcart'], DictItems)
+            else:
+                session['Shoppingcart'] = DictItems
 
-    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0 and 'user' not in session:
         return redirect('/')
     else:
         pictures = Picture.query.all()
         subcategories = Subcategory.query.all()
         categories = Category.query.all()
         category = categories[0]
-
         products = []
         quantities = []
-        for key, item in session['Shoppingcart'].items():
-            quantity = item['quantity']
-            quantities.append(quantity)
-            product = Product.query.filter_by(product_id=key).first()
-            products.append(product)
+        if 'user' in session:
+            cart_products = Cart.query.filter_by(customer_id=session['user']).all()
+            if not cart_products:
+                return redirect('/')
+            else:
+                for prod in cart_products:
+                    product = Product.query.filter_by(product_id=prod.product_id).first()
+                    products.append(product)
+                    quantities.append(prod.product_quantity)
+        else:
+            for key, item in session['Shoppingcart'].items():
+                quantity = item['quantity']
+                quantities.append(quantity)
+                product = Product.query.filter_by(product_id=key).first()
+                products.append(product)
         products.reverse()
         cart_products_pics = []
         for product in products:
@@ -175,17 +191,29 @@ def updateCart():
     if request.method == 'PUT':
         quantity = int(request.form['quantity'])
         id = int(request.form['id'])
-        session.modified = True
-        total_price_of_all_prods = []
         total_prod_price = 0
-        for key, item in session['Shoppingcart'].items():
-            if int(key) == id:
-                item['quantity'] = quantity
-                product = Product.query.filter_by(product_id=id).first()
-                total_prod_price = product.product_price * quantity
-            product = Product.query.filter_by(product_id=key).first()
-            res = int(item['quantity']) * product.product_price
-            total_price_of_all_prods.append(res)
+        total_price_of_all_prods = []
+        if 'user' in session:
+            cart_prod = Cart.query.filter_by(product_id=id).first()
+            cart_prod.product_quantity = quantity
+            db.session.commit()
+            product = Product.query.filter_by(product_id=id).first()
+            total_prod_price = product.product_price * quantity
+            cart_prods = Cart.query.all()
+            for prod in cart_prods:
+                product = Product.query.filter_by(product_id=prod.product_id).first()
+                res = prod.product_quantity * product.product_price
+                total_price_of_all_prods.append(res)
+        else:
+            for key, item in session['Shoppingcart'].items():
+                if int(key) == id:
+                    session.modified = True
+                    item['quantity'] = quantity
+                    product = Product.query.filter_by(product_id=id).first()
+                    total_prod_price = product.product_price * quantity
+                product = Product.query.filter_by(product_id=key).first()
+                res = int(item['quantity']) * product.product_price
+                total_price_of_all_prods.append(res)
         grand_total = sum(total_price_of_all_prods)
         return jsonify(
             total=total_prod_price,
@@ -197,14 +225,18 @@ def updateCart():
 def deleteFromCart():
     if request.method == 'DELETE':
         id = int(request.form['product_id'])
-        print(session['Shoppingcart'])
-        print(id)
         try:
-            session.modified = True
-            for key, item in session['Shoppingcart'].items():
-                if int(key) == id:
-                    session['Shoppingcart'].pop(key, None)
-                    return "Deleted"
+            if 'user' in session:
+                cart = Cart.query.filter_by(product_id=id).first()
+                db.session.delete(cart)
+                db.session.commit()
+                return "Deleted"
+            if 'Shoppingcart' in session:
+                session.modified = True
+                for key, item in session['Shoppingcart'].items():
+                    if int(key) == id:
+                        session['Shoppingcart'].pop(key, None)
+                        return "Deleted"
         except Exception as e:
             print(e)
 
@@ -278,7 +310,7 @@ def contact_us():
         email = request.form['customerEmail']
         subject = request.form['contactSubject']
         message = request.form['contactMessage']
-        info = Contact(name=name, email=email, subject=subject, message=message)
+        info = Contact(email=email, message=message, name=name, subject=subject)
         db.session.add(info)
         db.session.commit()
         mail.send_message(subject,
@@ -300,8 +332,6 @@ def phone_verification():
     if request.method == 'POST':
         customer_id = request.form['customer_id']
         customer_phone = request.form['phone']
-        print(customer_id)
-        print(customer_phone)
         if customer_id and customer_phone:
             customer = Customer.query.filter_by(customer_id=customer_id).first()
             if not customer:
@@ -309,7 +339,10 @@ def phone_verification():
                 db.session.add(customer)
                 db.session.commit()
             session['user'] = customer_id
-            print(session['user'])
+            # Check for cart in session if it has products the add them in DB
+            check_cart_in_session()
+            # Check for wishlist in session if it has products the add them in DB
+
             return "Success"
     categories = Category.query.all()
     category = categories[0]
@@ -538,37 +571,104 @@ def terms_n_conditions():
                            wishlist_count=wishlist_count)
 
 
+def mergeDict(dict1, dict2):
+    if isinstance(dict1, list) and isinstance(dict2, list):
+        return dict1 + dict2
+    elif isinstance(dict1, dict) and isinstance(dict2, dict):
+        return dict(list(dict1.items()) + list(dict2.items()))
+    return False
+
+
+def cartItemsAndPrice():
+    if 'user' in session or 'Shoppingcart' in session:
+        total_price_of_all_prods = []
+        if 'user' in session:
+            cart_prods = Cart.query.filter_by(customer_id=session['user']).all()
+            cart_count = len(cart_prods)
+            if cart_count <= 0:
+                return 0, 0, 0
+            else:
+                for cart_product in cart_prods:
+                    quantity = cart_product.product_quantity
+                    product = Product.query.filter_by(product_id=cart_product.product_id).first()
+                    res = quantity * product.product_price
+                    total_price_of_all_prods.append(res)
+        else:
+            cart_count = len(session['Shoppingcart'])
+            if cart_count <= 0:
+                return 0, 0, 0
+            else:
+                for key, item in session['Shoppingcart'].items():
+                    product = Product.query.filter_by(product_id=key).first()
+                    res = int(item['quantity']) * product.product_price
+                    total_price_of_all_prods.append(res)
+        grand_total = sum(total_price_of_all_prods)
+        return cart_count, total_price_of_all_prods, grand_total
+    else:
+        return 0, 0, 0
+
+
+def wishListCount():
+    if 'Wishlist' in session:
+        wishlist_count = len(session['Wishlist'])
+        if len(session['Wishlist']) <= 0:
+            return 0
+        else:
+            return wishlist_count
+    else:
+        return 0
+
+
+def check_cart_in_session():
+    if 'Shoppingcart' in session:
+        prods = []
+        quantities = []
+        for key, item in session['Shoppingcart'].items():
+            quantity = item['quantity']
+            quantities.append(quantity)
+            product = Product.query.filter_by(product_id=key).first()
+            prods.append(product)
+        for index in range(0, len(prods)):
+            print(prods[index].product_name, quantities[index])
+            cart = Cart.query.filter_by(product_id=prods[index].product_id, customer_id=session['user']).first()
+            if not cart:
+                cart = Cart(customer_id=session['user'], product_id=prods[index].product_id,
+                            product_quantity=quantities[index])
+                db.session.add(cart)
+                db.session.commit()
+
+
 @app.route('/mobileCart')
 def mobileCart():
-        total_products = request.form.get['total_products']
-        sub_total = request.form.get['sub_total']
-        delivery_charges = request.form.get['delivery_charges']
-        prod_id = request.form.get['prod_id']
-        show_Items = {prod_id: {'total_products': total_products}}
+    total_products = request.form.get['total_products']
+    sub_total = request.form.get['sub_total']
+    delivery_charges = request.form.get['delivery_charges']
+    prod_id = request.form.get['prod_id']
+    show_Items = {prod_id: {'total_products': total_products}}
 
-        if 'MyCart' in session:
-            if prod_id in session['MyCart']:
-                print("Product already exists")
-            if len(session['MyCart']) <= 0:
-                return redirect('/')
-        else:
-            session['MyCart'] = show_Items
+    if 'MyCart' in session:
+        if prod_id in session['MyCart']:
+            print("Product already exists")
+        if len(session['MyCart']) <= 0:
+            return redirect('/')
+    else:
+        session['MyCart'] = show_Items
 
-        mob_pictures = Picture.query.all()
-        mob_products = []
-        total_quantity = []
-        for key, product in session['MyCart'].product():
-            total_quantities = product['quantity']
-            total_quantity.append(total_quantities)
-            mob_product = Product.query.filter_by(prod_id=key).first()
-            mob_products.append(mob_product)
-        cart_pictures = []
-        for product in mob_products:
-            for pic in mob_pictures:
-                if product.picture_id == pic.picture_id:
-                    cart_pictures.append(pic)
-        return jsonify(total_quantity=total_products, grand_total=sub_total, delivery_charges=delivery_charges,
-                       pic=mob_pictures, product=mob_products)
+    mob_pictures = Picture.query.all()
+    mob_products = []
+    total_quantity = []
+    for key, product in session['MyCart'].product():
+        total_quantities = product['quantity']
+        total_quantity.append(total_quantities)
+        mob_product = Product.query.filter_by(prod_id=key).first()
+        mob_products.append(mob_product)
+    cart_pictures = []
+    for product in mob_products:
+        for pic in mob_pictures:
+            if product.picture_id == pic.picture_id:
+                cart_pictures.append(pic)
+    return jsonify(total_quantity=total_products, grand_total=sub_total, delivery_charges=delivery_charges,
+                   pic=mob_pictures, product=mob_products)
 
 
 @app.route('/DeletefromMobCart', methods=['DELETE'])
@@ -584,42 +684,6 @@ def DeletefromMobCart():
                     return "Product Removed"
         except Exception as e:
             print(e)
-
-
-def mergeDict(dict1, dict2):
-    if isinstance(dict1, list) and isinstance(dict2, list):
-        return dict1 + dict2
-    elif isinstance(dict1, dict) and isinstance(dict2, dict):
-        return dict(list(dict1.items()) + list(dict2.items()))
-    return False
-
-
-def cartItemsAndPrice():
-    if 'Shoppingcart' in session:
-        cart_count = len(session['Shoppingcart'])
-        if len(session['Shoppingcart']) <= 0:
-            return 0, 0, 0
-        else:
-            total_price_of_all_prods = []
-            for key, item in session['Shoppingcart'].items():
-                product = Product.query.filter_by(product_id=key).first()
-                res = int(item['quantity']) * product.product_price
-                total_price_of_all_prods.append(res)
-            grand_total = sum(total_price_of_all_prods)
-            return cart_count, total_price_of_all_prods, grand_total
-    else:
-        return 0, 0, 0
-
-
-def wishListCount():
-    if 'Wishlist' in session:
-        wishlist_count = len(session['Wishlist'])
-        if len(session['Wishlist']) <= 0:
-            return 0
-        else:
-            return wishlist_count
-    else:
-        return 0
 
 
 @app.route('/mobileMainCtaegory', methods=['GET'])
