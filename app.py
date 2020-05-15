@@ -70,6 +70,13 @@ class Cart(db.Model):
     product_quantity = db.Column(db.Integer)
 
 
+class Wishlist(db.Model):
+    __tablename__ = 'wishlist'
+    wishlist_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String(200))
+    product_id = db.Column(db.Integer)
+
+
 class Customer(db.Model):
     __tablename__ = 'customer'
     customer_id = db.Column(db.String(200), primary_key=True)
@@ -194,12 +201,12 @@ def updateCart():
         total_prod_price = 0
         total_price_of_all_prods = []
         if 'user' in session:
-            cart_prod = Cart.query.filter_by(product_id=id).first()
+            cart_prod = Cart.query.filter_by(product_id=id, customer_id=session['user']).first()
             cart_prod.product_quantity = quantity
             db.session.commit()
             product = Product.query.filter_by(product_id=id).first()
             total_prod_price = product.product_price * quantity
-            cart_prods = Cart.query.all()
+            cart_prods = Cart.query.filter_by(customer_id=session['user']).all()
             for prod in cart_prods:
                 product = Product.query.filter_by(product_id=prod.product_id).first()
                 res = prod.product_quantity * product.product_price
@@ -227,7 +234,7 @@ def deleteFromCart():
         id = int(request.form['product_id'])
         try:
             if 'user' in session:
-                cart = Cart.query.filter_by(product_id=id).first()
+                cart = Cart.query.filter_by(product_id=id, customer_id=session['user']).first()
                 db.session.delete(cart)
                 db.session.commit()
                 return "Deleted"
@@ -245,15 +252,24 @@ def deleteFromCart():
 def wishlist():
     if request.method == 'POST':
         product_id = int(request.form['product_id'])
-        ListItems = [product_id]
-        if 'Wishlist' in session:
-            if product_id in session['Wishlist']:
-                print("This product is already in wishList!")
+        if 'user' in session:
+            wishlist_prod = Wishlist.query.filter_by(product_id=product_id, customer_id=session['user']).first()
+            if not wishlist_prod:
+                wishlist = Wishlist(customer_id=session['user'], product_id=product_id)
+                db.session.add(wishlist)
+                db.session.commit()
             else:
-                session['Wishlist'] = mergeDict(session['Wishlist'], ListItems)
+                print("This product is already in wishList!")
         else:
-            session['Wishlist'] = ListItems
-    if 'Wishlist' not in session or len(session['Wishlist']) <= 0:
+            ListItems = [product_id]
+            if 'Wishlist' in session:
+                if product_id in session['Wishlist']:
+                    print("This product is already in wishList!")
+                else:
+                    session['Wishlist'] = mergeDict(session['Wishlist'], ListItems)
+            else:
+                session['Wishlist'] = ListItems
+    if 'Wishlist' not in session or len(session['Wishlist']) <= 0 and 'user' not in session:
         return redirect('/')
     else:
         pictures = Picture.query.all()
@@ -261,9 +277,18 @@ def wishlist():
         categories = Category.query.all()
         category = categories[0]  # for layout.html
         products = []
-        for key in session['Wishlist']:
-            product = Product.query.filter_by(product_id=key).first()
-            products.append(product)
+        if 'user' in session:
+            wishlist_prod = Wishlist.query.filter_by(customer_id=session['user']).all()
+            if not wishlist_prod:
+                return redirect('/')
+            else:
+                for prod in wishlist_prod:
+                    product = Product.query.filter_by(product_id=prod.product_id).first()
+                    products.append(product)
+        else:
+            for key in session['Wishlist']:
+                product = Product.query.filter_by(product_id=key).first()
+                products.append(product)
         products.reverse()
         wishlist_products_pics = []
         for product in products:
@@ -271,12 +296,12 @@ def wishlist():
                 if product.picture_id == pic.picture_id:
                     wishlist_products_pics.append(pic)
 
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    return render_template('wishlist.html', products=products, pictures=wishlist_products_pics,
-                           subcategories=subcategories, category=category, categories=categories,
-                           grand_total=grand_total,
-                           count=cart_count, wishlist_count=wishlist_count)
+        cart_count, totals, grand_total = cartItemsAndPrice()
+        wishlist_count = wishListCount()
+        return render_template('wishlist.html', products=products, pictures=wishlist_products_pics,
+                               subcategories=subcategories, category=category, categories=categories,
+                               grand_total=grand_total,
+                               count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/deleteFromWishlist', methods=['DELETE'])
@@ -284,11 +309,17 @@ def deleteFromWishlist():
     if request.method == 'DELETE':
         id = int(request.form['product_id'])
         try:
-            session.modified = True
-            for key in session['Wishlist']:
-                if int(key) == id:
-                    session['Wishlist'].remove(key)
-                    return "Deleted"
+            if 'user' in session:
+                wishlist = Wishlist.query.filter_by(product_id=id, customer_id=session['user']).first()
+                db.session.delete(wishlist)
+                db.session.commit()
+                return "Deleted"
+            if 'Wishlist' in session:
+                session.modified = True
+                for key in session['Wishlist']:
+                    if int(key) == id:
+                        session['Wishlist'].remove(key)
+                        return "Deleted"
         except Exception as e:
             print(e)
 
@@ -339,10 +370,10 @@ def phone_verification():
                 db.session.add(customer)
                 db.session.commit()
             session['user'] = customer_id
-            # Check for cart in session if it has products the add them in DB
+            # Check for cart in session if it has products then add them in DB
             check_cart_in_session()
-            # Check for wishlist in session if it has products the add them in DB
-
+            # Check for wishlist in session if it has products then add them in DB
+            check_wishlist_in_session()
             return "Success"
     categories = Category.query.all()
     category = categories[0]
@@ -609,12 +640,17 @@ def cartItemsAndPrice():
 
 
 def wishListCount():
-    if 'Wishlist' in session:
-        wishlist_count = len(session['Wishlist'])
-        if len(session['Wishlist']) <= 0:
-            return 0
+    if 'user' in session or 'Wishlist' in session:
+        if 'user' in session:
+            wishlist_prods = Wishlist.query.filter_by(customer_id=session['user']).all()
+            wishlist_count = len(wishlist_prods)
+            if wishlist_count <= 0:
+                return 0
         else:
-            return wishlist_count
+            wishlist_count = len(session['Wishlist'])
+            if len(session['Wishlist']) <= 0:
+                return 0
+        return wishlist_count
     else:
         return 0
 
@@ -635,6 +671,21 @@ def check_cart_in_session():
                 cart = Cart(customer_id=session['user'], product_id=prods[index].product_id,
                             product_quantity=quantities[index])
                 db.session.add(cart)
+                db.session.commit()
+
+
+def check_wishlist_in_session():
+    if 'Wishlist' in session:
+        prods = []
+        for product_id in session['Wishlist']:
+            product = Product.query.filter_by(product_id=product_id).first()
+            prods.append(product)
+        for prod in prods:
+            print(prod.product_name)
+            wishlist = Wishlist.query.filter_by(product_id=prod.product_id, customer_id=session['user']).first()
+            if not wishlist:
+                wishlist = Wishlist(customer_id=session['user'], product_id=prod.product_id)
+                db.session.add(wishlist)
                 db.session.commit()
 
 
