@@ -124,10 +124,11 @@ def index():
 
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Home"
     return render_template('index.html', categories=categories, pictures=pictures, products=products,
                            best_seller_products_categories=best_seller_products_categories,
                            index=best_seller_products_cat_index, grand_total=grand_total,
-                           best_seller_products=best_seller_products,
+                           best_seller_products=best_seller_products, title=title,
                            best_seller_products_images=best_seller_products_images, count=cart_count,
                            wishlist_count=wishlist_count)
 
@@ -188,8 +189,9 @@ def cart():
 
         cart_count, total, grand_total = cartItemsAndPrice()
         wishlist_count = wishListCount()
+        title = "Cart"
         return render_template('cart.html', products=products, pictures=cart_products_pics, category=category,
-                               subcategories=subcategories, categories=categories, quantities=quantities,
+                               subcategories=subcategories, categories=categories, quantities=quantities, title=title,
                                total=total, grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
@@ -298,10 +300,10 @@ def wishlist():
 
         cart_count, totals, grand_total = cartItemsAndPrice()
         wishlist_count = wishListCount()
-        return render_template('wishlist.html', products=products, pictures=wishlist_products_pics,
+        title = "Wishlist"
+        return render_template('wishlist.html', products=products, pictures=wishlist_products_pics, title=title,
                                subcategories=subcategories, category=category, categories=categories,
-                               grand_total=grand_total,
-                               count=cart_count, wishlist_count=wishlist_count)
+                               grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count)
 
 
 @app.route('/deleteFromWishlist', methods=['DELETE'])
@@ -330,7 +332,8 @@ def checkout():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('checkout.html', category=category, grand_total=grand_total, count=cart_count,
+    title = "Checkout"
+    return render_template('checkout.html', category=category, grand_total=grand_total, count=cart_count, title=title,
                            wishlist_count=wishlist_count)
 
 
@@ -352,7 +355,8 @@ def contact_us():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
-    return render_template('contact-us.html', category=category, grand_total=grand_total, count=cart_count,
+    title = "Contact Us"
+    return render_template('contact-us.html', category=category, grand_total=grand_total, count=cart_count, title=title,
                            wishlist_count=wishlist_count)
 
 
@@ -379,8 +383,9 @@ def phone_verification():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Phone Verification"
     return render_template('phone-verification.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -397,18 +402,22 @@ def register():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Register"
     return render_template('phone-verification.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/my-account')
 def my_account():
+    if 'user' not in session:
+        return redirect('/phone-verification')
     categories = Category.query.all()
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "My Account"
     return render_template('my-account.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/product-details/<string:prod_slug>')
@@ -425,8 +434,9 @@ def product_details(prod_slug):
 
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Product Details"
     return render_template('product-details.html', product=product, picture=pic, category=category,
-                           subcategory=subcategory, grand_total=grand_total, count=cart_count,
+                           subcategory=subcategory, grand_total=grand_total, count=cart_count, title=title,
                            wishlist_count=wishlist_count)
 
 
@@ -467,10 +477,11 @@ def shop(cate_slug):
         start_val += 1
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Shop"
     return render_template('shop.html', category=category, subcategories=subcategories, products=cate_products,
                            pictures=cate_products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
                            start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/subshop/<string:cate_slug>/<string:subcate_slug>')
@@ -505,11 +516,11 @@ def Shopwithsubcategory(cate_slug, subcate_slug):
         start_val += 1
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Shop"
     return render_template('subshop.html', category=category, subcategories=subcategories, subcategory=subcategory,
-                           products=products,
-                           pictures=subcate_products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
-                           start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           products=products, pictures=subcate_products_pics, number_of_pages=number_of_pages,
+                           total_prods=total_prods, start_val=start_val, end_val=end_val, grand_total=grand_total,
+                           count=cart_count, wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/privacy-policy')
@@ -518,8 +529,9 @@ def privacy_policy():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Privacy Policy"
     return render_template('privacy-policy.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/about-us')
@@ -528,8 +540,9 @@ def about_us():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "About Us"
     return render_template('about-us.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/careers')
@@ -538,8 +551,9 @@ def careers():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Careers"
     return render_template('careers.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/return-n-refunds')
@@ -548,8 +562,9 @@ def return_n_refunds():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Return n Refunds"
     return render_template('return-n-refunds.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/delivery')
@@ -558,8 +573,9 @@ def delivery():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Delivery"
     return render_template('delivery.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/faqs')
@@ -568,8 +584,9 @@ def faqs():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "FAQs"
     return render_template('faqs.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/how-to-order')
@@ -578,8 +595,9 @@ def how_to_order():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "How to Order"
     return render_template('how-to-order.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/how-to-pay')
@@ -588,8 +606,9 @@ def how_to_pay():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "How to Pay"
     return render_template('how-to-pay.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/terms-n-conditions')
@@ -598,8 +617,9 @@ def terms_n_conditions():
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
+    title = "Terms and Conditions"
     return render_template('terms-n-conditions.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count)
+                           wishlist_count=wishlist_count, title=title)
 
 
 def mergeDict(dict1, dict2):
