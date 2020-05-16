@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <title>Intelli Supermart</title>
+    <title>{{title}} - Intelli Supermart</title>
     <meta content="" name="description">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <!-- Favicon -->
@@ -59,7 +59,11 @@
                             <li><a href="/my-account">My account</a></li>
                             <li><a href="/wishlist">Wishlist</a></li>
                             <li><a href="/checkout">Checkout</a></li>
-                            <li><a href="" id="loginBtn">Login</a></li>
+                            {% if 'user' in session %}
+                            <li><a href="/logout">Logout</a></li>
+                            {% else %}
+                            <li><a href="/phone-verification">Login</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                     <!-- end of header top menu -->
@@ -105,52 +109,10 @@
                                 </div>
                                 <div class="cart-info d-inline-block">
                                     <p>Shopping Cart
-                                        <span>
-												2 items - Rs 450
-											</span>
+                                        <span>{{count}} items - <span class="grand_total">Rs {{grand_total}}</span></span>
                                     </p>
                                 </div>
                             </a>
-                            <!-- end of shopping cart -->
-
-                            <!-- cart floating box -->
-                            <div class="cart-floating-box" id="cart-floating-box">
-                                <div class="cart-items">
-                                    <div class="cart-float-single-item d-flex">
-                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
-                                        <div class="cart-float-single-item-image">
-                                            <a href="/product-details"><img
-                                                    alt="" class="img-flui"></a>
-                                        </div>
-                                        <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="/product-details">Supreme Tea</a></p>
-                                            <p class="price"><span class="count">1x</span>Rs 250</p>
-                                        </div>
-                                    </div>
-                                    <div class="cart-float-single-item d-flex">
-                                        <span class="remove-item"><a href="#"><i class="fa fa-times"></i></a></span>
-                                        <div class="cart-float-single-item-image">
-                                            <a href="/product-details"><img
-                                                    alt=""
-                                                    class="img-fluid"></a>
-                                        </div>
-                                        <div class="cart-float-single-item-desc">
-                                            <p class="product-title"><a href="/product-details">Nutella</a></p>
-                                            <p class="price"><span class="count">1x</span>Rs 200</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="cart-calculation">
-                                    <div class="calculation-details">
-                                        <p class="total">Subtotal <span>Rs 450</span></p>
-                                    </div>
-                                    <div class="floating-cart-btn text-center">
-                                        <a href="/checkout">Checkout</a>
-                                        <a href="/cart">View Cart</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end of cart floating box -->
                         </div>
                     </div>
 
@@ -159,8 +121,10 @@
                         <nav>
                             <ul>
                                 <li><a href="/">HOME</a></li>
-                                <li><a href="/shop">Shop</a></li>
+                                <li><a href="/shop/{{category.slug}}">Shop</a></li>
                                 <li><a href="/contact-us">CONTACT</a></li>
+                                <li><a href="/wishlist">WishList ({{wishlist_count}})</a></li>
+                                <li><a href="/cart">Cart ({{count}})</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -390,7 +354,6 @@
 <!-- AJAX mail JS -->
 <script src="{{url_for('static', filename = 'js/ajax-mail.js')}}"></script>
 
-
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
 
@@ -404,144 +367,6 @@
 
 <!-- Number Authenticate JS -->
 <script src="{{url_for('static', filename = 'js/number-authentication.js')}}"></script>
-
-<!--<script>-->
-<!--    var isAuthenticated = false;-->
-<!--    var disabledBtn = false;-->
-<!--    // Your web app's Firebase configuration-->
-<!--    var firebaseConfig = {-->
-<!--        apiKey: "AIzaSyCnfJW9IXONV7ZcKKAgYdC3fedXUqNMH9E",-->
-<!--        authDomain: "intelli-super-mart.firebaseapp.com",-->
-<!--        databaseURL: "https://intelli-super-mart.firebaseio.com",-->
-<!--        projectId: "intelli-super-mart",-->
-<!--        storageBucket: "intelli-super-mart.appspot.com",-->
-<!--        messagingSenderId: "298617996174",-->
-<!--        appId: "1:298617996174:web:3d206b0d0dda2aee845adf",-->
-<!--        measurementId: "G-8FMZRBHGFX"-->
-<!--    };-->
-<!--    // Initialize Firebase-->
-<!--    firebase.initializeApp(firebaseConfig);-->
-<!--    firebase.analytics();-->
-
-<!--    // To apply the default browser preference instead of explicitly setting it.-->
-<!--    firebase.auth().useDeviceLanguage();-->
-
-<!--     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {-->
-<!--          'size': 'invisible',-->
-<!--          'callback': function(response) {-->
-<!--            //alert("recaptcha success");-->
-<!--          },-->
-<!--          'expired-callback': function() {-->
-<!--            //alert("recaptcha failed");-->
-<!--          }-->
-<!--      });-->
-
-<!--    function disableSendCodeBtn(){-->
-<!--        $("#sendBtn").attr("disabled", true);-->
-<!--        $("#sendBtn").css('cursor', 'default');-->
-<!--        $("#sendBtn").css('background-color', 'grey');-->
-<!--    }-->
-
-<!--    function enableSendCodeBtn(){-->
-<!--        $("#sendBtn").removeAttr("disabled");-->
-<!--        $("#sendBtn").css('cursor', 'pointer');-->
-<!--        $("#sendBtn").css('background-color', '#5B3F91');-->
-<!--    }-->
-
-<!--    function disableVerifyCodeBtn(){-->
-<!--        $("#verificationCode").val("");-->
-<!--        $("#confirm_code_btn").attr("disabled", true);-->
-<!--        $("#confirm_code_btn").css('cursor', 'default');-->
-<!--        $("#confirm_code_btn").css('background-color', 'grey');-->
-<!--        disabledBtn = true;-->
-<!--    }-->
-
-<!--    function enableVerifyCodeBtn(){-->
-<!--        $("#confirm_code_btn").removeAttr("disabled");-->
-<!--        $("#confirm_code_btn").css('cursor', 'pointer');-->
-<!--        $("#confirm_code_btn").css('background-color', '#5B3F91');-->
-<!--        disabledBtn = false;-->
-<!--    }-->
-
-<!--    function makePassRequired(){-->
-<!--        $('#verifiedImg').attr('src', '../static/images/icons/greentick.png');-->
-<!--        $('#verifiedImg').attr('height', '15dp');-->
-<!--        $('#verifiedImg').attr('width', '15dp');-->
-<!--        $(".requiredField").attr("required", true);-->
-<!--    }-->
-
-<!--    $("#sendBtn").on('click', function() {-->
-<!--        disableSendCodeBtn();-->
-<!--        setTimeout(function(){-->
-<!--            var number = $('#number').val();-->
-<!--            var appVerifier = window.recaptchaVerifier;-->
-<!--            firebase.auth().signInWithPhoneNumber(number, appVerifier)-->
-<!--            .then(function (confirmationResult) {-->
-<!--                // SMS sent. Prompt user to type the code from the message, then sign the-->
-<!--                // user in with confirmationResult.confirm(code).-->
-<!--                window.confirmationResult = confirmationResult;-->
-<!--                if(disabledBtn){-->
-<!--                    enableVerifyCodeBtn();-->
-<!--                }-->
-<!--                enableSendCodeBtn();-->
-
-<!--                $("#confirm_code_btn").on('click', function(){-->
-<!--                    var code = $("#verificationCode").val();-->
-<!--                    confirmationResult.confirm(code).then(function (result) {-->
-<!--                        // User signed in successfully.-->
-<!--                        var user = result.user;-->
-<!--                        // ...-->
-<!--                        alert("Phone number verified!")-->
-<!--                        disableVerifyCodeBtn();-->
-<!--                        makePassRequired();-->
-<!--                        should_submit = true;-->
-<!--                        isAuthenticated = true;-->
-<!--                        console.log(user);-->
-<!--                    }).catch(function (error) {-->
-<!--                        // User couldn't sign in (bad verification code?)-->
-<!--                        // ...-->
-<!--                        alert("Phone number verification failed!");-->
-<!--                    });-->
-<!--                });-->
-<!--            }).catch(function (error) {-->
-<!--                console.log(error);-->
-<!--                enableSendCodeBtn();-->
-<!--                if(error['code'] == "auth/too-many-requests"){-->
-<!--                    alert("Too many attempts! please try again later.")-->
-<!--                }else if(error['code'] == 'auth/invalid-phone-number'){-->
-<!--                    alert("Please provide a valid phone number!")-->
-<!--                }else{-->
-<!--                    alert("Something went wrong! please try again later.")-->
-<!--                }-->
-<!--            });-->
-<!--        }, 5000);-->
-<!--    });-->
-
-<!--    function comparePassword(){-->
-<!--        var pass = $('passField').val();-->
-<!--        var confrmPass = $('confirmPassField').val();-->
-<!--        if(pass === confrmPass){-->
-<!--            return true;-->
-<!--        }-->
-<!--        return false;-->
-<!--    }-->
-
-<!--    $('#registrationForm').on('submit', function(){-->
-<!--        if(!isAuthenticated){-->
-<!--            alert("Please verify Your Phone Number First!");-->
-<!--            return false;-->
-<!--        } else {-->
-<!--            if(comparePassword()){-->
-<!--                alert("Password and Confirm Password doesn't match!");-->
-<!--                return false;-->
-<!--            }-->
-<!--        }-->
-<!--        return true;-->
-
-<!--    });-->
-
-
-<!--</script>-->
 
 </body>
 

@@ -45,7 +45,8 @@
                     <!--=======  single contact block  =======-->
 
                     <div class="single-contact-block">
-                        <h4><img src="{{url_for('static', filename = 'images/icons/contact-icon1.png')}}" alt=""> Address</h4>
+                        <h4><img alt="" src="{{url_for('static', filename = 'images/icons/contact-icon1.png')}}">
+                            Address</h4>
                         <p>PUCIT, Anarkali Bazar, Lahore, Pakistan</p>
                     </div>
 
@@ -54,7 +55,8 @@
                     <!--=======  single contact block  =======-->
 
                     <div class="single-contact-block">
-                        <h4><img src="{{url_for('static', filename = 'images/icons/contact-icon2.png')}}" alt=""> Phone</h4>
+                        <h4><img alt="" src="{{url_for('static', filename = 'images/icons/contact-icon2.png')}}"> Phone
+                        </h4>
                         <p>Mobile: (+92) 323 0496310</p>
                         <p>Hotline: 042 123 45678</p>
                     </div>
@@ -64,7 +66,8 @@
                     <!--=======  single contact block  =======-->
 
                     <div class="single-contact-block">
-                        <h4><img src="{{url_for('static', filename = 'images/icons/contact-icon3.png')}}" alt=""> Email</h4>
+                        <h4><img alt="" src="{{url_for('static', filename = 'images/icons/contact-icon3.png')}}"> Email
+                        </h4>
                         <p>bitf16a019@pucit.edu.pk</p>
                         <p>bitf16a022@pucit.edu.pk</p>
                         <p>bitf16a030@pucit.edu.pk</p>
@@ -84,25 +87,25 @@
                     <h3 class="contact-page-title">Tell Us Your Message</h3>
 
                     <div class="contact-form">
-                        <form id="contact-form" enctype="multipart/form-data" action="/contact-us" method="post">
+                        <form action="/contact-us" enctype="multipart/form-data" id="contact-form" method="post">
                             <div class="form-group">
                                 <label>Your Name <span class="required">*</span></label>
-                                <input type="text" name="customerName" id="customername" required>
+                                <input id="customerName" name="customerName" required type="text">
                             </div>
                             <div class="form-group">
                                 <label>Your Email <span class="required">*</span></label>
-                                <input type="email" name="customerEmail" id="customerEmail" required>
+                                <input id="customerEmail" name="customerEmail" required type="email">
                             </div>
                             <div class="form-group">
                                 <label>Subject</label>
-                                <input type="text" name="contactSubject" id="contactSubject">
+                                <input id="contactSubject" name="contactSubject" type="text">
                             </div>
                             <div class="form-group">
-                                <label>Your Message</label>
-                                <textarea name="contactMessage" id="contactMessage"></textarea>
+                                <label>Your Message <span class="required">*</span></label>
+                                <textarea id="contactMessage" name="contactMessage" required></textarea>
                             </div>
                             <div class="form-group">
-                                <button type="submit" id="submit" class="contact-form-btn">
+                                <button class="contact-form-btn" id="submit">
                                     send
                                 </button>
                             </div>

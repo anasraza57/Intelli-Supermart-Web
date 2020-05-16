@@ -33,7 +33,18 @@ $('.addToCartButton').on("click", function(){
         type: 'POST',
         data:{'product_id' : prod_id, 'quantity': quantity},
         success: function(result) {
-            window.location.reload();
+            if (result == "duplicate"){
+                swal("Couldn't add to wishlist","This product is already in cart!", "warning");
+            }else{
+                swal({
+                    title: "Added!",
+                    text: "This product is added to cart.",
+                    icon: "success",
+                })
+                .then((value) => {
+                    window.location.reload();
+                });
+            }
         },
         error: function(){
             swal("Couldn't add to cart","Please try again later", "error");
@@ -53,7 +64,8 @@ $('.updateInCartButton').on("click", function(){
         success: function(result) {
             $('.total'+prod_id).html("Rs " + result['total']);
             $('.grand_total').html("Rs " + result['grand_total']);
-        }
+            swal("Updated","This product is updated to wishlist", "success");
+        },
         error: function() {
             swal("Couldn't update the cart","Please try again later", "error");
         }
@@ -68,7 +80,14 @@ $('.deleteFromCartButton').on("click", function(){
         type: 'DELETE',
         data:{'product_id' : prod_id},
         success: function(result) {
-            window.location.reload();
+            swal({
+                title: "Deleted!",
+                text: "This product is deleted from cart.",
+                icon: "success",
+            })
+            .then((value) => {
+                window.location.reload();
+            });
         },
         error: function(){
             swal("Couldn't delete from cart","Please try again later", "error");
@@ -84,7 +103,12 @@ $('.addToWishlistButton').on("click", function(){
         type: 'POST',
         data:{'product_id' : prod_id},
         success: function(result) {
-            window.location.reload();
+            if (result == "duplicate"){
+                swal("Couldn't add to wishlist","This product is already in wishList!", "warning");
+            }else{
+                swal("Added","This product is added to wishlist", "success");
+                window.location.reload();
+            }
         },
         error: function(){
             swal("Couldn't add to wishlist","Please try again later", "error");
@@ -99,7 +123,14 @@ $('.deleteFromWishlistButton').on("click", function(){
         type: 'DELETE',
         data:{'product_id' : prod_id},
         success: function(result) {
-            window.location.reload();
+            swal({
+                title: "Deleted!",
+                text: "This product is deleted from wishlist.",
+                icon: "success",
+            })
+            .then((value) => {
+                window.location.reload();
+            });
         },
         error: function(){
             swal("Couldn't delete from wishlist","Please try again later", "error");
@@ -130,40 +161,52 @@ $('#placeOrderButton').on('click', function(){
         data:{'firstName' : firstName, 'lastName' : lastName, 'email' : email, 'gender' : gender,
         'address' : address, 'city' : city, 'zipCode' : zipcode, 'grandTotal' : grandTotal},
         success: function(result) {
-            swal("Your oder is Placed!","", "success");
-            window.location.reload();
+            swal({
+                title: "Congrats!",
+                text: "Your order is Placed.",
+                icon: "success",
+            })
+            .then((value) => {
+                window.location.reload();
+            });
         },
         error: function(){
-            swal("Your oder isn't Placed!","Please try again later", "error");
-            window.location.replace("/");
+            swal({
+                title: "Your oder isn't Placed!",
+                text: "Please try again later.",
+                icon: "error",
+            })
+            .then((value) => {
+                window.location.replace("/");
+            });
         }
     });
 });
 
-//$('#loginBtn').on("click", function () {
-//    swal({
-//        title: "Phone Number Verification",
-//        text: "Enter your mobile number to Login/SignUp:",
-//        content: "input",
-//        buttons: {
-//            confirm: "Next"
-//        },
-//        animation: "slide-from-top"
-//    }).then(val => {
-//        if (val) {
-//            swal({
-//                title: "Phone Number Verification",
-//                text: "Enter 4 digit code to your phone\n" + val,
-//                content: "input"
-//            }).then(val2 => {
-//                if (val2) {
-//                    swal({
-//                        title: "Thanks!",
-//                        text: "Logged In",
-//                        icon: "success"
-//                    });
-//                }
-//            });
-//        }
-//    });
-//});
+$('#submit').on('click', function(){
+    $('#contact-form').submit(function(){
+        $.ajax({
+            url: $('#contact-form').attr('action'),
+            type: 'POST',
+            data : $('#contact-form').serialize(),
+            success: function(result){
+                swal({
+                    title: "Your message has been sent!",
+                    text: "We will contact you shortly.",
+                    icon: "success"
+                });
+            },
+            error: function(){
+                swal({
+                    title: "Your message has not been sent!",
+                    text: "Please try again later.",
+                    icon: "error",
+                })
+                .then((value) => {
+                    window.location.replace("/");
+                });
+            }
+        });
+        return false;
+    });
+});

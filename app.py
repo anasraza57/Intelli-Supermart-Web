@@ -177,17 +177,20 @@ def cart():
                 cart = Cart(customer_id=session['user'], product_id=product_id, product_quantity=quantity)
                 db.session.add(cart)
                 db.session.commit()
+                return "success"
             else:
-                print("This product is already in cart!")
+                return "duplicate"
         else:
             DictItems = {product_id: {'quantity': quantity}}
             if 'Shoppingcart' in session:
                 if product_id in session['Shoppingcart']:
-                    print("This product is already in cart!")
+                    return "duplicate"
                 else:
                     session['Shoppingcart'] = mergeDict(session['Shoppingcart'], DictItems)
+                    return "success"
             else:
                 session['Shoppingcart'] = DictItems
+                return "success"
 
     if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0 and 'user' not in session:
         return redirect('/')
@@ -293,17 +296,20 @@ def wishlist():
                 wishlist = Wishlist(customer_id=session['user'], product_id=product_id)
                 db.session.add(wishlist)
                 db.session.commit()
+                return "success"
             else:
-                print("This product is already in wishList!")
+                return "duplicate"
         else:
             ListItems = [product_id]
             if 'Wishlist' in session:
                 if product_id in session['Wishlist']:
-                    print("This product is already in wishList!")
+                    return "duplicate"
                 else:
                     session['Wishlist'] = mergeDict(session['Wishlist'], ListItems)
+                    return "success"
             else:
                 session['Wishlist'] = ListItems
+                return "success"
     if 'Wishlist' not in session or len(session['Wishlist']) <= 0 and 'user' not in session:
         return redirect('/')
     else:
@@ -456,6 +462,7 @@ def contact_us():
                           sender=email,
                           recipients=["bitf16a022@gmail.com"],
                           body=message + '\n\nRegards,' + '\n' + name + '\n' + email + '\n\nThanks!')
+        return "Sent"
     categories = Category.query.all()
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
@@ -789,7 +796,7 @@ def check_cart_in_session():
             quantities.append(quantity)
             product = Product.query.filter_by(product_id=key).first()
             prods.append(product)
-            session['Shoppingcart'].pop(key, None)
+        session.pop('Shoppingcart')
         for index in range(0, len(prods)):
             cart = Cart.query.filter_by(product_id=prods[index].product_id, customer_id=session['user']).first()
             if not cart:
@@ -805,7 +812,7 @@ def check_wishlist_in_session():
         for product_id in session['Wishlist']:
             product = Product.query.filter_by(product_id=product_id).first()
             prods.append(product)
-            session['Wishlist'].remove(product_id)
+        session.pop('Wishlist')
         for prod in prods:
             wishlist = Wishlist.query.filter_by(product_id=prod.product_id, customer_id=session['user']).first()
             if not wishlist:

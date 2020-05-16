@@ -72,6 +72,7 @@ $("#sendBtn").on('click', function() {
             // SMS sent. Prompt user to type the code from the message, then sign the
             // user in with confirmationResult.confirm(code).
             window.confirmationResult = confirmationResult;
+            swal("Sent!", "Code is sent to your mobile.", "success");
             if(disabledBtn){
                 enableVerifyCodeBtn();
             }
@@ -83,7 +84,7 @@ $("#sendBtn").on('click', function() {
                     // User signed in successfully.
                     var user = result.user;
                     // ...
-                    swal("verified","your number is verified", "success");
+                    swal("Verified", "Your number is verified", "success");
                     disableVerifyCodeBtn();
                     showVerifiedIcon();
                     should_submit = true;
