@@ -404,10 +404,11 @@ def checkout():
         order_quantity = len(cart_prods)
 
         now = datetime.now()
-        dt_string = now.strftime("%b %d, %Y, %H:%M %p")
+        dt_string = now.strftime("%b %d, %Y, %I:%M %p")
         order = Order(customer_id=session['user'], order_amount=grandTotal, order_quantity=order_quantity,
                       order_status="Pending", order_at=dt_string)
         db.session.add(order)
+        db.session.commit()
         for prod in cart_prods:
             order_placed = OrderPlaced(customer_id=prod.customer_id, product_id=prod.product_id,
                                        product_quantity=prod.product_quantity, order_at=dt_string)
@@ -788,6 +789,7 @@ def check_cart_in_session():
             quantities.append(quantity)
             product = Product.query.filter_by(product_id=key).first()
             prods.append(product)
+            session['Shoppingcart'].pop(key, None)
         for index in range(0, len(prods)):
             cart = Cart.query.filter_by(product_id=prods[index].product_id, customer_id=session['user']).first()
             if not cart:
@@ -803,6 +805,7 @@ def check_wishlist_in_session():
         for product_id in session['Wishlist']:
             product = Product.query.filter_by(product_id=product_id).first()
             prods.append(product)
+            session['Wishlist'].remove(product_id)
         for prod in prods:
             wishlist = Wishlist.query.filter_by(product_id=prod.product_id, customer_id=session['user']).first()
             if not wishlist:

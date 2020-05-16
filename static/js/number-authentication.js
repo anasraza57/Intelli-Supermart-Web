@@ -21,10 +21,10 @@ firebase.auth().useDeviceLanguage();
  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
       'size': 'invisible',
       'callback': function(response) {
-        //alert("recaptcha success");
+        //swal("Recaptcha Success","", "success");
       },
       'expired-callback': function() {
-        //alert("recaptcha failed");
+        //swal("Recaptcha Failed","", "error");
       }
   });
 
@@ -83,7 +83,7 @@ $("#sendBtn").on('click', function() {
                     // User signed in successfully.
                     var user = result.user;
                     // ...
-                    alert("Phone number verified!")
+                    swal("verified","your number is verified", "success");
                     disableVerifyCodeBtn();
                     showVerifiedIcon();
                     should_submit = true;
@@ -92,19 +92,19 @@ $("#sendBtn").on('click', function() {
                     generateRequest(uid, phone);
                 }).catch(function (error) {
                     // User couldn't sign in (bad verification code?)
-                    // ...
-                    alert("Phone number verification failed!");
+                    swal("Failed", "Phone number verification failed!", "error");
+                    enableSendCodeBtn();
                 });
             });
         }).catch(function (error) {
             console.log(error);
             enableSendCodeBtn();
             if(error['code'] == "auth/too-many-requests"){
-                alert("Too many attempts! please try again later.")
+                swal("Failed", "Too many attempts! please try again later.", "error");
             }else if(error['code'] == 'auth/invalid-phone-number'){
-                alert("Please provide a valid phone number!")
+                swal("Failed", "Please provide a valid phone number!", "error");
             }else{
-                alert("Something went wrong! please try again later.")
+                swal("Failed", "Something went wrong! please try again later.", "error");
             }
         });
     }, 6000);
@@ -117,8 +117,8 @@ function generateRequest(id, phone){
             success: function(result) {
                 window.location.replace("/");
             },
-            failure: function(){
-                alert("failed");
+            error: function(){
+                swal("Failed", "Couldn't add user", "error");
             }
     });
 }

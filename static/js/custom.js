@@ -35,8 +35,8 @@ $('.addToCartButton').on("click", function(){
         success: function(result) {
             window.location.reload();
         },
-        failure: function(){
-            alert("failed");
+        error: function(){
+            swal("Couldn't add to cart","Please try again later", "error");
         }
     });
 });
@@ -54,6 +54,9 @@ $('.updateInCartButton').on("click", function(){
             $('.total'+prod_id).html("Rs " + result['total']);
             $('.grand_total').html("Rs " + result['grand_total']);
         }
+        error: function() {
+            swal("Couldn't update the cart","Please try again later", "error");
+        }
     });
 
 });
@@ -67,8 +70,8 @@ $('.deleteFromCartButton').on("click", function(){
         success: function(result) {
             window.location.reload();
         },
-        failure: function(){
-            alert("failed");
+        error: function(){
+            swal("Couldn't delete from cart","Please try again later", "error");
         }
     });
 
@@ -83,8 +86,8 @@ $('.addToWishlistButton').on("click", function(){
         success: function(result) {
             window.location.reload();
         },
-        failure: function(){
-            alert("failed");
+        error: function(){
+            swal("Couldn't add to wishlist","Please try again later", "error");
         }
     });
 });
@@ -99,7 +102,7 @@ $('.deleteFromWishlistButton').on("click", function(){
             window.location.reload();
         },
         error: function(){
-            alert("failed");
+            swal("Couldn't delete from wishlist","Please try again later", "error");
         }
     });
 
@@ -127,11 +130,11 @@ $('#placeOrderButton').on('click', function(){
         data:{'firstName' : firstName, 'lastName' : lastName, 'email' : email, 'gender' : gender,
         'address' : address, 'city' : city, 'zipCode' : zipcode, 'grandTotal' : grandTotal},
         success: function(result) {
-            alert("Order is Placed!");
+            swal("Your oder is Placed!","", "success");
             window.location.reload();
         },
         error: function(){
-            alert("failed");
+            swal("Your oder isn't Placed!","Please try again later", "error");
             window.location.replace("/");
         }
     });
