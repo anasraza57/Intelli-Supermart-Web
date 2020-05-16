@@ -1,3 +1,4 @@
+from datetime import datetime
 from math import *
 from random import randint
 
@@ -81,6 +82,38 @@ class Customer(db.Model):
     __tablename__ = 'customer'
     customer_id = db.Column(db.String(200), primary_key=True)
     customer_phone = db.Column(db.String(200))
+
+
+class CustomerInfo(db.Model):
+    __tablename__ = 'customer_info'
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String(200))
+    first_name = db.Column(db.String(200))
+    last_name = db.Column(db.String(200))
+    email = db.Column(db.String(200))
+    gender = db.Column(db.String(200))
+    address = db.Column(db.String(200))
+    city = db.Column(db.String(200))
+    zipcode = db.Column(db.String(200))
+
+
+class Order(db.Model):
+    __tablename__ = 'orders'
+    order_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String(200))
+    order_amount = db.Column(db.Integer)
+    order_at = db.Column(db.DateTime)
+    order_quantity = db.Column(db.Integer)
+    order_status = db.Column(db.String(200))
+
+
+class OrderPlaced(db.Model):
+    __tablename__ = 'order_placed'
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String(200))
+    product_id = db.Column(db.Integer)
+    product_quantity = db.Column(db.Integer)
+    order_at = db.Column(db.DateTime)
 
 
 class Contact(db.Model):
@@ -326,15 +359,86 @@ def deleteFromWishlist():
             print(e)
 
 
-@app.route('/checkout')
+@app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    title = "Checkout"
-    return render_template('checkout.html', category=category, grand_total=grand_total, count=cart_count, title=title,
-                           wishlist_count=wishlist_count)
+    if request.method == 'POST':
+        firstName = request.form['firstName']
+        lastName = request.form['lastName']
+        email = request.form['email']
+        gender = request.form['gender']
+        address = request.form['address']
+        city = request.form['city']
+        zipCode = request.form['zipCode']
+        grandTotal = int(request.form['grandTotal'])
+        info = CustomerInfo.query.filter_by(customer_id=session['user']).first()
+        if not info:
+            info = CustomerInfo(customer_id=session['user'], first_name=firstName, last_name=lastName, email=email,
+                                gender=gender, address=address, city=city, zipcode=zipCode)
+            db.session.add(info)
+        else:
+            is_changed = False
+            if info.first_name != firstName:
+                info.first_name = firstName
+                is_changed = True
+            if info.last_name != lastName:
+                info.last_name = lastName
+                is_changed = True
+            if info.email != email:
+                info.email = email
+                is_changed = True
+            if info.gender != gender:
+                info.gender = gender
+                is_changed = True
+            if info.address != address:
+                info.address = address
+                is_changed = True
+            if info.city != city:
+                info.city = city
+                is_changed = True
+            if info.zipcode != zipCode:
+                info.zipcode = zipCode
+                is_changed = True
+            if is_changed:
+                db.session.commit()
+        cart_prods = Cart.query.filter_by(customer_id=session['user']).all()
+        order_quantity = len(cart_prods)
+
+        now = datetime.now()
+        dt_string = now.strftime("%b %d, %Y, %H:%M %p")
+        order = Order(customer_id=session['user'], order_amount=grandTotal, order_quantity=order_quantity,
+                      order_status="Pending", order_at=dt_string)
+        db.session.add(order)
+        for prod in cart_prods:
+            order_placed = OrderPlaced(customer_id=prod.customer_id, product_id=prod.product_id,
+                                       product_quantity=prod.product_quantity, order_at=dt_string)
+            db.session.add(order_placed)
+            db.session.delete(prod)
+
+        db.session.commit()
+    if 'user' not in session:
+        return redirect('/')
+    else:
+        info = CustomerInfo.query.filter_by(customer_id=session['user']).first()
+        categories = Category.query.all()
+        category = categories[0]
+        cart_products = Cart.query.filter_by(customer_id=session['user']).all()
+        if not cart_products:
+            return redirect('/')
+        else:
+            products = []
+            quantities = []
+            for prod in cart_products:
+                product = Product.query.filter_by(product_id=prod.product_id).first()
+                products.append(product)
+                quantities.append(prod.product_quantity)
+            products.reverse()
+
+        cart_count, total, grand_total = cartItemsAndPrice()
+        wishlist_count = wishListCount()
+        title = "Checkout"
+        return render_template('checkout.html', products=products, quantities=quantities, category=category,
+                               grand_total=grand_total, count=cart_count,info=info,
+                               title=title, wishlist_count=wishlist_count, total=total)
 
 
 @app.route('/contact-us', methods=['GET', 'POST'])
@@ -685,7 +789,6 @@ def check_cart_in_session():
             product = Product.query.filter_by(product_id=key).first()
             prods.append(product)
         for index in range(0, len(prods)):
-            print(prods[index].product_name, quantities[index])
             cart = Cart.query.filter_by(product_id=prods[index].product_id, customer_id=session['user']).first()
             if not cart:
                 cart = Cart(customer_id=session['user'], product_id=prods[index].product_id,
@@ -701,7 +804,6 @@ def check_wishlist_in_session():
             product = Product.query.filter_by(product_id=product_id).first()
             prods.append(product)
         for prod in prods:
-            print(prod.product_name)
             wishlist = Wishlist.query.filter_by(product_id=prod.product_id, customer_id=session['user']).first()
             if not wishlist:
                 wishlist = Wishlist(customer_id=session['user'], product_id=prod.product_id)

@@ -105,6 +105,9 @@ $('.deleteFromWishlistButton').on("click", function(){
 
 });
 
+$('#placeOrderButton').on('click', function(){
+    alert("Order is Placed!")
+});
 
 //$('#loginBtn').on("click", function () {
 //    swal({
