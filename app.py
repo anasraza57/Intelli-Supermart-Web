@@ -538,8 +538,48 @@ def terms_n_conditions():
                            wishlist_count=wishlist_count)
 
 
-@app.route('/mobileCart')
+def mergeDict(dict1, dict2):
+    if isinstance(dict1, list) and isinstance(dict2, list):
+        return dict1 + dict2
+    elif isinstance(dict1, dict) and isinstance(dict2, dict):
+        return dict(list(dict1.items()) + list(dict2.items()))
+    return False
+
+
+def cartItemsAndPrice():
+    if 'Shoppingcart' in session:
+        cart_count = len(session['Shoppingcart'])
+        if len(session['Shoppingcart']) <= 0:
+            return 0, 0, 0
+        else:
+            total_price_of_all_prods = []
+            for key, item in session['Shoppingcart'].items():
+                product = Product.query.filter_by(product_id=key).first()
+                res = int(item['quantity']) * product.product_price
+                total_price_of_all_prods.append(res)
+            grand_total = sum(total_price_of_all_prods)
+            return cart_count, total_price_of_all_prods, grand_total
+    else:
+        return 0, 0, 0
+
+
+def wishListCount():
+    if 'Wishlist' in session:
+        wishlist_count = len(session['Wishlist'])
+        if len(session['Wishlist']) <= 0:
+            return 0
+        else:
+            return wishlist_count
+    else:
+        return 0
+
+
+
+
+
+@app.route('/mobileCart', methods='POST','GET','DELETE')
 def mobileCart():
+    if request.method == "POST":
         total_products = request.form.get['total_products']
         sub_total = request.form.get['sub_total']
         delivery_charges = request.form.get['delivery_charges']
@@ -585,41 +625,6 @@ def DeletefromMobCart():
         except Exception as e:
             print(e)
 
-
-def mergeDict(dict1, dict2):
-    if isinstance(dict1, list) and isinstance(dict2, list):
-        return dict1 + dict2
-    elif isinstance(dict1, dict) and isinstance(dict2, dict):
-        return dict(list(dict1.items()) + list(dict2.items()))
-    return False
-
-
-def cartItemsAndPrice():
-    if 'Shoppingcart' in session:
-        cart_count = len(session['Shoppingcart'])
-        if len(session['Shoppingcart']) <= 0:
-            return 0, 0, 0
-        else:
-            total_price_of_all_prods = []
-            for key, item in session['Shoppingcart'].items():
-                product = Product.query.filter_by(product_id=key).first()
-                res = int(item['quantity']) * product.product_price
-                total_price_of_all_prods.append(res)
-            grand_total = sum(total_price_of_all_prods)
-            return cart_count, total_price_of_all_prods, grand_total
-    else:
-        return 0, 0, 0
-
-
-def wishListCount():
-    if 'Wishlist' in session:
-        wishlist_count = len(session['Wishlist'])
-        if len(session['Wishlist']) <= 0:
-            return 0
-        else:
-            return wishlist_count
-    else:
-        return 0
 
 
 @app.route('/mobileMainCtaegory', methods=['GET'])
