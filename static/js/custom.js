@@ -98,15 +98,43 @@ $('.deleteFromWishlistButton').on("click", function(){
         success: function(result) {
             window.location.reload();
         },
-        failure: function(){
+        error: function(){
             alert("failed");
         }
     });
 
 });
 
+function disablePlaceOrderButton(){
+    $("#placeOrderButton").attr("disabled", true);
+    $("#placeOrderButton").css('cursor', 'default');
+    $("#placeOrderButton").css('background-color', 'grey');
+}
+
 $('#placeOrderButton').on('click', function(){
-    alert("Order is Placed!")
+    disablePlaceOrderButton();
+    firstName = $('#firstName').val();
+    lastName = $('#lastName').val();
+    email = $('#email').val();
+    gender = $('#gender').val();
+    address = $('#address').val();
+    city = $('#city').val();
+    zipcode = $('#zipCode').val();
+    grandTotal = $('#grandTotal').val();
+    $.ajax({
+        url: '/checkout',
+        type: 'POST',
+        data:{'firstName' : firstName, 'lastName' : lastName, 'email' : email, 'gender' : gender,
+        'address' : address, 'city' : city, 'zipCode' : zipcode, 'grandTotal' : grandTotal},
+        success: function(result) {
+            alert("Order is Placed!");
+            window.location.reload();
+        },
+        error: function(){
+            alert("failed");
+            window.location.replace("/");
+        }
+    });
 });
 
 //$('#loginBtn').on("click", function () {

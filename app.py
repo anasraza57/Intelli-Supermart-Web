@@ -413,8 +413,8 @@ def checkout():
                                        product_quantity=prod.product_quantity, order_at=dt_string)
             db.session.add(order_placed)
             db.session.delete(prod)
-
         db.session.commit()
+        return "Success"
     if 'user' not in session:
         return redirect('/')
     else:
