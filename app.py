@@ -769,58 +769,6 @@ def wishListCount():
         return 0
 
 
-
-
-
-@app.route('/mobileCart', methods='POST','GET','DELETE')
-def mobileCart():
-    if request.method == "POST":
-        total_products = request.form.get['total_products']
-        sub_total = request.form.get['sub_total']
-        delivery_charges = request.form.get['delivery_charges']
-        prod_id = request.form.get['prod_id']
-        show_Items = {prod_id: {'total_products': total_products}}
-
-        if 'MyCart' in session:
-            if prod_id in session['MyCart']:
-                print("Product already exists")
-            if len(session['MyCart']) <= 0:
-                return redirect('/')
-        else:
-            session['MyCart'] = show_Items
-
-        mob_pictures = Picture.query.all()
-        mob_products = []
-        total_quantity = []
-        for key, product in session['MyCart'].product():
-            total_quantities = product['quantity']
-            total_quantity.append(total_quantities)
-            mob_product = Product.query.filter_by(prod_id=key).first()
-            mob_products.append(mob_product)
-        cart_pictures = []
-        for product in mob_products:
-            for pic in mob_pictures:
-                if product.picture_id == pic.picture_id:
-                    cart_pictures.append(pic)
-        return jsonify(total_quantity=total_products, grand_total=sub_total, delivery_charges=delivery_charges,
-                       pic=mob_pictures, product=mob_products)
-
-
-@app.route('/DeletefromMobCart', methods=['DELETE'])
-def DeletefromMobCart():
-    if request.method == 'DELETE':
-        prod_id = request.form.get['product_id']
-        print(session['MyCart'])
-        try:
-            session.modified = True
-            for key, product in session['MyCart'].product():
-                if key == prod_id:
-                    session['MyCart'].remove(key)
-                    return "Product Removed"
-        except Exception as e:
-            print(e)
-
-
 def check_cart_in_session():
     if 'Shoppingcart' in session:
         prods = []
@@ -855,37 +803,41 @@ def check_wishlist_in_session():
                 db.session.commit()
 
 
-@app.route('/mobileCart')
+
+
+@app.route('/mobileCart', methods=['GET', 'POST', 'DELETE'])
 def mobileCart():
-    total_products = request.form.get['total_products']
-    sub_total = request.form.get['sub_total']
-    delivery_charges = request.form.get['delivery_charges']
-    prod_id = request.form.get['prod_id']
-    show_Items = {prod_id: {'total_products': total_products}}
+    if request.method == "POST":
+        total_products = request.form.get['total_products']
+        sub_total = request.form.get['sub_total']
+        delivery_charges = request.form.get['delivery_charges']
+        prod_id = request.form.get['prod_id']
+        show_Items = {prod_id: {'total_products': total_products}}
 
-    if 'MyCart' in session:
-        if prod_id in session['MyCart']:
-            print("Product already exists")
-        if len(session['MyCart']) <= 0:
-            return redirect('/')
-    else:
-        session['MyCart'] = show_Items
+        if 'MyCart' in session:
+            if prod_id in session['MyCart']:
+                print("Product already exists")
+            if len(session['MyCart']) <= 0:
+                return redirect('/')
+        else:
+            session['MyCart'] = show_Items
 
-    mob_pictures = Picture.query.all()
-    mob_products = []
-    total_quantity = []
-    for key, product in session['MyCart'].product():
-        total_quantities = product['quantity']
-        total_quantity.append(total_quantities)
-        mob_product = Product.query.filter_by(prod_id=key).first()
-        mob_products.append(mob_product)
-    cart_pictures = []
-    for product in mob_products:
-        for pic in mob_pictures:
-            if product.picture_id == pic.picture_id:
-                cart_pictures.append(pic)
-    return jsonify(total_quantity=total_products, grand_total=sub_total, delivery_charges=delivery_charges,
-                   pic=mob_pictures, product=mob_products)
+        mob_pictures = Picture.query.all()
+        mob_products = []
+        total_quantity = []
+        for key, product in session['MyCart'].product():
+            total_quantities = product['quantity']
+            total_quantity.append(total_quantities)
+            mob_product = Product.query.filter_by(prod_id=key).first()
+            mob_products.append(mob_product)
+        cart_pictures = []
+        for product in mob_products:
+            for pic in mob_pictures:
+                if product.picture_id == pic.picture_id:
+                    cart_pictures.append(pic)
+        return jsonify(total_quantity=total_products, grand_total=sub_total, delivery_charges=delivery_charges,
+                       pic=mob_pictures, product=mob_products)
+
 
 
 @app.route('/DeletefromMobCart', methods=['DELETE'])
