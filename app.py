@@ -730,8 +730,7 @@ def terms_n_conditions():
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
     title = "Terms and Conditions"
-    return render_template('terms-n-conditions.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count, title=title)
+    return render_template('terms-n-conditions.html', category=category, grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count, title=title)
 
 
 def mergeDict(dict1, dict2):
@@ -743,48 +742,83 @@ def mergeDict(dict1, dict2):
 
 
 def cartItemsAndPrice():
-    if 'user' in session or 'Shoppingcart' in session:
-        total_price_of_all_prods = []
-        if 'user' in session:
-            cart_prods = Cart.query.filter_by(customer_id=session['user']).all()
-            cart_count = len(cart_prods)
-            if cart_count <= 0:
-                return 0, 0, 0
-            else:
-                for cart_product in cart_prods:
-                    quantity = cart_product.product_quantity
-                    product = Product.query.filter_by(product_id=cart_product.product_id).first()
-                    res = quantity * product.product_price
-                    total_price_of_all_prods.append(res)
+    if 'Shoppingcart' in session:
+        cart_count = len(session['Shoppingcart'])
+        if len(session['Shoppingcart']) <= 0:
+            return 0, 0, 0
         else:
-            cart_count = len(session['Shoppingcart'])
-            if cart_count <= 0:
-                return 0, 0, 0
-            else:
-                for key, item in session['Shoppingcart'].items():
-                    product = Product.query.filter_by(product_id=key).first()
-                    res = int(item['quantity']) * product.product_price
-                    total_price_of_all_prods.append(res)
-        grand_total = sum(total_price_of_all_prods)
-        return cart_count, total_price_of_all_prods, grand_total
+            total_price_of_all_prods = []
+            for key, item in session['Shoppingcart'].items():
+                product = Product.query.filter_by(product_id=key).first()
+                res = int(item['quantity']) * product.product_price
+                total_price_of_all_prods.append(res)
+            grand_total = sum(total_price_of_all_prods)
+            return cart_count, total_price_of_all_prods, grand_total
     else:
         return 0, 0, 0
 
 
 def wishListCount():
-    if 'user' in session or 'Wishlist' in session:
-        if 'user' in session:
-            wishlist_prods = Wishlist.query.filter_by(customer_id=session['user']).all()
-            wishlist_count = len(wishlist_prods)
-            if wishlist_count <= 0:
-                return 0
+    if 'Wishlist' in session:
+        wishlist_count = len(session['Wishlist'])
+        if len(session['Wishlist']) <= 0:
+            return 0
         else:
-            wishlist_count = len(session['Wishlist'])
-            if len(session['Wishlist']) <= 0:
-                return 0
-        return wishlist_count
+            return wishlist_count
     else:
         return 0
+
+
+
+
+
+@app.route('/mobileCart', methods='POST','GET','DELETE')
+def mobileCart():
+    if request.method == "POST":
+        total_products = request.form.get['total_products']
+        sub_total = request.form.get['sub_total']
+        delivery_charges = request.form.get['delivery_charges']
+        prod_id = request.form.get['prod_id']
+        show_Items = {prod_id: {'total_products': total_products}}
+
+        if 'MyCart' in session:
+            if prod_id in session['MyCart']:
+                print("Product already exists")
+            if len(session['MyCart']) <= 0:
+                return redirect('/')
+        else:
+            session['MyCart'] = show_Items
+
+        mob_pictures = Picture.query.all()
+        mob_products = []
+        total_quantity = []
+        for key, product in session['MyCart'].product():
+            total_quantities = product['quantity']
+            total_quantity.append(total_quantities)
+            mob_product = Product.query.filter_by(prod_id=key).first()
+            mob_products.append(mob_product)
+        cart_pictures = []
+        for product in mob_products:
+            for pic in mob_pictures:
+                if product.picture_id == pic.picture_id:
+                    cart_pictures.append(pic)
+        return jsonify(total_quantity=total_products, grand_total=sub_total, delivery_charges=delivery_charges,
+                       pic=mob_pictures, product=mob_products)
+
+
+@app.route('/DeletefromMobCart', methods=['DELETE'])
+def DeletefromMobCart():
+    if request.method == 'DELETE':
+        prod_id = request.form.get['product_id']
+        print(session['MyCart'])
+        try:
+            session.modified = True
+            for key, product in session['MyCart'].product():
+                if key == prod_id:
+                    session['MyCart'].remove(key)
+                    return "Product Removed"
+        except Exception as e:
+            print(e)
 
 
 def check_cart_in_session():
