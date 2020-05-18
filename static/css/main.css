@@ -7300,6 +7300,7 @@ p.result-show-message {
 
 .myaccount-content a.edit-address-btn:hover {
     background-color: #423164;
+    color: #ffffff;
 }
 
 .myaccount-content button.save-change-btn {
@@ -7336,10 +7337,31 @@ p.result-show-message {
     vertical-align: middle;
 }
 
+.myaccount-table table td.pro-info a {
+    display: block;
+    font-weight: 500;
+    color: #666666;
+}
+
+.myaccount-table table td.pro-info a i {
+    font-size: 20px;
+}
+
+.myaccount-table table td.pro-info a:hover {
+    color: #5B3F91;
+}
+
+@media only screen and (max-width: 767px) {
+    .myaccount-table table td.pro-info a {
+        width: 60px;
+        text-align: center;
+    }
+}
+
 .saved-message {
     border-top: 3px solid #5B3F91;
     border-radius: 5px 5px 0 0;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 13px;
     padding: 20px;
 }

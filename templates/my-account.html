@@ -35,21 +35,19 @@
                     <!-- My Account Tab Menu Start -->
                     <div class="col-lg-3 col-12">
                         <div class="myaccount-tab-menu nav" role="tablist">
-                            <a href="#dashboad" class="active" data-toggle="tab"><i class="fa fa-dashboard"></i>
+                            <a class="active" data-toggle="tab" href="#dashboad"><i class="fa fa-dashboard"></i>
                                 Dashboard</a>
 
-                            <a href="#orders" data-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Orders</a>
+                            <a data-toggle="tab" href="#orders"><i class="fa fa-cart-arrow-down"></i> Orders</a>
 
-                            <a href="#download" data-toggle="tab"><i class="fa fa-cloud-download"></i> Download</a>
-
-                            <a href="#payment-method" data-toggle="tab"><i class="fa fa-credit-card"></i> Payment
+                            <a data-toggle="tab" href="#payment-method"><i class="fa fa-credit-card"></i> Payment
                                 Method</a>
 
-                            <a href="#address-edit" data-toggle="tab"><i class="fa fa-map-marker"></i> address</a>
+                            <a data-toggle="tab" href="#address-edit"><i class="fa fa-map-marker"></i> address</a>
 
-                            <a href="#account-info" data-toggle="tab"><i class="fa fa-user"></i> Account Details</a>
+                            <a data-toggle="tab" href="#account-info"><i class="fa fa-user"></i> Account Details</a>
 
-                            <a href="/login-register"><i class="fa fa-sign-out"></i> Logout</a>
+                            <a href="/logout"><i class="fa fa-sign-out"></i> Logout</a>
                         </div>
                     </div>
                     <!-- My Account Tab Menu End -->
@@ -63,11 +61,17 @@
                                     <h3>Dashboard</h3>
 
                                     <div class="welcome">
-                                        <p class="text-dark">Hello, <strong>Anas Raza</strong> (If Not <strong>Anas !</strong><a
-                                                href="/login-register" class="logout"> Logout</a>)</p>
+                                        <p class="text-dark">Hello,
+                                            {% if has_account%}
+                                            <strong>{{info.first_name}} {{info.last_name}}</strong> (If Not
+                                            <strong>{{info.first_name}} !</strong>
+                                            <a class="logout" href="/logout"> Logout</a>)
+                                            {% endif %}
+                                        </p>
                                     </div>
 
-                                    <p class="mb-0 text-dark">From your account dashboard. you can easily check &amp; view your
+                                    <p class="mb-0 text-dark">From your account dashboard. you can easily check &amp;
+                                        view your
                                         recent orders, manage your shipping and billing addresses and edit your
                                         password and account details.</p>
                                 </div>
@@ -84,75 +88,29 @@
                                             <thead class="thead-light">
                                             <tr>
                                                 <th>No</th>
-                                                <th>Name</th>
-                                                <th>Date</th>
-                                                <th>Status</th>
+                                                <th>Date & Time</th>
+                                                <th>Products Quantity</th>
                                                 <th>Total</th>
-                                                <th>Action</th>
+                                                <th>Status</th>
+                                                <th>Details</th>
                                             </tr>
                                             </thead>
 
                                             <tbody>
+                                            {% for order in orders %}
                                             <tr>
                                                 <td>1</td>
-                                                <td>Mostarizing Oil</td>
-                                                <td>Aug 22, 2019</td>
-                                                <td>Pending</td>
-                                                <td>Rs 45</td>
-                                                <td><a href="/cart" class="btn">View</a></td>
+                                                <td>{{order.order_at}}</td>
+                                                <td>{{order.order_quantity}}</td>
+                                                <td>Rs {{order.order_amount}}</td>
+                                                <td>{{order.order_status}}</td>
+                                                <td class="pro-info">
+                                                    <a class="showDetailsModel" name="{{order.order_at}}">
+                                                        <i class="fa fa-info-circle"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Katopeno Altuni</td>
-                                                <td>July 22, 2018</td>
-                                                <td>Approved</td>
-                                                <td>Rs 100</td>
-                                                <td><a href="/cart" class="btn">View</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Murikhete Paris</td>
-                                                <td>June 12, 2017</td>
-                                                <td>On Hold</td>
-                                                <td>Rs 99</td>
-                                                <td><a href="/cart" class="btn">View</a></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Single Tab Content End -->
-
-                            <!-- Single Tab Content Start -->
-                            <div class="tab-pane fade" id="download" role="tabpanel">
-                                <div class="myaccount-content">
-                                    <h3>Downloads</h3>
-
-                                    <div class="myaccount-table table-responsive text-center">
-                                        <table class="table table-bordered">
-                                            <thead class="thead-light">
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Date</th>
-                                                <th>Expire</th>
-                                                <th>Download</th>
-                                            </tr>
-                                            </thead>
-
-                                            <tbody>
-                                            <tr>
-                                                <td>Mostarizing Oil</td>
-                                                <td>Aug 22, 2018</td>
-                                                <td>Yes</td>
-                                                <td><a href="#" class="btn">Download File</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Katopeno Altuni</td>
-                                                <td>Sep 12, 2018</td>
-                                                <td>Never</td>
-                                                <td><a href="#" class="btn">Download File</a></td>
-                                            </tr>
+                                            {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -165,7 +123,7 @@
                                 <div class="myaccount-content">
                                     <h3>Payment Method</h3>
 
-                                    <p class="saved-message">You Can't Saved Your Payment Method yet.</p>
+                                    <p class="saved-message text-dark">You Can't Saved Your Payment Method yet.</p>
                                 </div>
                             </div>
                             <!-- Single Tab Content End -->
@@ -174,16 +132,20 @@
                             <div class="tab-pane fade" id="address-edit" role="tabpanel">
                                 <div class="myaccount-content">
                                     <h3>Billing Address</h3>
-
+                                    {% if has_account%}
                                     <address>
-                                        <p><strong>Anas Raza</strong></p>
-                                        <p>PUCIT, Anarkali Bazar, Lahore<br>
-                                            Pakistan, PK 54000</p>
-                                        <p>Mobile: (+92) 323-0496310</p>
+                                        <p><strong>{{info.first_name}} {{info.last_name}}</strong></p>
+                                        <p>{{info.address}}, {{info.city}}<br>
+                                            Pakistan, PK {{info.zipcode}}</p>
+                                        <p class="text-dark">Mobile: {{phone_no}}</p>
                                     </address>
 
-                                    <a href="#" class="btn d-inline-block edit-address-btn"><i class="fa fa-edit"></i>Edit
+                                    <a class="btn d-inline-block edit-address-btn"><i class="fa fa-edit"></i>Edit
                                         Address</a>
+                                    {% else %}
+                                    <a class="btn d-inline-block edit-address-btn"><i class="fa fa-plus"></i>Add
+                                        Address</a>
+                                    {% endif %}
                                 </div>
                             </div>
                             <!-- Single Tab Content End -->
@@ -194,46 +156,33 @@
                                     <h3>Account Details</h3>
 
                                     <div class="account-details-form">
-                                        <form action="#">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-12 mb-30">
-                                                    <input id="first-name" placeholder="First Name" type="text">
-                                                </div>
-
-                                                <div class="col-lg-6 col-12 mb-30">
-                                                    <input id="last-name" placeholder="Last Name" type="text">
-                                                </div>
-
-                                                <div class="col-12 mb-30">
-                                                    <input id="display-name" placeholder="Display Name" type="text">
-                                                </div>
-
-                                                <div class="col-12 mb-30">
-                                                    <input id="email" placeholder="Email Address" type="email">
-                                                </div>
-
-                                                <div class="col-12 mb-30"><h4>Password change</h4></div>
-
-                                                <div class="col-12 mb-30">
-                                                    <input id="current-pwd" placeholder="Current Password"
-                                                           type="password">
-                                                </div>
-
-                                                <div class="col-lg-6 col-12 mb-30">
-                                                    <input id="new-pwd" placeholder="New Password" type="password">
-                                                </div>
-
-                                                <div class="col-lg-6 col-12 mb-30">
-                                                    <input id="confirm-pwd" placeholder="Confirm Password"
-                                                           type="password">
-                                                </div>
-
-                                                <div class="col-12">
-                                                    <button class="save-change-btn">Save Changes</button>
-                                                </div>
-
+                                        <div class="row">
+                                            <div class="col-lg-6 col-12 mb-30">
+                                                <input id="firstName" placeholder="First Name"
+                                                       required type="text" value="{{info.first_name}}">
                                             </div>
-                                        </form>
+
+                                            <div class="col-lg-6 col-12 mb-30">
+                                                <input id="lastName" placeholder="Last Name"
+                                                       required type="text" value="{{info.last_name}}">
+                                            </div>
+
+                                            <div class="col-lg-6 col-12 mb-30">
+                                                <input id="gender" placeholder="Gender" required
+                                                       type="text" value="{{info.gender}}">
+                                            </div>
+
+                                            <div class="col-lg-6 col-12 mb-30">
+                                                <input id="email" placeholder="Email Address" required
+                                                       type="email" value="{{info.email}}">
+                                            </div>
+
+                                            <div class="col-12">
+                                                <button class="save-change-btn" id="saveAccountDetails">Save Changes
+                                                </button>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -249,5 +198,53 @@
 </div>
 
 <!--=====  End of My account page section  ======-->
+
+<!--=============================================
+=            Quick view modal         =
+=============================================-->
+
+<div aria-hidden="true" class="modal fade quick-view-modal-container" id="details-model" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="myaccount-table table-responsive text-center">
+                            <table class="table">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th class="pro-thumbnail">Image</th>
+                                    <th class="pro-title">Product</th>
+                                    <th class="pro-price">Price</th>
+                                    <th class="pro-price">Quantity</th>
+                                    <th class="pro-price">Total Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="pro-thumbnail"><a href="#"><img alt="Product"
+                                                                                 class="img-fluid" src=""></a></td>
+                                    <td class="pro-title"><a href="#">Name</a></td>
+                                    <td class="pro-price"><span>Rs 100</span></td>
+                                    <td class="pro-price"><span>2</span></td>
+                                    <td class="pro-price"><span>Rs 200</span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--=====  End of Quick view modal  ======-->
 
 {% endblock %}

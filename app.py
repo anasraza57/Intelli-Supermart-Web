@@ -5,6 +5,7 @@ from random import randint
 from flask import *
 from flask_mail import Mail
 from flask_migrate import Migrate, MigrateCommand
+from flask_msearch import Search
 from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 
@@ -23,6 +24,8 @@ app.config.update(
 
 mail = Mail(app)
 db = SQLAlchemy(app)
+search = Search()
+search.init_app(app)
 
 migrate = Migrate(app, db)
 manager = Manager(app)
@@ -30,6 +33,7 @@ manager.add_command('db', MigrateCommand)
 
 
 class Product(db.Model):
+    __searchable__ = ['product_name', 'product_description']
     __tablename__ = 'product'
     product_id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String(200))
@@ -192,7 +196,7 @@ def cart():
                 session['Shoppingcart'] = DictItems
                 return "success"
 
-    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0 and 'user' not in session:
+    if ('Shoppingcart' not in session or len(session['Shoppingcart']) <= 0) and 'user' not in session:
         return redirect('/')
     else:
         pictures = Picture.query.all()
@@ -310,7 +314,7 @@ def wishlist():
             else:
                 session['Wishlist'] = ListItems
                 return "success"
-    if 'Wishlist' not in session or len(session['Wishlist']) <= 0 and 'user' not in session:
+    if ('Wishlist' not in session or len(session['Wishlist']) <= 0) and 'user' not in session:
         return redirect('/')
     else:
         pictures = Picture.query.all()
@@ -423,7 +427,7 @@ def checkout():
         db.session.commit()
         return "Success"
     if 'user' not in session:
-        return redirect('/')
+        return redirect('/phone-verification')
     else:
         info = CustomerInfo.query.filter_by(customer_id=session['user']).first()
         categories = Category.query.all()
@@ -444,8 +448,68 @@ def checkout():
         wishlist_count = wishListCount()
         title = "Checkout"
         return render_template('checkout.html', products=products, quantities=quantities, category=category,
-                               grand_total=grand_total, count=cart_count,info=info,
+                               grand_total=grand_total, count=cart_count, info=info,
                                title=title, wishlist_count=wishlist_count, total=total)
+
+
+@app.route('/update-info', methods=['GET', 'PUT'])
+def update_info():
+    if request.method == 'PUT':
+        firstName = request.form['firstName']
+        lastName = request.form['lastName']
+        email = request.form['email']
+        gender = request.form['gender']
+        info = CustomerInfo.query.filter_by(customer_id=session['user']).first()
+        if not info:
+            info = CustomerInfo(customer_id=session['user'], first_name=firstName, last_name=lastName, email=email,
+                                gender=gender, address=" ", city=" ", zipcode=" ")
+            db.session.add(info)
+            return "added"
+        else:
+            is_changed = False
+            if info.first_name != firstName:
+                info.first_name = firstName
+                is_changed = True
+            if info.last_name != lastName:
+                info.last_name = lastName
+                is_changed = True
+            if info.email != email:
+                info.email = email
+                is_changed = True
+            if info.gender != gender:
+                info.gender = gender
+                is_changed = True
+            if is_changed:
+                db.session.commit()
+                return "updated"
+
+
+@app.route('/update-address', methods=['GET', 'PUT'])
+def update_address():
+    if request.method == 'PUT':
+        address = request.form['address']
+        city = request.form['city']
+        zipCode = request.form['zipCode']
+        info = CustomerInfo.query.filter_by(customer_id=session['user']).first()
+        if not info:
+            info = CustomerInfo(customer_id=session['user'], first_name=" ", last_name=" ", email=" ",
+                                gender=" ", address=address, city=city, zipcode=zipCode)
+            db.session.add(info)
+            return "added"
+        else:
+            is_changed = False
+            if info.address != address:
+                info.address = address
+                is_changed = True
+            if info.city != city:
+                info.city = city
+                is_changed = True
+            if info.zipcode != zipCode:
+                info.zipcode = zipCode
+                is_changed = True
+            if is_changed:
+                db.session.commit()
+                return "updated"
 
 
 @app.route('/contact-us', methods=['GET', 'POST'])
@@ -502,34 +566,34 @@ def phone_verification():
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    session.pop('user')
-    return redirect('/')
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        return redirect('/my-account')
-    categories = Category.query.all()
-    category = categories[0]
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    wishlist_count = wishListCount()
-    title = "Register"
-    return render_template('phone-verification.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count, title=title)
+    if 'user' in session:
+        session.pop('user')
+        return redirect('/')
 
 
 @app.route('/my-account')
 def my_account():
     if 'user' not in session:
         return redirect('/phone-verification')
+    customer = Customer.query.filter_by(customer_id=session['user']).first()
+    phone_no = customer.customer_phone
+    info = CustomerInfo.query.filter_by(customer_id=session['user']).first()
+    has_account = False
+    if info:
+        has_account = True
+    orders = Order.query.filter_by(customer_id=session['user']).all()
+    ordered_products = []
+    if orders:
+        ordered_products = OrderPlaced.query.filter_by(customer_id=session['user']).all()
+
     categories = Category.query.all()
     category = categories[0]
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
     title = "My Account"
-    return render_template('my-account.html', category=category, grand_total=grand_total, count=cart_count,
-                           wishlist_count=wishlist_count, title=title)
+    return render_template('my-account.html', has_account=has_account, category=category, grand_total=grand_total,
+                           count=cart_count, info=info, phone_no=phone_no, wishlist_count=wishlist_count, title=title,
+                           orders=orders, ordered_products=ordered_products)
 
 
 @app.route('/product-details/<string:prod_slug>')
@@ -550,6 +614,60 @@ def product_details(prod_slug):
     return render_template('product-details.html', product=product, picture=pic, category=category,
                            subcategory=subcategory, grand_total=grand_total, count=cart_count, title=title,
                            wishlist_count=wishlist_count)
+
+
+@app.route('/result')
+def result():
+    searchword = request.args.get('q')
+    categories = Category.query.all()
+    pictures = Picture.query.all()
+    category = categories[0]
+    prod_subcategories = Subcategory.query.filter_by(category_id=category.category_id).all()
+    subcategories = []
+    categories = []
+    products_pics = []
+    products = []
+    total_prods = 0
+    if searchword:
+        products = Product.query.msearch(searchword, fields=['product_name', 'product_description'])
+        if products:
+            for product in products:
+                subcategory = Subcategory.query.filter_by(subcategory_id=product.prod_subcategory_id).first()
+                prod_category = Category.query.filter_by(category_id=subcategory.category_id).first()
+                subcategories.append(subcategory)
+                categories.append(prod_category)
+                total_prods += 1
+
+            for product in products:
+                for pic in pictures:
+                    if product.picture_id == pic.picture_id:
+                        products_pics.append(pic)
+
+    per_page = 9
+    number_of_pages = ceil(total_prods / per_page) + 1
+    if number_of_pages == 1:
+        number_of_pages += 1
+    page = request.args.get('page')
+    if not str(page).isnumeric():
+        page = 1
+    page = int(page)
+    start_val = (page - 1) * per_page
+    end_val = ((page - 1) * per_page) + per_page
+    if end_val > total_prods:
+        end_val = total_prods
+    print(end_val)
+    print(total_prods)
+    products = products[start_val:end_val]
+    if not total_prods == 0:
+        start_val += 1
+    cart_count, totals, grand_total = cartItemsAndPrice()
+    wishlist_count = wishListCount()
+    title = "Shop"
+    return render_template("result.html", category=category, prod_subcategories=prod_subcategories,
+                           categories=categories, subcategories=subcategories, products=products,searchword=searchword,
+                           pictures=products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
+                           start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count, title=title)
 
 
 @app.route('/shop/<string:cate_slug>')

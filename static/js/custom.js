@@ -183,6 +183,120 @@ $('#placeOrderButton').on('click', function(){
     });
 });
 
+$('#saveAccountDetails').on('click', function(){
+    disablePlaceOrderButton();
+    firstName = $('#firstName').val();
+    lastName = $('#lastName').val();
+    email = $('#email').val();
+    gender = $('#gender').val();
+    $.ajax({
+        url: '/update-info',
+        type: 'PUT',
+        data:{'firstName' : firstName, 'lastName' : lastName, 'email' : email, 'gender' : gender},
+        success: function(result) {
+            if (result == "added"){
+                swal({
+                    title: "Success!",
+                    text: "Your info is added.",
+                    icon: "success",
+                }).then((value) => {
+                    window.location.reload();
+                });
+            }else{
+                swal({
+                    title: "Success!",
+                    text: "Your info is updated.",
+                    icon: "success",
+                }).then((value) => {
+                    window.location.reload();
+                });
+            }
+        },
+        error: function(){
+            swal({
+                title: "Your info isn't updated!",
+                text: "Please try again later.",
+                icon: "error",
+            })
+            .then((value) => {
+                window.location.reload();
+            });
+        }
+    });
+});
+
+$('.edit-address-btn').on('click', function(){
+    swal({
+        title: "Address Info: ",
+        text: "Enter House no, Streat no, Area: ",
+        content: "input",
+        button: {
+            text: "Next >",
+        },
+    })
+    .then((address) => {
+        if (!address) throw null;
+        swal({
+            title: "Address Info: ",
+            text: "Enter City: ",
+            content: "input",
+            button: {
+                text: "Next >",
+            },
+        })
+        .then((city) => {
+            if (!city) throw null;
+            swal({
+                title: "Address Info: ",
+                text: "Enter Zip Code: ",
+                content: "input",
+                button: {
+                    text: "Update!",
+                    closeModal: false,
+                },
+            })
+            .then((zipCode) => {
+                if (!zipCode) throw null;
+
+                $.ajax({
+                    url: '/update-address',
+                    type: 'PUT',
+                    data:{'address' : address, 'city' : city, 'zipCode' : zipCode},
+                    success: function(result){
+                        if (result == "added"){
+                            swal({
+                                title: "Success!",
+                                text: "Your info is added.",
+                                icon: "success",
+                            }).then((value) => {
+                                window.location.reload();
+                            });
+                        }else{
+                            swal({
+                                title: "Success!",
+                                text: "Your info is updated.",
+                                icon: "success",
+                            }).then((value) => {
+                                window.location.reload();
+                            });
+                        }
+                    },
+                    error: function(){
+                        swal({
+                            title: "Your address isn't updated!",
+                            text: "Please try again later.",
+                            icon: "error",
+                        })
+                        .then((value) => {
+                            window.location.reload();
+                        });
+                    }
+                });
+            });
+        });
+    });
+});
+
 $('#submit').on('click', function(){
     $('#contact-form').submit(function(){
         $.ajax({
@@ -210,3 +324,10 @@ $('#submit').on('click', function(){
         return false;
     });
 });
+
+$('.showDetailsModel').on('click', function(){
+//    order_at = $(this).attr("name");
+//    alert(order_at);
+    $('#details-model').modal('show');
+});
+

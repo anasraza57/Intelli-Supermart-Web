@@ -1,0 +1,256 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<!--=============================================
+=            breadcrumb area         =
+=============================================-->
+
+<div class="breadcrumb-area mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="breadcrumb-container">
+                    <ul>
+                        <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+                        <li class="active">Shop</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--=====  End of breadcrumb area  ======-->
+
+
+<!--=============================================
+=            Shop page container         =
+=============================================-->
+
+<div class="shop-page-container mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 order-2 order-lg-1">
+                <!--=======  sidebar area  =======-->
+
+                <div class="sidebar-area">
+                    <!--=======  single sidebar  =======-->
+
+                    <div class="sidebar mb-35">
+                        <h3 class="sidebar-title">{{category.category_name}}</h3>
+                        <ul class="product-categories">
+                            {% for subcategory in prod_subcategories%}
+                            <li><a href="/subshop/{{category.slug}}/{{subcategory.slug}}">{{subcategory.subcategory_name}}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!--=======  End of single sidebar  =======-->
+
+                    <!--=======  single sidebar  =======-->
+
+                    <div class="sidebar mb-35">
+                        <h3 class="sidebar-title">Top rated products</h3>
+
+                        <!--=======  top rated product container  =======-->
+
+                        <div class="top-rated-product-container">
+                            <!--=======  single top rated product  =======-->
+
+                            <div class="single-top-rated-product d-flex align-content-center">
+                                <div class="image">
+                                    <a href="/product-details">
+                                        <img alt="" class="img-fluid" src="">
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <p><a href="/product-details">Bringles</a></p>
+                                    <p class="product-rating">
+                                        <i class="fa fa-star active"></i>
+                                        <i class="fa fa-star active"></i>
+                                        <i class="fa fa-star active"></i>
+                                        <i class="fa fa-star active"></i>
+                                        <i class="fa fa-star active"></i>
+                                    </p>
+
+                                    <p class="product-price">
+                                        <span class="discounted-price">Rs 120</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!--=======  End of single top rated product  =======-->
+
+                        </div>
+
+                        <!--=======  End of top rated product container  =======-->
+                    </div>
+
+                    <!--=======  End of single sidebar  =======-->
+                </div>
+
+                <!--=======  End of sidebar area  =======-->
+            </div>
+            <div class="col-lg-9 order-1 order-lg-2 mb-sm-35 mb-xs-35">
+                <!--=======  Shop header  =======-->
+
+                <div class="shop-header mb-35">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-12 d-flex align-items-center">
+                            <!--=======  view mode  =======-->
+
+                            <div class="view-mode-icons mb-xs-10">
+                                <a class="active" data-target="grid" href="#"><i class="fa fa-th"></i></a>
+                                <a data-target="list" href="#"><i class="fa fa-list"></i></a>
+                            </div>
+
+                            <!--=======  End of view mode  =======-->
+
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-12 d-flex flex-column flex-sm-row justify-content-between align-items-left align-items-sm-center">
+                            <!--=======  Sort by dropdown  =======-->
+
+                            <div class="sort-by-dropdown d-flex align-items-center mb-xs-10">
+                                <p class="mr-10">Sort By: </p>
+                                <select class="nice-select" id="sort-by" name="sort-by">
+                                    <option value="0">Sort By Popularity</option>
+                                    <option value="0">Sort By Average Rating</option>
+                                    <option value="0">Sort By Newness</option>
+                                    <option value="0">Sort By Price: Low to High</option>
+                                    <option value="0">Sort By Price: High to Low</option>
+                                </select>
+                            </div>
+
+                            <!--=======  End of Sort by dropdown  =======-->
+
+                            <p class="result-show-message ">Showing {{start_val}}–{{end_val}} of {{total_prods}}
+                                results</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!--=======  End of Shop header  =======-->
+
+                <!--=======  Grid list view  =======-->
+
+                <div class="shop-product-wrap grid row no-gutters mb-35">
+
+                    {% for product in products %}
+                    {% set subcategory = subcategories.pop() %}
+                    {% set category = categories.pop() %}
+                    {% set picture = pictures.pop() %}
+                    {% set url = 'images/products/'+ category.category_name + '/' + picture.picture_url %}
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+
+                        <!--=======  Grid view product  =======-->
+
+                        <div class="gf-product shop-grid-view-product">
+                            <div class="image">
+                                <a href="/product-details/{{product.slug}}">
+                                    <img alt="" class="img-fluid"
+                                         src="{{url_for('static', filename=url)}}">
+                                </a>
+                                <div class="product-hover-icons">
+                                    <input name="quantity{{product.product_id}}" type="hidden" value="1">
+                                    <a class="addToCartButton" data-tooltip="Add to cart" name="{{product.product_id}}"
+                                       style="color: #fff;">
+                                        <span class="icon_cart_alt"></span></a>
+                                    <a class="addToWishlistButton" data-tooltip="Add to wishlist"
+                                       name="{{product.product_id}}" style="color: #fff;"> <span
+                                            class="icon_heart_alt"></span> </a>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <div class="product-categories">
+                                    <a href="/subshop/{{category.slug}}/{{subcategory.slug}}">{{subcategory.subcategory_name}}</a>
+                                </div>
+                                <h3 class="product-title"><a href="/product-details/{{product.slug}}">{{product.product_name}}
+                                    -
+                                    {{product.product_quantity}}</a></h3>
+                                <div class="price-box">
+                                    <!--<span class="main-price">Rs {{product.product_price}}</span>-->
+                                    <span class="discounted-price">Rs {{product.product_price}}</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!--=======  End of Grid view product  =======-->
+
+                        <!--=======  Shop list view product  =======-->
+
+                        <div class="gf-product shop-list-view-product">
+                            <div class="image">
+                                <a href="/product-details/{{product.slug}}">
+                                    <img alt="" class="img-fluid"
+                                         src="{{url_for('static', filename=url)}}">
+                                </a>
+                            </div>
+                            <div class="product-content">
+                                <div class="product-categories">
+                                    <a href="/subshop/{{category.slug}}/{{subcategory.slug}}">{{subcategory.subcategory_name}}</a>
+                                </div>
+                                <h3 class="product-title"><a href="/product-details/{{product.slug}}">{{product.product_name}}
+                                    -
+                                    {{product.product_quantity}}</a></h3>
+                                <div class="price-box mb-20">
+                                    <!--                                    <span class="main-price">Rs 120</span>-->
+                                    <span class="discounted-price">Rs {{product.product_price}}</span>
+                                </div>
+                                <p class="product-description">{{product.product_description}}</p>
+                                <div class="list-product-icons">
+                                    <input name="quantity{{product.product_id}}" type="hidden" value="1">
+                                    <a class="addToCartButton" data-tooltip="Add to cart" name="{{product.product_id}}"
+                                       style="color: #fff;">
+                                        <span class="icon_cart_alt"></span></a>
+                                    <a class="addToWishlistButton" data-tooltip="Add to wishlist"
+                                       name="{{product.product_id}}" style="color: #fff;"> <span
+                                            class="icon_heart_alt"></span> </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!--=======  End of Shop list view product  =======-->
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                <!--=======  End of Grid list view  =======-->
+
+                <!--=======  Pagination container  =======-->
+
+                <div class="pagination-container">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <!--=======  pagination-content  =======-->
+
+                                <div class="pagination-content text-center">
+                                    <ul class="pagination">
+                                        <li><a class="prev" href="#"><i class="fa fa-angle-left"></i></a></li>
+                                        {% for i in range(1, number_of_pages) %}
+                                        <li class="pageNumber"><a href="?q={{searchword}}&&page={{i}}">{{i}}</a></li>
+                                        {% endfor %}
+                                        <li><a class="next" href="#"><i class="fa fa-angle-right"></i></a></li>
+                                    </ul>
+                                </div>
+
+                                <!--=======  End of pagination-content  =======-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--=======  End of Pagination container  =======-->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--=====  End of Shop page container  ======-->
+
+{% endblock %}
