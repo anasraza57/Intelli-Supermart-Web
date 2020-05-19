@@ -628,9 +628,11 @@ def result():
     products_pics = []
     products = []
     total_prods = 0
+    hasProducts = False
     if searchword:
         products = Product.query.msearch(searchword, fields=['product_name', 'product_description'])
         if products:
+            hasProducts = True
             for product in products:
                 subcategory = Subcategory.query.filter_by(subcategory_id=product.prod_subcategory_id).first()
                 prod_category = Category.query.filter_by(category_id=subcategory.category_id).first()
@@ -663,7 +665,7 @@ def result():
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
     title = "Shop"
-    return render_template("result.html", category=category, prod_subcategories=prod_subcategories,
+    return render_template("result.html", category=category, prod_subcategories=prod_subcategories,hasProducts=hasProducts,
                            categories=categories, subcategories=subcategories, products=products,searchword=searchword,
                            pictures=products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
                            start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count,

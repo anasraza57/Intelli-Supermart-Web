@@ -136,6 +136,10 @@
 
                 <div class="shop-product-wrap grid row no-gutters mb-35">
 
+                    {%if (hasProducts == False) %}
+                    <h2>No results found...</h2>
+                    {%endif%}
+
                     {% for product in products %}
                     {% set subcategory = subcategories.pop() %}
                     {% set category = categories.pop() %}
