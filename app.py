@@ -4,6 +4,7 @@ from random import randint
 
 from flask import *
 from flask_mail import Mail
+from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate, MigrateCommand
 from flask_msearch import Search
 from flask_script import Manager
@@ -26,6 +27,7 @@ mail = Mail(app)
 db = SQLAlchemy(app)
 search = Search()
 search.init_app(app)
+ma = Marshmallow(app)
 
 migrate = Migrate(app, db)
 manager = Manager(app)
@@ -36,7 +38,7 @@ class Product(db.Model):
     __searchable__ = ['product_name', 'product_description']
     __tablename__ = 'product'
     product_id = db.Column(db.Integer, primary_key=True)
-    product_name = db.Column(db.String(200))
+    product_name = db.Column(db.String(200),primary_key=True)
     product_description = db.Column(db.String(1000))
     product_price = db.Column(db.String(200))
     picture_id = db.Column(db.Integer)
@@ -45,12 +47,22 @@ class Product(db.Model):
     slug = db.Column(db.String(200))
 
 
+class ProductSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Product
+
+
 class Category(db.Model):
     __tablename__ = 'category'
     category_id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String(200))
     picture_id = db.Column(db.Integer)
     slug = db.Column(db.String(200))
+
+
+class CategorySchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Category
 
 
 class Subcategory(db.Model):
@@ -65,6 +77,11 @@ class Picture(db.Model):
     __tablename__ = 'picture'
     picture_id = db.Column(db.Integer, primary_key=True)
     picture_url = db.Column(db.String(200))
+
+
+class PictureSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Picture
 
 
 class Cart(db.Model):
@@ -664,7 +681,7 @@ def result():
     wishlist_count = wishListCount()
     title = "Shop"
     return render_template("result.html", category=category, prod_subcategories=prod_subcategories,
-                           categories=categories, subcategories=subcategories, products=products,searchword=searchword,
+                           categories=categories, subcategories=subcategories, products=products, searchword=searchword,
                            pictures=products_pics, number_of_pages=number_of_pages, total_prods=total_prods,
                            start_val=start_val, end_val=end_val, grand_total=grand_total, count=cart_count,
                            wishlist_count=wishlist_count, title=title)
@@ -848,7 +865,8 @@ def terms_n_conditions():
     cart_count, totals, grand_total = cartItemsAndPrice()
     wishlist_count = wishListCount()
     title = "Terms and Conditions"
-    return render_template('terms-n-conditions.html', category=category, grand_total=grand_total, count=cart_count, wishlist_count=wishlist_count, title=title)
+    return render_template('terms-n-conditions.html', category=category, grand_total=grand_total, count=cart_count,
+                           wishlist_count=wishlist_count, title=title)
 
 
 def mergeDict(dict1, dict2):
@@ -921,7 +939,7 @@ def check_wishlist_in_session():
                 db.session.commit()
 
 
-
+# --------------------------------------------MOBILE WORK------------------------------------------------
 
 @app.route('/mobileCart', methods=['GET', 'POST', 'DELETE'])
 def mobileCart():
@@ -957,7 +975,6 @@ def mobileCart():
                        pic=mob_pictures, product=mob_products)
 
 
-
 @app.route('/DeletefromMobCart', methods=['DELETE'])
 def DeletefromMobCart():
     if request.method == 'DELETE':
@@ -976,15 +993,19 @@ def DeletefromMobCart():
 @app.route('/mobileMainCtaegory', methods=['GET'])
 def mobileMainCategory():
     categories = Category.query.all()
+    category_schema = CategorySchema(many=True)
+    categories = category_schema.dump(categories)
     pictures = Picture.query.all()
-    category_images = []
-    for category in categories:
-        for picture in pictures:
-            if category.picture_id == picture.picture_id:
-                category_images.append(picture)
-    cart_count, totals, grand_total = cartItemsAndPrice()
-    return jsonify(categories=categories, pictures=pictures, category_images=category_images, grand_total=grand_total,
-                   count=cart_count)
+    picture_schema = PictureSchema(many=True)
+    pictures = picture_schema.dump(pictures)
+    return jsonify(category=categories, pictures=pictures)
+    # category_images = []
+    # for category in categories:
+    #     picture = Picture.query.filter_by(picture_id=category.picture_id).first()
+    #     category_images.append(picture)
+    # cart_count, totals, grand_total = cartItemsAndPrice()
+    # return jsonify(categories=categories, pictures=pictures, category_images=category_images, grand_total=grand_total,
+    #                count=cart_count)
 
 
 @app.route('/mobileProduct/<string:cate_slug>')
