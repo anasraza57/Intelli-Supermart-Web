@@ -95,8 +95,15 @@ class Cart(db.Model):
 class Wishlist(db.Model):
     __tablename__ = 'wishlist'
     wishlist_id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.String(200))
-    product_id = db.Column(db.Integer)
+    customer_id = db.Column(db.String(200) , db.ForeignKey('customer.customer_id'))
+    product_id = db.Column(db.Integer , db.ForeignKey('product.product_id'))
+    products = db.relationship('Product', backref='wishlist', lazy='select') #onetomany
+    customer = db.relationship('Customer', backref='wishlist', lazy='select', uselist='False') #onetoone
+
+
+class WishlistSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Wishlist
 
 
 class Customer(db.Model):
@@ -105,10 +112,16 @@ class Customer(db.Model):
     customer_phone = db.Column(db.String(200))
 
 
+
+class CustomerSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Customer
+
+
 class CustomerInfo(db.Model):
     __tablename__ = 'customer_info'
     id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.String(200))
+    customer_id = db.Column(db.String(200), db.ForeignKey('customer.customer_id'))
     first_name = db.Column(db.String(200))
     last_name = db.Column(db.String(200))
     email = db.Column(db.String(200))
@@ -116,26 +129,42 @@ class CustomerInfo(db.Model):
     address = db.Column(db.String(200))
     city = db.Column(db.String(200))
     zipcode = db.Column(db.String(200))
+    customer = db.relationship('Customer', backref= 'CustomerInfo', lazy= 'select', uselist= 'False') #onetoone
 
+
+class CustomerInfoSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = CustomerInfo
 
 class Order(db.Model):
     __tablename__ = 'orders'
     order_id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.String(200))
+    customer_id = db.Column(db.String(200), db.ForeignKey('customer.customer_id'))
     order_amount = db.Column(db.Integer)
     order_at = db.Column(db.DateTime)
     order_quantity = db.Column(db.Integer)
     order_status = db.Column(db.String(200))
+    customer = db.relationship('Customer', backref= 'Order', uselist= 'False') #onetoone
+    products = db.relationship('Product', backref= 'Order', lazy= 'select') #onetomany
+
+class OrderSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Order
 
 
 class OrderPlaced(db.Model):
     __tablename__ = 'order_placed'
     id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.String(200))
-    product_id = db.Column(db.Integer)
+    customer_id = db.Column(db.String(200), db.ForeignKey('customer.customer_id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'))
     product_quantity = db.Column(db.Integer)
-    order_at = db.Column(db.DateTime)
+    order_at = db.Column(db.DateTime, db.ForeignKey('orders.order_at'))
 
+
+
+class OrderPlacedSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = OrderPlaced
 
 class Contact(db.Model):
     __tablename__ = 'contact'
@@ -144,6 +173,11 @@ class Contact(db.Model):
     message = db.Column(db.String(1000))
     name = db.Column(db.String(200))
     subject = db.Column(db.String(200))
+
+
+class ContactSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Contact
 
 
 @app.route('/', methods=['GET', 'POST', 'DELETE'])
