@@ -1,4 +1,4 @@
-#!/home/anas_raza/FYP/Intelli-Supermart-Web/env/bin/python
+#!/home/anas_raza/Projects/Intelli-Supermart-Web/env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
