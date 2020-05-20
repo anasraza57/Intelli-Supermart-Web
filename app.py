@@ -205,15 +205,19 @@ def cart():
             DictItems = {product_id: {'quantity': quantity}}
             if 'Shoppingcart' in session:
                 if product_id in session['Shoppingcart']:
+                    print("no session duplicate")
                     return "duplicate"
                 else:
                     session['Shoppingcart'] = mergeDict(session['Shoppingcart'], DictItems)
+                    print("no session success")
                     return "success"
             else:
                 session['Shoppingcart'] = DictItems
+                print("no session")
                 return "success"
 
     if ('Shoppingcart' not in session or len(session['Shoppingcart']) <= 0) and 'user' not in session:
+        print("Condition problem a rhi")
         return redirect('/')
     else:
         pictures = Picture.query.all()
@@ -878,29 +882,45 @@ def mergeDict(dict1, dict2):
 
 
 def cartItemsAndPrice():
-    if 'Shoppingcart' in session:
-        cart_count = len(session['Shoppingcart'])
-        if len(session['Shoppingcart']) <= 0:
-            return 0, 0, 0
+    if 'Shoppingcart' in session or 'user' in session:
+        total_price_of_all_prods = []
+        if 'user' in session:
+            cart_prods = Cart.query.filter_by(customer_id=session['user']).all()
+            if not cart_prods:
+                return 0, 0, 0
+            else:
+                cart_count = len(cart_prods)
+                for cart_prod in cart_prods:
+                    product = Product.query.filter_by(product_id=cart_prod.product_id).first()
+                    res = cart_prod.product_quantity * product.product_price
+                    total_price_of_all_prods.append(res)
         else:
-            total_price_of_all_prods = []
-            for key, item in session['Shoppingcart'].items():
-                product = Product.query.filter_by(product_id=key).first()
-                res = int(item['quantity']) * product.product_price
-                total_price_of_all_prods.append(res)
-            grand_total = sum(total_price_of_all_prods)
-            return cart_count, total_price_of_all_prods, grand_total
+            cart_count = len(session['Shoppingcart'])
+            if cart_count <= 0:
+                return 0, 0, 0
+            else:
+                for key, item in session['Shoppingcart'].items():
+                    product = Product.query.filter_by(product_id=key).first()
+                    res = int(item['quantity']) * product.product_price
+                    total_price_of_all_prods.append(res)
+        grand_total = sum(total_price_of_all_prods)
+        return cart_count, total_price_of_all_prods, grand_total
     else:
         return 0, 0, 0
 
 
 def wishListCount():
-    if 'Wishlist' in session:
-        wishlist_count = len(session['Wishlist'])
-        if len(session['Wishlist']) <= 0:
-            return 0
+    if 'Wishlist' in session or 'user' in session:
+        if 'user' in session:
+            wishlist_prods = Wishlist.query.filter_by(customer_id=session['user']).all()
+            if not wishlist_prods:
+                return 0
+            wishlist_count = len(wishlist_prods)
         else:
-            return wishlist_count
+            wishlist_count = len(session['Wishlist'])
+            if wishlist_count <= 0:
+                return 0
+        return wishlist_count
     else:
         return 0
 

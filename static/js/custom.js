@@ -34,7 +34,7 @@ $('.addToCartButton').on("click", function(){
         data:{'product_id' : prod_id, 'quantity': quantity},
         success: function(result) {
             if (result == "duplicate"){
-                swal("Couldn't add to wishlist","This product is already in cart!", "warning");
+                swal("Couldn't add to cart","This product is already in cart!", "warning");
             }else{
                 swal({
                     title: "Added!",
@@ -64,7 +64,7 @@ $('.updateInCartButton').on("click", function(){
         success: function(result) {
             $('.total'+prod_id).html("Rs " + result['total']);
             $('.grand_total').html("Rs " + result['grand_total']);
-            swal("Updated","This product is updated to wishlist", "success");
+            swal("Updated","This product is updated to cart", "success");
         },
         error: function() {
             swal("Couldn't update the cart","Please try again later", "error");
