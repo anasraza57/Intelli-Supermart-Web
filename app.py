@@ -34,6 +34,39 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 
+class Cart(db.Model):
+    __tablename__ = 'cart'
+    cart_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String(200),db.ForeignKey('customer.customer_id'))
+    product_id = db.Column(db.Integer,db.ForeignKey('product.product_id'))
+    product_quantity = db.Column(db.Integer)
+
+class CartSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Cart
+
+class Wishlist(db.Model):
+    __tablename__ = 'wishlist'
+    wishlist_id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String(200) , db.ForeignKey('customer.customer_id'))
+    product_id = db.Column(db.Integer , db.ForeignKey('product.product_id'))
+
+class WishlistSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Wishlist
+
+class OrderPlaced(db.Model):
+    __tablename__ = 'order_placed'
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String(200), db.ForeignKey('customer.customer_id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'))
+    product_quantity = db.Column(db.Integer)
+    order_at = db.Column(db.DateTime, db.ForeignKey('orders.order_at'))
+
+class OrderPlacedSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = OrderPlaced
+
 class Product(db.Model):
     __searchable__ = ['product_name', 'product_description']
     __tablename__ = 'product'
@@ -41,82 +74,52 @@ class Product(db.Model):
     product_name = db.Column(db.String(200),primary_key=True)
     product_description = db.Column(db.String(1000))
     product_price = db.Column(db.String(200))
-    picture_id = db.Column(db.Integer)
+    picture_id = db.Column(db.Integer,db.ForeignKey('picture.picture_id'))
     product_quantity = db.Column(db.String(20))
-    prod_subcategory_id = db.Column(db.Integer)
+    prod_subcategory_id = db.Column(db.Integer,db.ForeignKey('subcategory.subcategory_id'))
     slug = db.Column(db.String(200))
-
+    cart = db.relationship('Cart', backref='product', lazy='select')                         #one-to-many
+    wishlist = db.relationship('Wishlist', backref='product', lazy='select')                 #one-to-many
+    order_placed=db.relationship('OrderPlaced',backref='product',lazy='select')              #one-to-many
 
 class ProductSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Product
 
+class Subcategory(db.Model):
+    __tablename__ = 'subcategory'
+    subcategory_id = db.Column(db.Integer, primary_key=True)
+    subcategory_name = db.Column(db.String(200))
+    category_id = db.Column(db.Integer,db.ForeignKey('category.category_id'))
+    slug = db.Column(db.String(200))
+    product=db.relationship('Product',backref='subcategory',lazy='select')                  #one-to-many
+
+class SubcategorySchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Subcategory
 
 class Category(db.Model):
     __tablename__ = 'category'
     category_id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String(200))
-    picture_id = db.Column(db.Integer)
+    picture_id = db.Column(db.Integer,db.ForeignKey('picture.picture_id'))
     slug = db.Column(db.String(200))
-
+    subcategory = db.relationship('Subcategory', backref='category', lazy='select')             #one-to-many
 
 class CategorySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Category
 
-
-class Subcategory(db.Model):
-    __tablename__ = 'subcategory'
-    subcategory_id = db.Column(db.Integer, primary_key=True)
-    subcategory_name = db.Column(db.String(200))
-    category_id = db.Column(db.Integer)
-    slug = db.Column(db.String(200))
-
-
 class Picture(db.Model):
     __tablename__ = 'picture'
     picture_id = db.Column(db.Integer, primary_key=True)
     picture_url = db.Column(db.String(200))
-
+    product = db.relationship('Product', backref='picture', lazy='select', uselist=False)         #one-to-one
+    category = db.relationship('Category', backref='picture', lazy='select', uselist=False)       #one-to-one
 
 class PictureSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Picture
-
-
-class Cart(db.Model):
-    __tablename__ = 'cart'
-    cart_id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.String(200))
-    product_id = db.Column(db.Integer)
-    product_quantity = db.Column(db.Integer)
-
-
-class Wishlist(db.Model):
-    __tablename__ = 'wishlist'
-    wishlist_id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.String(200) , db.ForeignKey('customer.customer_id'))
-    product_id = db.Column(db.Integer , db.ForeignKey('product.product_id'))
-    products = db.relationship('Product', backref='wishlist', lazy='select') #onetomany
-    customer = db.relationship('Customer', backref='wishlist', lazy='select', uselist='False') #onetoone
-
-
-class WishlistSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Wishlist
-
-
-class Customer(db.Model):
-    __tablename__ = 'customer'
-    customer_id = db.Column(db.String(200), primary_key=True)
-    customer_phone = db.Column(db.String(200))
-
-
-
-class CustomerSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Customer
-
 
 class CustomerInfo(db.Model):
     __tablename__ = 'customer_info'
@@ -129,8 +132,6 @@ class CustomerInfo(db.Model):
     address = db.Column(db.String(200))
     city = db.Column(db.String(200))
     zipcode = db.Column(db.String(200))
-    customer = db.relationship('Customer', backref= 'CustomerInfo', lazy= 'select', uselist= 'False') #onetoone
-
 
 class CustomerInfoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -144,27 +145,25 @@ class Order(db.Model):
     order_at = db.Column(db.DateTime)
     order_quantity = db.Column(db.Integer)
     order_status = db.Column(db.String(200))
-    customer = db.relationship('Customer', backref= 'Order', uselist= 'False') #onetoone
-    products = db.relationship('Product', backref= 'Order', lazy= 'select') #onetomany
+    order_placed = db.relationship('OrderPlaced', backref='order', lazy='select')                #one-to-many
 
 class OrderSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Order
 
+class Customer(db.Model):
+    __tablename__ = 'customer'
+    customer_id = db.Column(db.String(200), primary_key=True)
+    customer_phone = db.Column(db.String(200))
+    cart = db.relationship('Cart', backref='customer', lazy='select', uselist=False)                #one-to-one
+    wishlist=db.relationship('Wishlist',backref='customer',lazy='select',uselist=False)             #one-to-one
+    customer_info=db.relationship('CustomerInfo',backref='customer',lazy='select',uselist=False)    #one-to-one
+    order=db.relationship('Order',backref='customer',lazy='select')                                 #one-to-many
+    order_placed = db.relationship('OrderPlaced', backref='customer', lazy='select')                #one-to-many
 
-class OrderPlaced(db.Model):
-    __tablename__ = 'order_placed'
-    id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.String(200), db.ForeignKey('customer.customer_id'))
-    product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'))
-    product_quantity = db.Column(db.Integer)
-    order_at = db.Column(db.DateTime, db.ForeignKey('orders.order_at'))
-
-
-
-class OrderPlacedSchema(ma.SQLAlchemyAutoSchema):
+class CustomerSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = OrderPlaced
+        model = Customer
 
 class Contact(db.Model):
     __tablename__ = 'contact'
@@ -173,7 +172,6 @@ class Contact(db.Model):
     message = db.Column(db.String(1000))
     name = db.Column(db.String(200))
     subject = db.Column(db.String(200))
-
 
 class ContactSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -1044,22 +1042,22 @@ def DeletefromMobCart():
             print(e)
 
 
-@app.route('/mobileMainCtaegory', methods=['GET'])
+@app.route('/mobileMainCategory', methods=['GET'])
 def mobileMainCategory():
     categories = Category.query.all()
+    pictures = Picture.query.all()
+    category_images = []
+    for category in categories:
+        picture = Picture.query.filter_by(picture_id=category.picture_id).first()
+        category_images.append(picture)
+
     category_schema = CategorySchema(many=True)
     categories = category_schema.dump(categories)
-    pictures = Picture.query.all()
     picture_schema = PictureSchema(many=True)
-    pictures = picture_schema.dump(pictures)
-    return jsonify(category=categories, pictures=pictures)
-    # category_images = []
-    # for category in categories:
-    #     picture = Picture.query.filter_by(picture_id=category.picture_id).first()
-    #     category_images.append(picture)
+    category_images=picture_schema.dump(category_images)
+
     # cart_count, totals, grand_total = cartItemsAndPrice()
-    # return jsonify(categories=categories, pictures=pictures, category_images=category_images, grand_total=grand_total,
-    #                count=cart_count)
+    return jsonify(categories=categories, category_images=category_images)
 
 
 @app.route('/mobileProduct/<string:cate_slug>')
@@ -1081,10 +1079,19 @@ def mobileProduct(cate_slug):
             if product.picture_id == pic.picture_id:
                 cate_products_pics.append(pic)
 
+    category_schema = CategorySchema()
+    category = category_schema.dump(category)
+    subcategory_schema = SubcategorySchema(many=True)
+    subcategories = subcategory_schema.dump(subcategories)
+    product_schema = ProductSchema(many=True)
+    cate_products = product_schema.dump(cate_products)
+    picture_schema = PictureSchema(many=True)
+    cate_products_pics = picture_schema.dump(cate_products_pics)
+
     total_prods = len(cate_products)
-    cart_count, totals, grand_total = cartItemsAndPrice()
+    #cart_count, totals, grand_total = cartItemsAndPrice()
     return jsonify(category=category, subcategories=subcategories, products=cate_products,
-                   pictures=cate_products_pics, total_prods=total_prods, grand_total=grand_total, count=cart_count)
+                   pictures=cate_products_pics, total_prods=total_prods)
 
 
 @app.route('/mobileProduct-details/<string:prod_slug>')
@@ -1099,10 +1106,17 @@ def mobileProduct_details(prod_slug):
         if product.picture_id == picture.picture_id:
             pic = picture
 
-    cart_count, totals, grand_total = cartItemsAndPrice()
+    category_schema = CategorySchema()
+    category = category_schema.dump(category)
+    product_schema = ProductSchema()
+    product = product_schema.dump(product)
+    picture_schema = PictureSchema()
+    pic = picture_schema.dump(pic)
+    subcategory_schema = SubcategorySchema()
+    subcategory = subcategory_schema.dump(subcategory)
 
-    return jsonify(product=product, picture=pic, category=category,
-                   subcategory=subcategory, grand_total=grand_total, count=cart_count)
+    #cart_count, totals, grand_total = cartItemsAndPrice()
+    return jsonify(product=product, picture=pic, category=category,subcategory=subcategory)
 
 
 @app.route('/mobileLogin', methods=['POST'])
