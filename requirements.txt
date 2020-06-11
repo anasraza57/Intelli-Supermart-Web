@@ -8,7 +8,7 @@ Flask-Migrate==2.5.3
 flask-msearch==0.2.9
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.4.1
-gunicorn==19.0.0
+gunicorn==19.5.0
 itsdangerous==1.1.0
 Jinja2==2.11.2
 Mako==1.1.2
