@@ -308,6 +308,8 @@ $('#submit').on('click', function(){
                     title: "Your message has been sent!",
                     text: "We will contact you shortly.",
                     icon: "success"
+                }).then((value) => {
+                    window.location.replace("/contact-us");
                 });
             },
             error: function(){
